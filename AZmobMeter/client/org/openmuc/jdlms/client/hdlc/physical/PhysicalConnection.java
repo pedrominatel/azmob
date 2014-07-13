@@ -59,20 +59,17 @@ public class PhysicalConnection implements IPhysicalConnection {
             super.handleMessage(msg);
             switch(msg.what){
             case SUCCESS_CONNECT:
+            	isClosed = false;
                 // DO something
                 ConnectedThread connectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
-
                 connectedThread.start(); //start the read thread
                 connectedThread.cancel();
-                String s = "successfully connected";
+                String s = "successfully connected"; //TODO Remove this!
                 connectedThread.write(s.getBytes());
-                Log.i(tag, "connected");
-
+                Log.i(tag, "connected"); //TODO Use R.string.xxx
                 break;
             case MESSAGE_READ:
                 byte[] readBuf = (byte[])msg.obj;
-                String string = new String(readBuf);
-
                 break;
             case MESSAGE_READ_OK:
 
