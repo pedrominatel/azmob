@@ -49,6 +49,7 @@ public class PhysicalConnection implements IPhysicalConnection {
     String tag = "debugging";
 	
     BluetoothAdapter btAdapter;
+    //ConnectThread connectBt = new ConnectThread(device);
     
     Handler mHandler = new Handler(){
         @Override
@@ -63,9 +64,9 @@ public class PhysicalConnection implements IPhysicalConnection {
 
                 connectedThread.start(); //start the read thread
                 connectedThread.cancel();
-//                String s = "successfully connected";
-//                connectedThread.write(s.getBytes());
-//                Log.i(tag, "connected");
+                String s = "successfully connected";
+                connectedThread.write(s.getBytes());
+                Log.i(tag, "connected");
 
                 break;
             case MESSAGE_READ:
