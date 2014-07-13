@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.thinken.azmobmeter.BluetoothManager" >
+
+    <item
+        android:id="@+id/action_bt_off"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/bt_off"/>
+    <item
+        android:id="@+id/action_bt_on"
+        android:orderInCategory="110"
+        android:showAsAction="never"
+        android:title="@string/bt_on"/>
+
+</menu>

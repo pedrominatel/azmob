@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AZmob Meter</string>
+    <string name="activity_mainMenu">AZmob Menu Principal</string>
+    <string name="activity_connectedMenu">AZmob Operação</string>
+    <string name="ttl_info">Medidor</string>
+    <string name="ttl_read">Leitura</string>
+    <string name="ttl_write">Programa</string>
+    <string name="ttl_toolbox">Tool Box</string>
+    <string name="act_disconnect">Desconectar</string>
+    <string name="act_reconnect">Reconectar</string>
+    <string name="act_settings">Configurações</string>
+    <string name="act_exit">Sair</string>
+    <string name="bt_connect">Conectar ao Medidor</string>
+    <string name="bt_connectBluetooth">Conectar Bluetooth</string>
+    <string name="bt_scanBluetooth">Procurar Dispositivo</string>
+    <string name="bt_settings">Configurações</string>
+    <string name="bt_about">Sobre</string>
+    <string name="bt_reports">Relatórios de Leitura</string>
+    <string name="bt_hw_error">Hardware Bluetooth não suportado!</string>
+    <string name="bt_on">Ligar Bluetooth</string>
+    <string name="bt_off">Desligar Bluetooth</string>
+    <string name="bt_paired">Dispositivos pareados</string>
+    <string name="bt_connect_confirm">Conectar ao dispositivo?</string>
+    <string name="exit">Sair</string>
+    <string name="exit_question">Sair?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="confirm">Confirme</string>
+    <string name="confirm_question">Confirmar?</string>
+    <string name="exit_warning">Deseja realmente sair?</string>
+    <string name="activity_bluetooth_manager">Gerenciador de Bluetooth</string>
+    <string name="popup_bluetooth_connect">Conectar</string>
+    <string name="popup_bluetooth_ignore">Ignorar</string>
+    <string name="popup_bluetooth_cancel">Cancelar</string>
+    <string name="options_menu">Menu de Opções</string>
+    <string name="todo">Opção não disponível!</string>
+    <string name="engineering_mode">Modo de Engenharia</string>
+
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <string name="readouts">Leituras</string>
+    <string name="startReadout">Iniciar Leitura</string>
+    <string name="activity_readout_menu">Leitura do Medidor</string>
+    <string name="readout_menu">Menu de Leitura</string>
+    <string name="read_meter">Ler Medidor</string>
+    <string name="clock_adjust">Ajuste de Relógio</string>
+    <string name="billing">Ver Faturamento</string>
+    <string name="alarm_clean">Limpar Alarmes</string>
+    <string name="meter_info">Status do Medidor</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="title_activity_meter_read">MeterRead</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+</resources>
