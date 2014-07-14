@@ -1,4 +1,4 @@
-package itr.driver.teste;
+package driver.teste;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,10 +12,10 @@ import org.openmuc.jdlms.client.MethodResult;
 import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
-import itr.driver.meter.*;
-import itr.driver.parse.itr_driver_parse_pduXml;
+import driver.meter.*;
+import driver.parse.*;
 
-public class main {
+public class teste {
 
 	private static final int dlms_upperAddress = 1;
 	private static final int dlms_lowerAddress = 17;
@@ -54,7 +54,7 @@ public class main {
 			System.out.println("Deu merda!" + ex.toString());
 			connection.disconnect(false);
 		} catch (Exception ex) {
-			System.out.println("Não sei, não sei...!" + ex.toString());
+			System.out.println("Nï¿½o sei, nï¿½o sei...!" + ex.toString());
 		}
 		
 	}

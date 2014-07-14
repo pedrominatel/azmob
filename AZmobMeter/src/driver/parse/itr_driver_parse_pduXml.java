@@ -1,4 +1,4 @@
-package itr.driver.parse;
+package driver.parse;
 
 
 import java.io.File;
@@ -537,6 +537,8 @@ public class itr_driver_parse_pduXml {
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 				
 				String cosemType = tempNode.getNodeName();
+				
+				//XXX Change to int instead of string. It only works on JRE 1.7 or more
 				
 				switch (cosemType) {
 				case COSEM_ELEMENT:

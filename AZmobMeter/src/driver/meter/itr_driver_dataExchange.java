@@ -1,6 +1,6 @@
-package itr.driver.meter;
+package driver.meter;
 
-import itr.driver.parse.itr_driver_parse_pduXml;
+import driver.parse.itr_driver_parse_pduXml;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -52,23 +52,23 @@ public class itr_driver_dataExchange {
 //	in Connection
 //	in FilePath
 //	out GetResult
-	public GetResult GetObjectXml(IClientConnection connection, String xmlFilePath){
-		// Get parameter to read
-		
-		//itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
-		//parse.xmlHeader(obis, classId, attributeId);
-		
-		GetRequest getObject = new GetRequest(classId, obis, attributeId);
-		GetResult result = null;
-		// Read entire event log
-		try {
-			List<GetResult> getResults = connection.get(HIGH_TIMEOUT, true, getObject); //set the timeout with more than 15s for big data i.e Events
-			result = getResults.get(0); 
-		} catch (Exception e) {
-			return null;
-		}
-		return result;
-	}
+//	public GetResult GetObjectXml(IClientConnection connection, String xmlFilePath){
+//		// Get parameter to read
+//		
+//		//itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
+//		//parse.xmlHeader(obis, classId, attributeId);
+//		
+//		GetRequest getObject = new GetRequest(classId, obis, attributeId);
+//		GetResult result = null;
+//		// Read entire event log
+//		try {
+//			List<GetResult> getResults = connection.get(HIGH_TIMEOUT, true, getObject); //set the timeout with more than 15s for big data i.e Events
+//			result = getResults.get(0); 
+//		} catch (Exception e) {
+//			return null;
+//		}
+//		return result;
+//	}
 	
 //GetObjectWithSelector
 //	in Connection
@@ -227,19 +227,19 @@ public AccessResultCode SetDateTimeObject(IClientConnection connection, ObisCode
 //	in ObisCode
 //	in ClassID
 //	out MethodResult
-	public MethodResult ActionXml(IClientConnection connection, String xmlFilePath){
-		// Action
-		MethodRequest action = new MethodRequest(classId, obis, attributeId);
-		action.data().setUnsigned16(data);
-		MethodResult result = null;
-		// Read entire event log
-		try {
-			List<MethodResult> actionResults = connection.action(LOW_TIMEOUT, action);
-			result = actionResults.get(0); 
-		} catch (Exception e) {
-			return null;
-		}
-		return result;
-	}
+//	public MethodResult ActionXml(IClientConnection connection, String xmlFilePath){
+//		// Action
+//		MethodRequest action = new MethodRequest(classId, obis, attributeId);
+//		action.data().setUnsigned16(data);
+//		MethodResult result = null;
+//		// Read entire event log
+//		try {
+//			List<MethodResult> actionResults = connection.action(LOW_TIMEOUT, action);
+//			result = actionResults.get(0); 
+//		} catch (Exception e) {
+//			return null;
+//		}
+//		return result;
+//	}
 	
 }
