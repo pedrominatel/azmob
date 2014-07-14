@@ -1,23 +1,17 @@
 package com.thinken.azmobmeter;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
 
 import android.app.Activity;
+import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,25 +27,12 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 
 	private ArrayAdapter<String> listAdapter;
 	private ListView listView;
-
 	private BluetoothAdapter btAdapter; // bt adapter contains the radio adapter
-	private BluetoothDevice btDevice; // bt device contains the selected bt
-										// paired device
-
-	// app singleton
-	public BluetoothDevice getData() {
-		return btDevice;
-	}
-
-	public void setData(BluetoothDevice data) {
-		this.btDevice = data;
-	}
+	BluetoothDevice btDevice; // bt device contains the selected bt
 
 	Set<BluetoothDevice> devicesArray;
 	private ArrayList<String> pairedDevices;
 	private ArrayList<BluetoothDevice> devices;
-	public static final UUID MY_UUID = UUID
-			.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	protected static final int SUCCESS_CONNECT = 0;
 	protected static final int MESSAGE_READ = 1;
 	protected static final int MESSAGE_READ_OK = 2;
@@ -61,39 +42,6 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 	IntentFilter filter;
 	BroadcastReceiver receiver;
 	String tag = "debugging";
-
-	Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			Log.i(tag, "in handler");
-			super.handleMessage(msg);
-			switch (msg.what) {
-			case SUCCESS_CONNECT:
-				// DO something
-				ConnectedThread connectedThread = new ConnectedThread(
-						(BluetoothSocket) msg.obj);
-				Toast.makeText(getApplicationContext(), "CONNECT", 0).show();
-				connectedThread.start(); // start the read thread
-				connectedThread.cancel();
-				String s = "successfully connected";
-				connectedThread.write(s.getBytes());
-				Log.i(tag, "connected");
-				Intent intent = new Intent(BluetoothManager.this,
-						MeterMenu.class);
-				startActivity(intent);
-				break;
-			case MESSAGE_READ:
-				byte[] readBuf = (byte[]) msg.obj;
-				String string = new String(readBuf);
-				Toast.makeText(getApplicationContext(), string, 0).show();
-				break;
-			case MESSAGE_READ_OK:
-				Toast.makeText(getApplicationContext(), "Received", 0).show();
-				break;
-			}
-		}
-	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +61,21 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 			startDiscovery();
 		}
 
+	}
+
+	public class MyApplication extends Application {
+	    BluetoothDevice device;
+
+	    public synchronized void setBtConnection(BluetoothDevice btdevice) {
+	    	this.device = btdevice;
+	    }
+	    
+	    public synchronized BluetoothDevice getBtConnection() {
+	        if (device == null) {
+	            // construct a BluetoothDevice object and put it into variable device
+	        }
+	        return device;
+	    }
 	}
 
 	private void startDiscovery() {
@@ -258,10 +221,14 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 		if (listAdapter.getItem(arg2).contains("Paired")) {
 
 			btDevice = devices.get(arg2);
-			BluetoothManager app = (BluetoothManager) getApplicationContext();
-			app.setData(btDevice);
-
+			
+			String btAddress = btDevice.getAddress();
 			Log.i(tag, "in click listener");
+
+			Intent i = new Intent(getApplicationContext(), MeterMenu.class);
+			i.putExtra("btAddress",btAddress);
+			startActivity(i);
+
 		} else {
 			Toast.makeText(getApplicationContext(), "device is not paired", 0)
 					.show();
@@ -272,119 +239,6 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 		listAdapter.clear();
 		getPairedDevices();
 		startDiscovery();
-	}
-
-	private class ConnectThread extends Thread {
-
-		private final BluetoothSocket mmSocket;
-		private final BluetoothDevice mmDevice;
-
-		public ConnectThread(BluetoothDevice device) {
-			// Use a temporary object that is later assigned to mmSocket,
-			// because mmSocket is final
-			BluetoothSocket tmp = null;
-			mmDevice = device;
-			Log.i(tag, "construct");
-			// Get a BluetoothSocket to connect with the given BluetoothDevice
-			try {
-				// MY_UUID is the app's UUID string, also used by the server
-				// code
-				tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-			} catch (IOException e) {
-				Log.i(tag, "get socket failed");
-
-			}
-			mmSocket = tmp;
-		}
-
-		public void run() {
-			// Cancel discovery because it will slow down the connection
-			btAdapter.cancelDiscovery();
-			Log.i(tag, "connect - run");
-			try {
-				// Connect the device through the socket. This will block
-				// until it succeeds or throws an exception
-				mmSocket.connect();
-				Log.i(tag, "connect - succeeded");
-			} catch (IOException connectException) {
-				Log.i(tag, "connect failed");
-				// Unable to connect; close the socket and get out
-				try {
-					mmSocket.close();
-				} catch (IOException closeException) {
-				}
-				return;
-			}
-
-			// Do work to manage the connection (in a separate thread)
-
-			mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
-		}
-
-		/** Will cancel an in-progress connection, and close the socket */
-		public void cancel() {
-			try {
-				mmSocket.close();
-			} catch (IOException e) {
-			}
-		}
-	}
-
-	private class ConnectedThread extends Thread {
-		private final BluetoothSocket mmSocket;
-		private final InputStream mmInStream;
-		private final OutputStream mmOutStream;
-
-		public ConnectedThread(BluetoothSocket socket) {
-			mmSocket = socket;
-			InputStream tmpIn = null;
-			OutputStream tmpOut = null;
-
-			// Get the input and output streams, using temp objects because
-			// member streams are final
-			try {
-				tmpIn = socket.getInputStream();
-				tmpOut = socket.getOutputStream();
-			} catch (IOException e) {
-			}
-
-			mmInStream = tmpIn;
-			mmOutStream = tmpOut;
-		}
-
-		public void run() {
-			byte[] buffer = new byte[1024]; // buffer store for the stream
-			int bytes; // bytes returned from read()
-
-			// Keep listening to the InputStream until an exception occurs
-			while (true) {
-				try {
-					// Read from the InputStream
-					bytes = mmInStream.read(buffer);
-					// Send the obtained bytes to the UI activity
-					mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
-							.sendToTarget();
-				} catch (IOException e) {
-					break;
-				}
-			}
-		}
-
-		/* Call this from the main activity to send data to the remote device */
-		public void write(byte[] bytes) {
-			try {
-				mmOutStream.write(bytes);
-			} catch (IOException e) {
-			}
-		}
-
-		/* Call this from the main activity to shutdown the connection */
-		public void cancel() {
-			try {
-				mmSocket.close();
-			} catch (IOException e) {
-			}
-		}
 	}
 
 }

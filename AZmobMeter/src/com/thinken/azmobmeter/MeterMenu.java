@@ -1,7 +1,6 @@
 package com.thinken.azmobmeter;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,15 +10,18 @@ import android.widget.Toast;
 
 public class MeterMenu extends Activity {
 	
-	BluetoothDevice btDevice;
+	private String btAddress = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_meter);
 		
-		BluetoothManager app = (BluetoothManager) getApplicationContext();
-		btDevice = app.getData();
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+		    btAddress = extras.getString("btAddress");
+		    //Toast.makeText(getApplicationContext(), btAddress, 0).show();
+		}
 		
 	}
 
