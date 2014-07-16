@@ -592,7 +592,7 @@ public class driver_parse_pduXml {
 					String elementType = tempNode.getAttributes().item(0)
 							.getTextContent();
 					CosemType type = CosemType.NULL_TAG;
-
+					//TODO Criar uma function e substituir o if
 					if (elementType == "Unsigned8")
 						type = CosemType.UNSIGNED8;
 					else if (elementType == "Unsigned16")
