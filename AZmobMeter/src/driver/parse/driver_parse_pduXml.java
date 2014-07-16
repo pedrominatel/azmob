@@ -1,6 +1,5 @@
 package driver.parse;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,29 +33,11 @@ public class driver_parse_pduXml {
 	private static final String COSEM_DATA = "CosemData";
 	private static final String COSEM_OBJECT = "CosemObject";
 	private static final String COSEM_CONTAINER = "CosemContainer";
-	private static final String COSEM_ELEMENT = "CosemElement";	
+	private static final String COSEM_ELEMENT = "CosemElement";
 	private static final String COSEM_TYPE = "CosemType";
 
-	public static enum XML_tags {
-		NULL_TAG,
-		ELEMENT,
-		CONTAINER,
-		UNSIGNED8,
-		UNSIGNED16,
-		UNSIGNED32,
-		INTEGER8,
-		INTEGER16,
-		INTEGER32,
-		OCTETSTRING,
-		BITSTRING,
-		BOOLEAN,
-		ENUMERATED,
-		VISIBLESTRING,
-		DATA;
-	}
-	
-	public enum cosemType {
-		Structure, Array, Unsigned8, Unsigned16, Unsigned32, Integer8, Integer16, Integer32, BitString, Boolean, VisibleString, Enumerated, OctetString
+	public static enum CosemType {
+		NULL_TAG, ELEMENT, CONTAINER, UNSIGNED8, UNSIGNED16, UNSIGNED32, INTEGER8, INTEGER16, INTEGER32, OCTETSTRING, BITSTRING, BOOLEAN, ENUMERATED, VISIBLESTRING, DATA;
 	}
 
 	public void pduToXmlDebug(GetResult logObject) {
@@ -138,7 +119,8 @@ public class driver_parse_pduXml {
 			break;
 		case DOUBLE_LONG_UNSIGNED:
 			Element cosemDoubleLongUnsigned = xml.createElement(COSEM_ELEMENT);
-			cosemDoubleLongUnsigned.setAttribute(COSEM_TYPE, "DOUBLE_LONG_UNSIGNED");
+			cosemDoubleLongUnsigned.setAttribute(COSEM_TYPE,
+					"DOUBLE_LONG_UNSIGNED");
 			cosemDoubleLongUnsigned.setTextContent(data.getNumber().toString());
 			element.appendChild(cosemDoubleLongUnsigned);
 			break;
@@ -174,7 +156,7 @@ public class driver_parse_pduXml {
 	}
 
 	private static void pduToXmlDebugDecode(Data data, int indent) {
-		
+
 		for (int i = 0; i < indent; i++) {
 			System.out.print("   ");
 		}
@@ -198,9 +180,9 @@ public class driver_parse_pduXml {
 		case OCTET_STRING:
 			System.out.print("Octet String: ");
 			for (byte b : data.getByteArray()) {
-				//String hex = Integer.toHexString(b & 0xFF);
-				String hex = Integer.toString(b&0xFF);
-				//hex = hex.length() == 1 ? "0" + hex : hex;
+				// String hex = Integer.toHexString(b & 0xFF);
+				String hex = Integer.toString(b & 0xFF);
+				// hex = hex.length() == 1 ? "0" + hex : hex;
 				System.out.print(hex + ";");
 			}
 			System.out.println();
@@ -260,31 +242,40 @@ public class driver_parse_pduXml {
 		int sec = bytes[7];
 
 		Calendar calendar = new GregorianCalendar();
-		calendar.set(year,month,dayOfMonth,hour,min,sec);
+		calendar.set(year, month, dayOfMonth, hour, min, sec);
 
 		return calendar;
 	}
 
 	public byte[] encodeClock(Calendar dateTime) {
 		// encode clock OCTETSTRING
-		//force to one byte each integer (32bits) to avoid overflow
-		int yearHigh = 7 & (0xFF);//fixed to 7 high = 222
+		// force to one byte each integer (32bits) to avoid overflow
+		int yearHigh = 7 & (0xFF);// fixed to 7 high = 222
 		int yearLow = dateTime.get(Calendar.YEAR) - 1792 & (0xFF);
-		int month = dateTime.get(Calendar.MONTH) + 1 & (0xFF);//January = 0, just sum 1 to get the right value
+		int month = dateTime.get(Calendar.MONTH) + 1 & (0xFF);// January = 0,
+																// just sum 1 to
+																// get the right
+																// value
 		int dayOfMonth = dateTime.get(Calendar.DAY_OF_MONTH) & (0xFF);
-		int hourOfDay  = dateTime.get(Calendar.HOUR_OF_DAY) & (0xFF); // 24 hour clock
+		int hourOfDay = dateTime.get(Calendar.HOUR_OF_DAY) & (0xFF); // 24 hour
+																		// clock
 		int minute = dateTime.get(Calendar.MINUTE) & (0xFF);
 		int second = dateTime.get(Calendar.SECOND) & (0xFF);
 
-		byte[] dateArray = {(byte)yearHigh, (byte)yearLow, (byte)month, (byte)dayOfMonth, (byte)0xFF, (byte)hourOfDay, (byte)minute, (byte)second, (byte)0xff, (byte)0x80, (byte)0x00, (byte)0x00};
+		byte[] dateArray = { (byte) yearHigh, (byte) yearLow, (byte) month,
+				(byte) dayOfMonth, (byte) 0xFF, (byte) hourOfDay,
+				(byte) minute, (byte) second, (byte) 0xff, (byte) 0x80,
+				(byte) 0x00, (byte) 0x00 };
 
 		return dateArray;
 	}
 
-	public boolean createXml(String filePathName, GetResult pdu, ObisCode obis, int classId, int attribute) {
+	public boolean createXml(String filePathName, GetResult pdu, ObisCode obis,
+			int classId, int attribute) {
 		try {
 
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory
+					.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
 			// XML root elements
@@ -295,30 +286,33 @@ public class driver_parse_pduXml {
 			cosemXML.setAttribute("Version", "1.0.0");
 			xml.appendChild(cosemXML);
 
-			//CosemObject tag
+			// CosemObject tag
 			Element cosemObject = xml.createElement(COSEM_OBJECT);
 			cosemObject.setAttribute("SerialNumber", "");
 			cosemObject.setAttribute("LogicalName", obis.getHexCode());
-			cosemObject.setAttribute("ClassId",  Integer.toString(classId));
+			cosemObject.setAttribute("ClassId", Integer.toString(classId));
 			cosemObject.setAttribute("Index", Integer.toString(attribute));
-			cosemObject.setAttribute("ReadingDateTime", octetStringToString(encodeClock(Calendar.getInstance())));
+			cosemObject.setAttribute("ReadingDateTime",
+					octetStringToString(encodeClock(Calendar.getInstance())));
 			cosemObject.setAttribute("DataAccessResult", "success(0)");
 			cosemXML.appendChild(cosemObject);
-			
+
 			// CosemData tag
 			Element cosemData = xml.createElement(COSEM_DATA);
 			cosemObject.appendChild(cosemData);
-			
-			//Parse the GetResult data
+
+			// Parse the GetResult data
 			pduToXml(pdu.getResultData(), xml, cosemData);
 
 			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			TransformerFactory transformerFactory = TransformerFactory
+					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 
-			//Set ident
+			// Set ident
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			transformer.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", "2");
 
 			DOMSource source = new DOMSource(xml);
 
@@ -360,103 +354,121 @@ public class driver_parse_pduXml {
 		List<Data> elementsList = new ArrayList<Data>();
 		String[] obisArray = new String[6];
 		int classId = 0, index = 0;
-		
+
 		SetRequest setRequest = null;
 
 		try {
 
 			File file = new File(filePathName);
-			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			//Parse the XML
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+			// Parse the XML
 			Document doc = dBuilder.parse(file);
-			
-			//TODO: Check if this XML is valid by the root element. If != CosemXML throws Exception
-			if(!doc.getDocumentElement().getNodeName().equals(COSEM_XML)){
-				//TODO: Create Exception here
+
+			// TODO: Check if this XML is valid by the root element. If !=
+			// CosemXML throws Exception
+			if (!doc.getDocumentElement().getNodeName().equals(COSEM_XML)) {
+				// TODO: Create Exception here
 				return null;
 			}
-			
-			//TODO: Read CosemObject tag
+
+			// TODO: Read CosemObject tag
 			NodeList cosemObjectTag = doc.getElementsByTagName(COSEM_OBJECT);
 			Node cosemObjectTagNode = cosemObjectTag.item(0);
-			
+
 			if (cosemObjectTagNode.hasAttributes()) {
-				String objectNameAttr = cosemObjectTagNode.getAttributes().getNamedItem("Name").getNodeValue();
-				String logicalNameAttr = cosemObjectTagNode.getAttributes().getNamedItem("LogicalName").getNodeValue();
-				String classIdAttr = cosemObjectTagNode.getAttributes().getNamedItem("ClassId").getNodeValue();
-				String indexAttr = cosemObjectTagNode.getAttributes().getNamedItem("Index").getNodeValue();
+				String objectNameAttr = cosemObjectTagNode.getAttributes()
+						.getNamedItem("Name").getNodeValue();
+				String logicalNameAttr = cosemObjectTagNode.getAttributes()
+						.getNamedItem("LogicalName").getNodeValue();
+				String classIdAttr = cosemObjectTagNode.getAttributes()
+						.getNamedItem("ClassId").getNodeValue();
+				String indexAttr = cosemObjectTagNode.getAttributes()
+						.getNamedItem("Index").getNodeValue();
 				if (objectNameAttr != null) {
 					obisArray = logicalNameAttr.split(";");
 					classId = Integer.parseInt(classIdAttr);
 					index = Integer.parseInt(indexAttr);
 				}
 			}
-			
+
 			int[] obisIntArr = new int[6];
-			
+
 			for (int i = 0; i < obisArray.length; i++) {
 				obisIntArr[i] = Integer.parseInt(obisArray[i]);
 			}
-			
-			ObisCode obis = new ObisCode(obisIntArr[0],obisIntArr[1],obisIntArr[2],obisIntArr[3],obisIntArr[4],obisIntArr[5]);
+
+			ObisCode obis = new ObisCode(obisIntArr[0], obisIntArr[1],
+					obisIntArr[2], obisIntArr[3], obisIntArr[4], obisIntArr[5]);
 			setRequest = new SetRequest(classId, obis, index);
-			
+
 			if (doc.hasChildNodes()) {
-				//Find the tag CosemData and select the child nodes
+				// Find the tag CosemData and select the child nodes
 				NodeList cosemDataList = doc.getElementsByTagName(COSEM_DATA);
-				//Read the CosemData Node Structure
-				readXml(cosemDataList,elementsList);
+				// Read the CosemData Node Structure
+				readXml(cosemDataList, elementsList);
 			} else {
 				return null;
 			}
 
-			//Create the Data() structure/element
+			// Create the Data() structure/element
 			switch (elementsList.get(0).getChoiceIndex()) {
 			case STRUCTURE:
-				setRequest.data().setStructure(elementsList.get(0).getComplex());
+				setRequest.data()
+						.setStructure(elementsList.get(0).getComplex());
 				break;
 			case ARRAY:
 				setRequest.data().setArray(elementsList.get(0).getComplex());
 				break;
 			case OCTET_STRING:
-				setRequest.data().setOctetString(elementsList.get(0).getByteArray());
+				setRequest.data().setOctetString(
+						elementsList.get(0).getByteArray());
 				break;
 			case BOOL:
 				setRequest.data().setbool(elementsList.get(0).getBoolean());
 				break;
 			case ENUMERATE:
-				setRequest.data().setEnumerate(elementsList.get(0).getNumber().longValue());
+				setRequest.data().setEnumerate(
+						elementsList.get(0).getNumber().longValue());
 				break;
 			case LONG_UNSIGNED:
-				setRequest.data().setUnsigned16(elementsList.get(0).getNumber().longValue());
+				setRequest.data().setUnsigned16(
+						elementsList.get(0).getNumber().longValue());
 				break;
 			case UNSIGNED:
-				setRequest.data().setUnsigned8(elementsList.get(0).getNumber().longValue());
+				setRequest.data().setUnsigned8(
+						elementsList.get(0).getNumber().longValue());
 				break;
 			case INTEGER:
-				setRequest.data().setInteger8(elementsList.get(0).getNumber().longValue());
+				setRequest.data().setInteger8(
+						elementsList.get(0).getNumber().longValue());
 				break;
 			case LONG_INTEGER:
-				setRequest.data().setInteger16(elementsList.get(0).getNumber().longValue());
+				setRequest.data().setInteger16(
+						elementsList.get(0).getNumber().longValue());
 				break;
 			case DOUBLE_LONG_UNSIGNED:
-				setRequest.data().setUnsigned32(elementsList.get(0).getNumber().longValue());
+				setRequest.data().setUnsigned32(
+						elementsList.get(0).getNumber().longValue());
 				break;
 			case VISIBLE_STRING:
-				setRequest.data().setVisibleString(elementsList.get(0).getByteArray());
+				setRequest.data().setVisibleString(
+						elementsList.get(0).getByteArray());
 				break;
 			case BIT_STRING:
-				setRequest.data().setBitString(elementsList.get(0).getByteArray(),elementsList.get(0).getByteArray().length);
+				setRequest.data().setBitString(
+						elementsList.get(0).getByteArray(),
+						elementsList.get(0).getByteArray().length);
 				break;
 			default:
 				break;
 			}
-			
-			//TODO: Debug code #remove
+
+			// TODO: Debug code #remove
 			if (!setRequest.data().equals(null)) {
 				pduToXmlDebugDecode(setRequest.data(), 0);
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -467,31 +479,33 @@ public class driver_parse_pduXml {
 	public Data readXmlStructureData(String filePathName) {
 
 		List<Data> elementsList = new ArrayList<Data>();
-		Data dataStruct = new Data();	
+		Data dataStruct = new Data();
 
 		try {
 
 			File file = new File(filePathName);
-			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			//Parse the XML
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+			// Parse the XML
 			Document doc = dBuilder.parse(file);
-			
-			//TODO: Check if this XML is valid by the root element. If != CosemXML throws Exception
-			if(!doc.getDocumentElement().getNodeName().equals(COSEM_XML)){
-				//TODO: Create Exception here
+
+			// TODO: Check if this XML is valid by the root element. If !=
+			// CosemXML throws Exception
+			if (!doc.getDocumentElement().getNodeName().equals(COSEM_XML)) {
+				// TODO: Create Exception here
 				return null;
 			}
 
 			if (doc.hasChildNodes()) {
-				//Find the tag CosemData and select the child nodes
+				// Find the tag CosemData and select the child nodes
 				NodeList cosemDataList = doc.getElementsByTagName(COSEM_DATA);
-				//Read the CosemData Node Structure
-				readXml(cosemDataList,elementsList);
+				// Read the CosemData Node Structure
+				readXml(cosemDataList, elementsList);
 			} else {
 				return null;
 			}
 
-			//Create the Data() structure/element
+			// Create the Data() structure/element
 			switch (elementsList.get(0).getChoiceIndex()) {
 			case STRUCTURE:
 				dataStruct.setStructure(elementsList.get(0).getComplex());
@@ -506,45 +520,52 @@ public class driver_parse_pduXml {
 				dataStruct.setbool(elementsList.get(0).getBoolean());
 				break;
 			case ENUMERATE:
-				dataStruct.setEnumerate(elementsList.get(0).getNumber().longValue());
+				dataStruct.setEnumerate(elementsList.get(0).getNumber()
+						.longValue());
 				break;
 			case LONG_UNSIGNED:
-				dataStruct.setUnsigned16(elementsList.get(0).getNumber().longValue());
+				dataStruct.setUnsigned16(elementsList.get(0).getNumber()
+						.longValue());
 				break;
 			case UNSIGNED:
-				dataStruct.setUnsigned8(elementsList.get(0).getNumber().longValue());
+				dataStruct.setUnsigned8(elementsList.get(0).getNumber()
+						.longValue());
 				break;
 			case INTEGER:
-				dataStruct.setInteger8(elementsList.get(0).getNumber().longValue());
+				dataStruct.setInteger8(elementsList.get(0).getNumber()
+						.longValue());
 				break;
 			case LONG_INTEGER:
-				dataStruct.setInteger16(elementsList.get(0).getNumber().longValue());
+				dataStruct.setInteger16(elementsList.get(0).getNumber()
+						.longValue());
 				break;
 			case DOUBLE_LONG_UNSIGNED:
-				dataStruct.setUnsigned32(elementsList.get(0).getNumber().longValue());
+				dataStruct.setUnsigned32(elementsList.get(0).getNumber()
+						.longValue());
 				break;
 			case VISIBLE_STRING:
 				dataStruct.setVisibleString(elementsList.get(0).getByteArray());
 				break;
 			case BIT_STRING:
-				dataStruct.setBitString(elementsList.get(0).getByteArray(),elementsList.get(0).getByteArray().length);
+				dataStruct.setBitString(elementsList.get(0).getByteArray(),
+						elementsList.get(0).getByteArray().length);
 				break;
 			default:
 				break;
 			}
-			
-			//TODO: Debug code #remove
+
+			// TODO: Debug code #remove
 			if (!dataStruct.equals(null)) {
 				pduToXmlDebugDecode(dataStruct, 0);
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
 		return dataStruct;
 	}
-	
+
 	private void readXml(NodeList nodeList, List<Data> elementsList) {
 
 		for (int count = 0; count < nodeList.getLength(); count++) {
@@ -553,48 +574,50 @@ public class driver_parse_pduXml {
 
 			// make sure it's element node.
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-				
+
 				String cosemType = tempNode.getNodeName();
-				XML_tags element = XML_tags.NULL_TAG;
-				//XXX Change to int instead of string. It only works on JRE 1.7 or more
-				
-				if(cosemType==COSEM_ELEMENT)
-					element = XML_tags.ELEMENT;
-				else if(cosemType==COSEM_CONTAINER)
-					element = XML_tags.CONTAINER;
-				else if(cosemType==COSEM_DATA)
-					element = XML_tags.DATA;
-				
+				CosemType element = CosemType.NULL_TAG;
+				// XXX Change to int instead of string. It only works on JRE 1.7
+				// or more
+
+				if (cosemType == COSEM_ELEMENT)
+					element = CosemType.ELEMENT;
+				else if (cosemType == COSEM_CONTAINER)
+					element = CosemType.CONTAINER;
+				else if (cosemType == COSEM_DATA)
+					element = CosemType.DATA;
+
 				switch (element) {
 				case ELEMENT:
-					String elementType = tempNode.getAttributes().item(0).getTextContent();
-					XML_tags type = XML_tags.NULL_TAG;
-					
-					if(elementType=="Unsigned8")
-						type = XML_tags.UNSIGNED8;
-					else if(elementType=="Unsigned16")
-						type = XML_tags.UNSIGNED16;
-					else if(elementType=="Unsigned32")
-						type = XML_tags.UNSIGNED32;
-					else if(elementType=="Integer8")
-						type = XML_tags.INTEGER8;
-					else if(elementType=="Integer32")
-						type = XML_tags.INTEGER32;
-					else if(elementType=="OctetString")
-						type = XML_tags.OCTETSTRING;
-					else if(elementType=="BitString")
-						type = XML_tags.BITSTRING;
-					else if(elementType=="Boolean")
-						type = XML_tags.BOOLEAN;
-					else if(elementType=="Enumerated")
-						type = XML_tags.ENUMERATED;
-					else if(elementType=="VisibleString")
-						type = XML_tags.VISIBLESTRING;
-					
+					String elementType = tempNode.getAttributes().item(0)
+							.getTextContent();
+					CosemType type = CosemType.NULL_TAG;
+
+					if (elementType == "Unsigned8")
+						type = CosemType.UNSIGNED8;
+					else if (elementType == "Unsigned16")
+						type = CosemType.UNSIGNED16;
+					else if (elementType == "Unsigned32")
+						type = CosemType.UNSIGNED32;
+					else if (elementType == "Integer8")
+						type = CosemType.INTEGER8;
+					else if (elementType == "Integer32")
+						type = CosemType.INTEGER32;
+					else if (elementType == "OctetString")
+						type = CosemType.OCTETSTRING;
+					else if (elementType == "BitString")
+						type = CosemType.BITSTRING;
+					else if (elementType == "Boolean")
+						type = CosemType.BOOLEAN;
+					else if (elementType == "Enumerated")
+						type = CosemType.ENUMERATED;
+					else if (elementType == "VisibleString")
+						type = CosemType.VISIBLESTRING;
+
 					Data dataElement = new Data();
 					String tagValueString = tempNode.getTextContent();
 					int tagValueInt = 0;
-					
+
 					switch (type) {
 					case UNSIGNED8:
 						tagValueInt = Integer.parseInt(tagValueString);
@@ -626,10 +649,11 @@ public class driver_parse_pduXml {
 						break;
 					case BITSTRING:
 						String[] bitString = tagValueString.split(";");
-						dataElement.setBitString(convertToBytes(bitString),bitString.length);
+						dataElement.setBitString(convertToBytes(bitString),
+								bitString.length);
 						break;
 					case BOOLEAN:
-						if(tagValueString.equals("1")){
+						if (tagValueString.equals("1")) {
 							dataElement.setbool(true);
 						} else {
 							dataElement.setbool(false);
@@ -639,34 +663,37 @@ public class driver_parse_pduXml {
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setEnumerate(tagValueInt);
 						break;
-					case VISIBLESTRING:	
-							dataElement.setVisibleString(tagValueString.getBytes());
+					case VISIBLESTRING:
+						dataElement.setVisibleString(tagValueString.getBytes());
 						break;
 					default:
 						dataElement.setNull();
 						break;
 					}
-					
+
 					elementsList.add(dataElement);
-					
+
 					break;
 				case CONTAINER:
-					
-					String containerType = tempNode.getAttributes().item(0).getTextContent();
-					
-					if(containerType.equals("Array")){
-						//TODO: Cria o array e se caso tiver childNodes passa o array
-						
+
+					String containerType = tempNode.getAttributes().item(0)
+							.getTextContent();
+
+					if (containerType.equals("Array")) {
+						// TODO: Cria o array e se caso tiver childNodes passa o
+						// array
+
 						if (tempNode.hasChildNodes()) {
 							List<Data> structure = new ArrayList<Data>();
 							readXml(tempNode.getChildNodes(), structure);
 							Data dataStructure = new Data();
 							dataStructure.setArray(structure);
 							elementsList.add(dataStructure);
-						}//if
-						
-					} else if((containerType.equals("Structure"))) { //Structure
-						//TODO: Cria a structure e se caso tiver childNodes passa a structure
+						}// if
+
+					} else if ((containerType.equals("Structure"))) { // Structure
+						// TODO: Cria a structure e se caso tiver childNodes
+						// passa a structure
 
 						if (tempNode.hasChildNodes()) {
 							List<Data> structure = new ArrayList<Data>();
@@ -674,25 +701,26 @@ public class driver_parse_pduXml {
 							Data dataStructure = new Data();
 							dataStructure.setStructure(structure);
 							elementsList.add(dataStructure);
-						}//if
-						
+						}// if
+
 					} else {
-						System.out.println("Missing CONTAINER TYPE: "+containerType);
+						System.out.println("Missing CONTAINER TYPE: "
+								+ containerType);
 					}
 
 					break;
 				case DATA:
 					if (tempNode.hasChildNodes()) {
 						readXml(tempNode.getChildNodes(), elementsList);
-					}//if
+					}// if
 					break;
 				default:
 					break;
 				}
-			
-			}//if
-			
-		}//for
+
+			}// if
+
+		}// for
 
 	}
 
