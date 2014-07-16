@@ -37,6 +37,24 @@ public class itr_driver_parse_pduXml {
 	private static final String COSEM_ELEMENT = "CosemElement";	
 	private static final String COSEM_TYPE = "CosemType";
 
+	public static enum XML_tags {
+		NULL_TAG,
+		ELEMENT,
+		CONTAINER,
+		UNSIGNED8,
+		UNSIGNED16,
+		UNSIGNED32,
+		INTEGER8,
+		INTEGER16,
+		INTEGER32,
+		OCTETSTRING,
+		BITSTRING,
+		BOOLEAN,
+		ENUMERATED,
+		VISIBLESTRING,
+		DATA;
+	}
+	
 	public enum cosemType {
 		Structure, Array, Unsigned8, Unsigned16, Unsigned32, Integer8, Integer16, Integer32, BitString, Boolean, VisibleString, Enumerated, OctetString
 	}
@@ -537,62 +555,91 @@ public class itr_driver_parse_pduXml {
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 				
 				String cosemType = tempNode.getNodeName();
-				
+				XML_tags element = XML_tags.NULL_TAG;
 				//XXX Change to int instead of string. It only works on JRE 1.7 or more
 				
-				switch (cosemType) {
-				case COSEM_ELEMENT:
+				if(cosemType==COSEM_ELEMENT)
+					element = XML_tags.ELEMENT;
+				else if(cosemType==COSEM_CONTAINER)
+					element = XML_tags.CONTAINER;
+				else if(cosemType==COSEM_DATA)
+					element = XML_tags.DATA;
+				
+				switch (element) {
+				case ELEMENT:
 					String elementType = tempNode.getAttributes().item(0).getTextContent();
-
+					XML_tags type = XML_tags.NULL_TAG;
+					
+					if(elementType=="Unsigned8")
+						type = XML_tags.UNSIGNED8;
+					else if(elementType=="Unsigned16")
+						type = XML_tags.UNSIGNED16;
+					else if(elementType=="Unsigned32")
+						type = XML_tags.UNSIGNED32;
+					else if(elementType=="Integer8")
+						type = XML_tags.INTEGER8;
+					else if(elementType=="Integer32")
+						type = XML_tags.INTEGER32;
+					else if(elementType=="OctetString")
+						type = XML_tags.OCTETSTRING;
+					else if(elementType=="BitString")
+						type = XML_tags.BITSTRING;
+					else if(elementType=="Boolean")
+						type = XML_tags.BOOLEAN;
+					else if(elementType=="Enumerated")
+						type = XML_tags.ENUMERATED;
+					else if(elementType=="VisibleString")
+						type = XML_tags.VISIBLESTRING;
+					
 					Data dataElement = new Data();
 					String tagValueString = tempNode.getTextContent();
 					int tagValueInt = 0;
 					
-					switch (elementType) {
-					case "Unsigned8":
+					switch (type) {
+					case UNSIGNED8:
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setUnsigned8(tagValueInt);
 						break;
-					case "Unsigned16":
+					case UNSIGNED16:
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setUnsigned16(tagValueInt);
 						break;
-					case "Unsigned32":
+					case UNSIGNED32:
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setUnsigned32(tagValueInt);
 						break;
-					case "Integer8":
+					case INTEGER8:
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setInteger8(tagValueInt);
 						break;
-					case "Integer16":
+					case INTEGER16:
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setInteger16(tagValueInt);
 						break;
-					case "Integer32":
+					case INTEGER32:
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setInteger32(tagValueInt);
 						break;
-					case "OctetString":
+					case OCTETSTRING:
 						String[] octetString = tagValueString.split(";");
 						dataElement.setOctetString(convertToBytes(octetString));
 						break;
-					case "BitString":
+					case BITSTRING:
 						String[] bitString = tagValueString.split(";");
 						dataElement.setBitString(convertToBytes(bitString),bitString.length);
 						break;
-					case "Boolean":
+					case BOOLEAN:
 						if(tagValueString.equals("1")){
 							dataElement.setbool(true);
 						} else {
 							dataElement.setbool(false);
 						}
 						break;
-					case "Enumerated":
+					case ENUMERATED:
 						tagValueInt = Integer.parseInt(tagValueString);
 						dataElement.setEnumerate(tagValueInt);
 						break;
-					case "VisibleString":	
+					case VISIBLESTRING:	
 							dataElement.setVisibleString(tagValueString.getBytes());
 						break;
 					default:
@@ -603,7 +650,7 @@ public class itr_driver_parse_pduXml {
 					elementsList.add(dataElement);
 					
 					break;
-				case COSEM_CONTAINER:
+				case CONTAINER:
 					
 					String containerType = tempNode.getAttributes().item(0).getTextContent();
 					
@@ -634,7 +681,7 @@ public class itr_driver_parse_pduXml {
 					}
 
 					break;
-				case COSEM_DATA:
+				case DATA:
 					if (tempNode.hasChildNodes()) {
 						readXml(tempNode.getChildNodes(), elementsList);
 					}//if
