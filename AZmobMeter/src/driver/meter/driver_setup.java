@@ -1,7 +1,7 @@
 package driver.meter;
 
 
-public class itr_driver_setup {
+public class driver_setup {
 
 	private int dlms_upperAddress;
 	private int dlms_lowerAddress;
@@ -21,7 +21,7 @@ public class itr_driver_setup {
 		B19200//default for SL7000 IEC7 over HDLC
 	}
 	
-	public itr_driver_setup(int dlms_upperAddress, int dlms_lowerAddress,
+	public driver_setup(int dlms_upperAddress, int dlms_lowerAddress,
 			int dlms_addressSize, int default_baudrate, int default_dlmsClientAddress,
 			String commPort, 	String password ){
 		
@@ -34,7 +34,7 @@ public class itr_driver_setup {
 		this.password = password;
 	}
 	
-	public itr_driver_setup() {
+	public driver_setup() {
 		// TODO Auto-generated constructor stub
 	}
 

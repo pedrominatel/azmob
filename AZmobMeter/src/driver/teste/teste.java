@@ -22,10 +22,10 @@ public class teste {
 	private static final int dlms_addressSize = 4;
 	private static final int CONN_TIMEOUT = 5000;
 
-	static itr_driver_connectionManager connManager = new itr_driver_connectionManager();
-	static itr_driver_setup setup = new itr_driver_setup();
-	static itr_driver_dataExchange data = new itr_driver_dataExchange();
-	static itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
+	static driver_connectionManager connManager = new driver_connectionManager();
+	static driver_setup setup = new driver_setup();
+	static driver_dataExchange data = new driver_dataExchange();
+	static driver_parse_pduXml parse = new driver_parse_pduXml();
 	
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub

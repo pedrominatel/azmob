@@ -10,7 +10,7 @@ import org.openmuc.jdlms.client.ClientConnectionSettings.ReferencingMethod;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 import org.openmuc.jdlms.client.hdlc.HdlcClientConnectionSettings;
 
-public class itr_driver_connectionManager {
+public class driver_connectionManager {
 
 	public IClientConnection buildHDLCConnection(HdlcAddress hdlcAddress, String commPort, int baudRate, int clientProfile){
 		

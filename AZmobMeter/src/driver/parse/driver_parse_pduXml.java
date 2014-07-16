@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class itr_driver_parse_pduXml {
+public class driver_parse_pduXml {
 
 	// XML tags definition
 	private static final String COSEM_XML = "CosemXML";

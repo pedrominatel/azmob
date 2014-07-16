@@ -1,6 +1,6 @@
 package driver.meter;
 
-import driver.parse.itr_driver_parse_pduXml;
+import driver.parse.driver_parse_pduXml;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,13 +17,13 @@ import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.SelectiveAccessDescription;
 import org.openmuc.jdlms.client.SetRequest;
 
-public class itr_driver_dataExchange {
+public class driver_dataExchange {
 
 	private static final int HIGH_TIMEOUT = 60000;//60 seconds in miliseconds
 	private static final int LOW_TIMEOUT =5000;//5 seconds in miliseconds
 	private static final int DEFAULT_TIMEOUT = 3000;//3 seconds in miliseconds
 	
-	itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
+	driver_parse_pduXml parse = new driver_parse_pduXml();
 	
 //GetObject
 //	in Connection
