@@ -20,7 +20,7 @@ public class teste {
 	private static final int dlms_upperAddress = 1;
 	private static final int dlms_lowerAddress = 17;
 	private static final int dlms_addressSize = 4;
-	private static final int CONN_TIMEOUT = 5000;
+	private static final int CONN_TIMEOUT = 5000;//timeout
 
 	static driver_connectionManager connManager = new driver_connectionManager();
 	static driver_setup setup = new driver_setup();
