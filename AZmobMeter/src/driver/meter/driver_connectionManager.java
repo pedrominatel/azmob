@@ -1,6 +1,7 @@
 package driver.meter;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 
 import org.openmuc.jdlms.client.ClientConnectionSettings;
 import org.openmuc.jdlms.client.IClientConnection;
@@ -10,6 +11,7 @@ import org.openmuc.jdlms.client.ClientConnectionSettings.ConfirmedMode;
 import org.openmuc.jdlms.client.ClientConnectionSettings.ReferencingMethod;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 import org.openmuc.jdlms.client.hdlc.HdlcClientConnectionSettings;
+import org.openmuc.jdlms.client.ip.TcpClientConnectionSettings;
 
 import android.util.Log;
 
@@ -19,16 +21,19 @@ public class driver_connectionManager {
 		
 		IClientConnection connection = null;
 		Log.i("CONNECTION", "Building HDLC");
-		Log.i("CONNECTION", "HDLC: "+hdlcAddress);
+		Log.i("CONNECTION", "HDLC: "+hdlcAddress.toString());
 		Log.i("CONNECTION", "Bluetooth Address: "+btAddress);
 		Log.i("CONNECTION", "Client Profile: "+clientProfile);
 		
 		HdlcClientConnectionSettings hdlcConnSettings = new HdlcClientConnectionSettings(btAddress,
 		        new HdlcAddress(clientProfile), hdlcAddress, ReferencingMethod.LN);
+		
 		Log.i("CONNECTION", "Building HDLC Settings");
+		
 		hdlcConnSettings.setAuthentication(Authentication.LOW);
 		hdlcConnSettings.setUseHandshake(false);
 		hdlcConnSettings.setConfirmedMode(ConfirmedMode.CONFIRMED);
+		
 		Log.i("CONNECTION", "Config HDLC");
 		
 		if(hdlcConnSettings.isFullyParametrized()) {
@@ -37,15 +42,15 @@ public class driver_connectionManager {
 			Log.i("CONNECTION", "NOT Fully Parametrized");
 		}
 		
-		//IClientConnectionFactory factory =  HdlcClientConnectionSettings.getFactory();
-		IClientConnectionFactory factory = ClientConnectionSettings.getFactory();
+		IClientConnectionFactory factory =  HdlcClientConnectionSettings.getFactory();
+		//IClientConnectionFactory factory = ClientConnectionSettings.getFactory();
 		
 		Log.i("CONNECTION", "Building Factory");
-		try {
-			connection = factory.createClientConnection(hdlcConnSettings);
-		} catch (IOException ioExp) {
-			connection = null;
-		}
+//		try {
+//			connection = factory.createClientConnection(hdlcConnSettings);
+//		} catch (IOException ioExp) {
+//			connection = null;
+//		}
 		return connection;
 	}
 }
