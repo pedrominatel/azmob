@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="api"/>
 	<classpathentry kind="src" path="client"/>
+	<classpathentry kind="src" path="api"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/libdlms/lib/jdlms/build/libs/slf4j-api-1.7.2.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/libdlms/lib/jdlms/build/libs/axdr-compiler-0.9.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

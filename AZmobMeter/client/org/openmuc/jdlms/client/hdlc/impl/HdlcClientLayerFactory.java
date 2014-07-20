@@ -29,8 +29,6 @@ import org.openmuc.jdlms.client.ClientConnectionSettings.ConfirmedMode;
 import org.openmuc.jdlms.client.communication.ILowerLayer;
 import org.openmuc.jdlms.client.hdlc.HdlcClientConnectionSettings;
 import org.openmuc.jdlms.client.hdlc.common.HdlcAddressPair;
-import org.openmuc.jdlms.client.hdlc.physical.LocalDataExchangeClient;
-import org.openmuc.jdlms.client.hdlc.physical.LocalDataExchangeFactory;
 import org.openmuc.jdlms.client.impl.ILowerLayerFactory;
 
 /**
@@ -40,12 +38,14 @@ import org.openmuc.jdlms.client.impl.ILowerLayerFactory;
  */
 public class HdlcClientLayerFactory implements ILowerLayerFactory {
 
-	private static LocalDataExchangeFactory lowerLayerBuilder = new LocalDataExchangeFactory();
+	//private static LocalDataExchangeFactory lowerLayerBuilder = new LocalDataExchangeFactory();
 
 	private final Map<HdlcLayersKey, HdlcClientLayer> hdlcLayers = new HashMap<HdlcLayersKey, HdlcClientLayer>(8);
 
 	@Override
 	public ILowerLayer<Object> build(ClientConnectionSettings<?> setting) throws IOException {
+		
+		HdlcClientLayer result = null;
 
 		if (setting.isFullyParametrized() == false) {
 			throw new IllegalArgumentException("Settings not fully parametrized");
@@ -57,21 +57,24 @@ public class HdlcClientLayerFactory implements ILowerLayerFactory {
 
 		HdlcClientConnectionSettings settings = (HdlcClientConnectionSettings) setting;
 
-		LocalDataExchangeClient lowerLayer;
-		HdlcClientLayer result;
+		//LocalDataExchangeClient lowerLayer;
+		
 
 		HdlcLayersKey key = new HdlcLayersKey(new HdlcAddressPair(settings.getClientAddress(),
 				settings.getServerAddress()), settings.getBtAddress());
+		
+		
 		if (hdlcLayers.containsKey(key)) {
 			result = hdlcLayers.get(key);
+			return result;
 		}
-		else {
-			lowerLayer = lowerLayerBuilder.build(settings.getBtAddress(), settings.doesUseHandshake());
-
-			result = new HdlcClientLayer(lowerLayer, settings.getClientAddress(), settings.getServerAddress(),
-					HdlcClientLayerState.beginningState(), settings.getConfirmedMode() == ConfirmedMode.CONFIRMED);
-			hdlcLayers.put(key, result);
-		}
+//		else {
+//			//lowerLayer = lowerLayerBuilder.build(settings.getBtAddress(), settings.doesUseHandshake());
+//
+////			result = new HdlcClientLayer(lowerLayer, settings.getClientAddress(), settings.getServerAddress(),
+////					HdlcClientLayerState.beginningState(), settings.getConfirmedMode() == ConfirmedMode.CONFIRMED);
+////			hdlcLayers.put(key, result);
+//		}
 
 		return result;
 	}
@@ -83,23 +86,23 @@ public class HdlcClientLayerFactory implements ILowerLayerFactory {
 
 	private class HdlcLayersKey {
 		private final HdlcAddressPair addressPair;
-		private final String portName;
+		private final String btDevice;
 
-		public HdlcLayersKey(HdlcAddressPair pair, String port) {
+		public HdlcLayersKey(HdlcAddressPair pair, String value) {
 			addressPair = pair;
-			portName = port;
+			btDevice = value;
 		}
 
 		@Override
 		public int hashCode() {
-			return addressPair.hashCode() ^ portName.hashCode();
+			return addressPair.hashCode() ^ btDevice.hashCode();
 		}
 
 		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof HdlcLayersKey) {
 				HdlcLayersKey o = (HdlcLayersKey) obj;
-				return addressPair.equals(o.addressPair) && portName.equals(o.portName);
+				return addressPair.equals(o.addressPair) && btDevice.equals(o.btDevice);
 			}
 			return false;
 		}
