@@ -6,9 +6,7 @@ public class driver_setup {
 	private int dlms_upperAddress;
 	private int dlms_lowerAddress;
 	private int dlms_addressSize;
-	private int default_baudrate;
 	private int default_dlmsClientAddress;
-	private String commPort;
 	private String password;
 	
 	public enum BaudRate {
@@ -28,9 +26,7 @@ public class driver_setup {
 		this.dlms_upperAddress = dlms_upperAddress;
 		this.dlms_lowerAddress = dlms_lowerAddress;
 		this.dlms_addressSize = dlms_addressSize;
-		this.default_baudrate = default_baudrate;
 		this.default_dlmsClientAddress = default_dlmsClientAddress;
-		this.commPort = commPort;
 		this.password = password;
 	}
 	
@@ -50,16 +46,8 @@ public class driver_setup {
 		return dlms_addressSize;
 	}
 	
-	public int get_BaudRate(){
-		return default_baudrate;
-	}
-	
 	public int get_DlmsClientAddress(){
 		return default_dlmsClientAddress;
-	}
-	
-	public String get_SerialPort(){
-		return commPort;
 	}
 	
 	public String get_Password(){
@@ -77,16 +65,8 @@ public class driver_setup {
 		this.dlms_addressSize = dlms_addressSize;
 	}
 	
-	public void set_BaudRate(int default_baudrate){
-		this.default_baudrate = default_baudrate;
-	}
-	
 	public void set_DlmsClientAddress(int default_dlmsClientAddress){
 		this.default_dlmsClientAddress = default_dlmsClientAddress;
-	}
-	
-	public void set_SerialPort (String commPort){
-		this.commPort = commPort;
 	}
 	
 	public void set_Password(String password){
@@ -97,9 +77,7 @@ public class driver_setup {
 		this.dlms_upperAddress = 1;
 		this.dlms_lowerAddress = 17;
 		this.dlms_addressSize = 4;
-		this.default_baudrate = 9600;
 		this.default_dlmsClientAddress = 1;
-		this.commPort = "COM15";
 		this.password = "ABCEDFGH";
 	}
 	

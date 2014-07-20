@@ -27,17 +27,15 @@ public class teste {
 	static driver_dataExchange data = new driver_dataExchange();
 	static driver_parse_pduXml parse = new driver_parse_pduXml();
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void connect(String btAddress) throws InterruptedException {
 		// TODO Auto-generated method stub
 		
-		parse.readXmlStructure("C:\\read.xml");
+		//parse.readXmlStructure("C:\\read.xml");
 
 		setup.loadDefaultHdlcValues(); // String password = setup.get_Password();
 
-		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress,
-				dlms_lowerAddress, dlms_addressSize);
-		IClientConnection connection = connManager.buildHDLCConnection(
-				hdlcAddress, setup.get_SerialPort(), setup.get_BaudRate(), 1);
+		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress, dlms_lowerAddress, dlms_addressSize);
+		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, btAddress, 1);
 
 		try {
 			// Create the connection and connect using HDLC
@@ -51,10 +49,10 @@ public class teste {
 			connection.disconnect(false);
 			
 		} catch (IOException ex) {
-			System.out.println("Deu merda!" + ex.toString());
+			//System.out.println("Deu merda!" + ex.toString());
 			connection.disconnect(false);
 		} catch (Exception ex) {
-			System.out.println("N�o sei, n�o sei...!" + ex.toString());
+			//System.out.println("N�o sei, n�o sei...!" + ex.toString());
 		}
 		
 	}
@@ -72,12 +70,11 @@ public class teste {
 		 GetResult getResult = data.GetObject(connection, obis, classId, attribute);
 
 		if (getResult.isSuccess()) {
-			System.out.println("Success!");
-			parse.createXml("C:\\teste.xml", getResult, obis, classId, attribute); // this function create the XML file using the GetResult
+			//System.out.println("Success!");
+			//parse.createXml("C:\\teste.xml", getResult, obis, classId, attribute); // this function create the XML file using the GetResult
 			// parse.printLog(getResult);
 		} else {
-			System.out.println("Reading Error. ErrorCode: "
-					+ getResult.getResultCode());
+			//System.out.println("Reading Error. ErrorCode: " + getResult.getResultCode());
 		}
 	}
 

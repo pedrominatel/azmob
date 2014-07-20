@@ -34,15 +34,15 @@ public class LocalDataExchangeFactory {
 
 	private final PhysicalConnectionFactory physicalFactory = new PhysicalConnectionFactory();
 
-	public LocalDataExchangeClient build(String portName, int baudrate, boolean useHandshake) throws IOException {
+	public LocalDataExchangeClient build(String btAddress, boolean useHandshake) throws IOException {
 		LocalDataExchangeClient result = null;
 
-		if (localConnections.containsKey(portName)) {
-			result = localConnections.get(portName);
+		if (localConnections.containsKey(btAddress)) {
+			result = localConnections.get(btAddress);
 		}
 		else {
-			result = new LocalDataExchangeClient(portName, physicalFactory, baudrate, useHandshake);
-			localConnections.put(portName, result);
+			//result = new LocalDataExchangeClient(btAddress, physicalFactory, useHandshake);
+			//localConnections.put(btAddress, result);
 		}
 		return result;
 	}

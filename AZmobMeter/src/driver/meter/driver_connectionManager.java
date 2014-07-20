@@ -12,15 +12,14 @@ import org.openmuc.jdlms.client.hdlc.HdlcClientConnectionSettings;
 
 public class driver_connectionManager {
 
-	public IClientConnection buildHDLCConnection(HdlcAddress hdlcAddress, String commPort, int baudRate, int clientProfile){
+	public IClientConnection buildHDLCConnection(HdlcAddress hdlcAddress, String btAddress, int clientProfile){
 		
 		IClientConnection connection = null;
 		
-		HdlcClientConnectionSettings hdlcConnSettings = new HdlcClientConnectionSettings(commPort,
+		HdlcClientConnectionSettings hdlcConnSettings = new HdlcClientConnectionSettings(btAddress,
 		        new HdlcAddress(clientProfile), hdlcAddress, ReferencingMethod.LN);
 
 		hdlcConnSettings.setAuthentication(Authentication.LOW);
-		hdlcConnSettings.setBaudrate(baudRate);
 		hdlcConnSettings.setUseHandshake(false);
 		hdlcConnSettings.setConfirmedMode(ConfirmedMode.CONFIRMED);
 		

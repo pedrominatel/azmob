@@ -20,7 +20,7 @@ public class MeterMenu extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 		    btAddress = extras.getString("btAddress");
-		    //Toast.makeText(getApplicationContext(), btAddress, 0).show();
+		    Toast.makeText(getApplicationContext(), "Bluetooth Address: "+btAddress, 0).show();
 		}
 		
 	}
