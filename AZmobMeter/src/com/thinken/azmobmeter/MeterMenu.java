@@ -3,10 +3,12 @@ package com.thinken.azmobmeter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import driver.teste.*;
 
 public class MeterMenu extends Activity {
 	
@@ -43,6 +45,21 @@ public class MeterMenu extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void connect(View view) {
+		Log.i("CONNECTION", "Starting Connection");
+		teste tst = new teste();
+		
+		try {
+			int ret = tst.connect(btAddress);
+			Toast.makeText(getApplicationContext(),"Ret: " + ret, 0).show();
+		} catch (Exception e) {
+			// TODO: handle exception
+			Toast.makeText(getApplicationContext(),"Error: "+e.toString(), 0).show();
+		}
+		
+	}
+	
 	
 	public void openReadouts(View view) {
 		Intent intent = new Intent(MeterMenu.this,MeterReadout.class);

@@ -12,6 +12,7 @@ import org.openmuc.jdlms.client.MethodResult;
 import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
+import android.util.Log;
 import driver.meter.*;
 import driver.parse.*;
 
@@ -27,34 +28,41 @@ public class teste {
 	static driver_dataExchange data = new driver_dataExchange();
 	static driver_parse_pduXml parse = new driver_parse_pduXml();
 	
-	public static void connect(String btAddress) throws InterruptedException {
+	public int connect(String btAddress) {
 		// TODO Auto-generated method stub
-		
+		Log.i("CONNECTION", "Creating Connection HDLC mode");
 		//parse.readXmlStructure("C:\\read.xml");
 
-		setup.loadDefaultHdlcValues(); // String password = setup.get_Password();
+		//setup.loadDefaultHdlcValues(); // String password = setup.get_Password();
 
 		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress, dlms_lowerAddress, dlms_addressSize);
+		Log.i("CONNECTION", "HDLC Address: "+hdlcAddress.toString());
 		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, btAddress, 1);
+		Log.i("CONNECTION", "Creating Connection Manager");
+		if(connection==null){
+			return 0;
+		} else {
+			try {
+				// Create the connection and connect using HDLC
+				connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
+				
+				//getObjectEx(connection);
+				//getObjectWithSelectorEx(connection);
+				//setActionEx(connection);
+				//setObjectEx(connection);
 
-		try {
-			// Create the connection and connect using HDLC
-			connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
-			
-			//getObjectEx(connection);
-			//getObjectWithSelectorEx(connection);
-			//setActionEx(connection);
-			setObjectEx(connection);
-
-			connection.disconnect(false);
-			
-		} catch (IOException ex) {
-			//System.out.println("Deu merda!" + ex.toString());
-			connection.disconnect(false);
-		} catch (Exception ex) {
-			//System.out.println("N�o sei, n�o sei...!" + ex.toString());
+				//connection.disconnect(false);
+				
+			} catch (IOException ex) {
+				//System.out.println("Deu merda!" + ex.toString());
+				//connection.disconnect(false);
+				return 0;
+			} catch (Exception ex) {
+				//System.out.println("N�o sei, n�o sei...!" + ex.toString());
+				return 0;
+			}
 		}
-		
+		return 1;
 	}
 
 	public static void getObjectEx(IClientConnection connection) {
@@ -121,12 +129,11 @@ public class teste {
 		GetResult getResult = data.GetObjectWithSelector(connection, obis, classId, attribute, outerStruct, 1);
 
 		if (getResult.isSuccess()) {
-			System.out.println("Success!");
-			parse.createXml("C:\\teste.xml", getResult, obis, classId, attribute); // this function create the XML file using the GetResult
+			//System.out.println("Success!");
+			//parse.createXml("C:\\teste.xml", getResult, obis, classId, attribute); // this function create the XML file using the GetResult
 			// parse.printLog(getResult);
 		} else {
-			System.out.println("Reading Error. ErrorCode: "
-					+ getResult.getResultCode());
+			//System.out.println("Reading Error. ErrorCode: " + getResult.getResultCode());
 		}
 	}
 
@@ -136,21 +143,21 @@ public class teste {
 		 MethodResult actionResult = data.Action(connection, obisAction, 9, 1, 1);
 		
 		if (actionResult.isSuccess()) {
-			System.out.println("Action success");
+			//System.out.println("Action success");
 		} else {
-			System.out.println("Action error");
+			//System.out.println("Action error");
 		}
 	}
 	
 	public static void setObjectEx(IClientConnection connection) {
 		// TODO: Set clock example
 			
-		AccessResultCode setResult = data.SetObjectXML(connection,"C:\\read.xml"); //Set clock using octet string
+		AccessResultCode setResult = data.SetObjectXML(connection,"file"); //Set clock using octet string
 
 		if (setResult == AccessResultCode.SUCCESS) {
-			System.out.println("Set Success");
+			//System.out.println("Set Success");
 		} else {
-			System.out.println("Set Error: " + setResult.toString());
+			//System.out.println("Set Error: " + setResult.toString());
 		}
 	}
 	
@@ -167,9 +174,9 @@ public class teste {
 		//AccessResultCode setResult = data.SetDateTimeObject(connection, obis, 8, 2); //Set clock using system time
 
 		if (setResult == AccessResultCode.SUCCESS) {
-			System.out.println("Set Success");
+			//System.out.println("Set Success");
 		} else {
-			System.out.println("Set Error: " + setResult.toString());
+			//System.out.println("Set Error: " + setResult.toString());
 		}
 	}
 }
