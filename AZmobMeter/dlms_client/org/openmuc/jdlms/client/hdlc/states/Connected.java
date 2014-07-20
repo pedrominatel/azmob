@@ -28,15 +28,12 @@ import org.openmuc.jdlms.client.hdlc.common.FrameType;
 import org.openmuc.jdlms.client.hdlc.common.HdlcFrame;
 import org.openmuc.jdlms.client.hdlc.impl.HdlcClientLayer;
 import org.openmuc.jdlms.client.hdlc.impl.HdlcClientLayerState;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 public class Connected extends HdlcClientLayerState {
 
 	public static final Connected instance = new Connected();
 
-	private static Logger logger = LoggerFactory.getLogger(Connected.class);
 
 	@Override
 	public void connect(HdlcClientLayer wrapper, long timeout) throws IOException {
@@ -80,10 +77,10 @@ public class Connected extends HdlcClientLayerState {
 		try {
 			frame.decode(new ByteArrayInputStream(data));
 		} catch (IOException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 			return;
 		} catch (FrameInvalidException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 			return;
 		}
 
@@ -93,7 +90,7 @@ public class Connected extends HdlcClientLayerState {
 			try {
 				wrapper.acknowledgeReceive();
 			} catch (IOException e) {
-				LoggingHelper.logStackTrace(e, logger);
+				//TODO LoggingHelper.logStackTrace(e, logger);
 			}
 		}
 		else if (frame.getFrameType() == FrameType.Information) {

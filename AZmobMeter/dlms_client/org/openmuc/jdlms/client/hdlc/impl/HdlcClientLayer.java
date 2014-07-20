@@ -37,9 +37,6 @@ import org.openmuc.jdlms.client.hdlc.common.FrameInvalidException;
 import org.openmuc.jdlms.client.hdlc.common.FrameType;
 import org.openmuc.jdlms.client.hdlc.common.HdlcAddressPair;
 import org.openmuc.jdlms.client.hdlc.common.HdlcFrame;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class representing a HDLC connection sub layer. This class and its State classes (see {@link HdlcClientLayerState})
@@ -48,8 +45,6 @@ import org.slf4j.LoggerFactory;
  * @author Karsten Mueller-Bier
  */
 public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
-
-	private static Logger logger = LoggerFactory.getLogger(HdlcClientLayer.class);
 
 	private static byte FLAG = 0x7E;
 	private static byte[] LLCREQUEST = new byte[] { (byte) 0xE6, (byte) 0xE6, (byte) 0x00 };
@@ -278,7 +273,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 				lowerLayer.send(m.getData());
 			}
 		} catch (IOException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 		}
 
 	}
@@ -341,7 +336,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 		} catch (FrameInvalidException e) {
 		} catch (IOException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 
@@ -393,7 +388,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 		try {
 			segmentBuffer.write(segment.getInformationField());
 		} catch (IOException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 

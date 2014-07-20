@@ -55,6 +55,7 @@ public class MeterMenu extends Activity {
 			Toast.makeText(getApplicationContext(),"Ret: " + ret, 0).show();
 		} catch (Exception e) {
 			// TODO: handle exception
+		    Log.i("CONNECTION", "Error: "+e.toString());
 			Toast.makeText(getApplicationContext(),"Error: "+e.toString(), 0).show();
 		}
 		

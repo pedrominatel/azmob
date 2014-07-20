@@ -33,9 +33,6 @@ import java.util.Map;
 import java.util.TooManyListenersException;
 
 import org.openmuc.jdlms.client.communication.IUpperLayer;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class to handle all outgoing and incoming UDP datagrams
@@ -43,8 +40,6 @@ import org.slf4j.LoggerFactory;
  * @author Karsten Mueller-Bier
  */
 public class UdpLayer implements IUdpLayer, ISelectableChannel {
-
-	private static Logger logger = LoggerFactory.getLogger(UdpLayer.class);
 
 	private final InetSocketAddress receivingPort;
 
@@ -82,7 +77,7 @@ public class UdpLayer implements IUdpLayer, ISelectableChannel {
 
 	@Override
 	public void sendOverUdp(byte[] data, SocketAddress destination) throws IOException {
-		LoggingHelper.logBytes(data, data.length, "Sending", logger);
+		//TODO LoggingHelper.logBytes(data, data.length, "Sending", logger);
 		udpServer.send(ByteBuffer.wrap(data), destination);
 	}
 
@@ -115,7 +110,7 @@ public class UdpLayer implements IUdpLayer, ISelectableChannel {
 	public void processSelection(SelectionKey key) throws IOException {
 		SocketAddress remoteHost = udpServer.receive(buffer);
 
-		LoggingHelper.logBytes(buffer.array(), buffer.position(), "Received", logger);
+		//TODO LoggingHelper.logBytes(buffer.array(), buffer.position(), "Received", logger);
 		try {
 			buffer.flip();
 			wpduHeader.decode(buffer);

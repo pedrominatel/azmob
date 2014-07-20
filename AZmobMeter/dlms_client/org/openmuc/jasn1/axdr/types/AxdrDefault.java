@@ -27,13 +27,8 @@ import java.io.InputStream;
 
 import org.openmuc.jasn1.axdr.AxdrByteArrayOutputStream;
 import org.openmuc.jasn1.axdr.AxdrType;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AxdrDefault<T extends AxdrType> {
-
-	private static Logger logger = LoggerFactory.getLogger(AxdrDefault.class);
 
 	private T value;
 	private final T defaultValue;
@@ -88,7 +83,7 @@ public class AxdrDefault<T extends AxdrType> {
 			try {
 				setValueToDefault();
 			} catch (IOException e) {
-				LoggingHelper.logStackTrace(e, logger);
+				//TODO LoggingHelper.logStackTrace(e, logger);
 			}
 		}
 		else {

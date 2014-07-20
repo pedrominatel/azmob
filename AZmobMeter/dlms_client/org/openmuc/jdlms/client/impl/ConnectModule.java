@@ -42,9 +42,6 @@ import org.openmuc.jdlms.client.HlsSecretProcessor;
 import org.openmuc.jdlms.client.communication.ILowerLayer;
 import org.openmuc.jdlms.client.communication.IUpperLayer;
 import org.openmuc.jdlms.client.cosem.context.MechanismName;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Small module shared by all ClientConnections that realizes the complete connection sequence between client and smart
@@ -57,8 +54,6 @@ import org.slf4j.LoggerFactory;
  * @author Karsten Mueller-Bier
  */
 public class ConnectModule implements IUpperLayer {
-
-	private static Logger logger = LoggerFactory.getLogger(ConnectModule.class);
 
 	private final SecureRandom rand = new SecureRandom();
 
@@ -181,7 +176,7 @@ public class ConnectModule implements IUpperLayer {
 				try {
 					cpdu.decode(new ByteArrayInputStream(data));
 				} catch (IOException e1) {
-					LoggingHelper.logStackTrace(e1, logger);
+					//TODO Log LoggingHelper.logStackTrace(e1, logger);
 				}
 			}
 		}

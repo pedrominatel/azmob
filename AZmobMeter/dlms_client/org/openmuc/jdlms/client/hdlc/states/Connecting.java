@@ -29,15 +29,10 @@ import org.openmuc.jdlms.client.hdlc.common.HdlcFrame;
 import org.openmuc.jdlms.client.hdlc.common.HdlcParameterNegotiation;
 import org.openmuc.jdlms.client.hdlc.impl.HdlcClientLayer;
 import org.openmuc.jdlms.client.hdlc.impl.HdlcClientLayerState;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Connecting extends HdlcClientLayerState {
 
 	public static final Connecting instance = new Connecting();
-
-	private static Logger logger = LoggerFactory.getLogger(Connecting.class);
 
 	@Override
 	public void connect(HdlcClientLayer wrapper, long timeout) throws IOException {
@@ -52,7 +47,7 @@ public class Connecting extends HdlcClientLayerState {
 					}
 				}
 			} catch (InterruptedException e) {
-				LoggingHelper.logStackTrace(e, logger);
+				//TODO LoggingHelper.logStackTrace(e, logger);
 				throw new IOException("Interrupted while establishing connection");
 			}
 		}
@@ -80,10 +75,10 @@ public class Connecting extends HdlcClientLayerState {
 		try {
 			frame.decode(new ByteArrayInputStream(data));
 		} catch (IOException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 			return;
 		} catch (FrameInvalidException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 			return;
 		}
 
@@ -102,7 +97,7 @@ public class Connecting extends HdlcClientLayerState {
 			try {
 				wrapper.getLowerLayer().disconnect();
 			} catch (IOException e) {
-				LoggingHelper.logStackTrace(e, logger);
+				//TODO LoggingHelper.logStackTrace(e, logger);
 			}
 		}
 	}

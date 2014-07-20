@@ -31,9 +31,6 @@ import java.util.Map;
 import java.util.TooManyListenersException;
 
 import org.openmuc.jdlms.client.communication.IUpperLayer;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class to handle all outgoing and incoming TCP packets over one TCP connection
@@ -42,7 +39,6 @@ import org.slf4j.LoggerFactory;
  */
 public class TcpLayer implements ITcpLayer, ISelectableChannel {
 
-	private static Logger logger = LoggerFactory.getLogger(TcpLayer.class);
 
 	private final SocketAddress destination;
 	private SocketChannel client;
@@ -93,7 +89,7 @@ public class TcpLayer implements ITcpLayer, ISelectableChannel {
 
 	@Override
 	public void send(byte[] data) throws IOException {
-		LoggingHelper.logBytes(data, data.length, "Sending", logger);
+		//TODO LoggingHelper.logBytes(data, data.length, "Sending", logger);
 		client.write(ByteBuffer.wrap(data));
 	}
 
@@ -145,7 +141,7 @@ public class TcpLayer implements ITcpLayer, ISelectableChannel {
 			int bytesRead = client.read(buffer);
 			while (Thread.currentThread().isInterrupted() == false && bytesRead != -1) {
 				if (bytesRead != 0) {
-					LoggingHelper.logBytes(buffer.array(), buffer.position(), "Received", logger);
+					//TODO LoggingHelper.logBytes(buffer.array(), buffer.position(), "Received", logger);
 					if (buffer.position() >= 8) {
 						buffer.flip();
 						wpdu.decode(buffer);

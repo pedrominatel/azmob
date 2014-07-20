@@ -30,9 +30,6 @@ import org.openmuc.jdlms.client.communication.IUpperLayer;
 import org.openmuc.jdlms.client.ip.common.ConnectionIdentifier;
 import org.openmuc.jdlms.client.ip.common.IUdpLayer;
 import org.openmuc.jdlms.client.ip.common.Wpdu;
-import org.openmuc.jdlms.util.LoggingHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Communication layer to wrap CosemPDUs inside a WPDU and send it out using an UDP connection
@@ -40,8 +37,6 @@ import org.slf4j.LoggerFactory;
  * @author Karsten Mueller-Bier
  */
 public class UdpClientLayer implements ILowerLayer<Object>, IUpperLayer {
-
-	private static Logger logger = LoggerFactory.getLogger(UdpClientLayer.class);
 
 	private IUpperLayer upperLayer;
 	private final IUdpLayer lowerLayer;
@@ -64,7 +59,7 @@ public class UdpClientLayer implements ILowerLayer<Object>, IUpperLayer {
 				upperLayer.dataReceived(pdu.getData());
 			}
 		} catch (IOException e) {
-			LoggingHelper.logStackTrace(e, logger);
+			//TODO LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 

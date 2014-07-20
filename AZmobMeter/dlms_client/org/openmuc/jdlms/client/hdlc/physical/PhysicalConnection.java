@@ -32,9 +32,6 @@ import java.io.OutputStream;
 import java.util.TooManyListenersException;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Wrapper class around the actual SerialPort object, abstracting sending and
  * receiving of data.
@@ -81,9 +78,6 @@ public class PhysicalConnection implements IPhysicalConnection {
 		}
 	};
 
-	private static Logger logger = LoggerFactory
-			.getLogger(PhysicalConnection.class);
-
 	private IPhysicalConnectionListener listener = null;
 
 	private boolean isClosed;
@@ -113,11 +107,11 @@ public class PhysicalConnection implements IPhysicalConnection {
 
 	}
 
-	@Override
-	public void setSerialParams(int baud, int databits, int stopbits, int parity) {
-		// port.setSerialPortParams(baud, databits, stopbits, parity);
-		// port.enableReceiveTimeout(5);
-	}
+//	@Override
+//	public void setSerialParams(int baud, int databits, int stopbits, int parity) {
+//		// port.setSerialPortParams(baud, databits, stopbits, parity);
+//		// port.enableReceiveTimeout(5);
+//	}
 
 	@Override
 	public void registerListener(IPhysicalConnectionListener listener)

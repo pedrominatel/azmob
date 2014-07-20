@@ -56,7 +56,7 @@ public interface IPhysicalConnection {
 	 *            Parity Bit (Range 0-2)
 	 * @throws UnsupportedCommOperationException
 	 */
-	public void setSerialParams(int baud, int databits, int stopbits, int parity);
+	//public void setBtParams(int baud, int databits, int stopbits, int parity);
 
 	/**
 	 * Registers an upper layer as Listener for incoming data

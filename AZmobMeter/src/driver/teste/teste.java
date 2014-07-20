@@ -37,6 +37,7 @@ public class teste {
 
 		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress, dlms_lowerAddress, dlms_addressSize);
 		Log.i("CONNECTION", "HDLC Address: "+hdlcAddress.toString());
+		
 		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, btAddress, 1);
 		Log.i("CONNECTION", "Creating Connection Manager");
 		
