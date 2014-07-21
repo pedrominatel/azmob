@@ -20,37 +20,38 @@ public class driver_connectionManager {
 
 	public IClientConnection buildHDLCConnection(HdlcAddress hdlcAddress, String btAddress, int clientProfile){
 		
+		IClientConnection connection = null;
+		
 		Log.i("CONNECTION", "Building HDLC");
 		Log.i("CONNECTION", "HDLC: "+hdlcAddress.toString());
 		Log.i("CONNECTION", "Bluetooth Address: "+btAddress);
 		Log.i("CONNECTION", "Client Profile: "+clientProfile);
 		
-		HdlcAddress serverAddress = new HdlcAddress(1, 17, 4);
-		
-		HdlcClientConnectionSettings settings = new HdlcClientConnectionSettings(btAddress,
-		        new HdlcAddress(1), serverAddress, ReferencingMethod.LN);
+		HdlcClientConnectionSettings hdlcConnSettings = new HdlcClientConnectionSettings(btAddress,
+		        new HdlcAddress(clientProfile), hdlcAddress, ReferencingMethod.LN);
 		
 		Log.i("CONNECTION", "Building HDLC Settings");
 		
-		settings.setAuthentication(Authentication.LOW);
-		settings.setUseHandshake(false);
-		settings.setConfirmedMode(ConfirmedMode.CONFIRMED);
+		hdlcConnSettings.setAuthentication(Authentication.LOW);
+		hdlcConnSettings.setUseHandshake(false);
+		hdlcConnSettings.setConfirmedMode(ConfirmedMode.CONFIRMED);
 		
 		Log.i("CONNECTION", "Config HDLC");
 		
-		if(settings.isFullyParametrized()) {
+		if(hdlcConnSettings.isFullyParametrized()) {
 			Log.i("CONNECTION", "IS Fully Parametrized");
 		} else {
 			Log.i("CONNECTION", "NOT Fully Parametrized");
 		}
 		
+		IClientConnectionFactory factory =  HdlcClientConnectionSettings.getFactory();
+		
 		try {
-			IClientConnectionFactory factory =  HdlcClientConnectionSettings.getFactory();
-			//IClientConnectionFactory factory =  new ClientConnectionFactory();
-			IClientConnection connection = factory.createClientConnection(settings);
+			connection = factory.createClientConnection(hdlcConnSettings);
 			Log.i("CONNECTION", "Building Factory");
 			return connection;
 		} catch (IOException ioExp) {
+			Log.i("CONNECTION", "Error: "+ioExp.toString());
 			return null;
 		}
 		

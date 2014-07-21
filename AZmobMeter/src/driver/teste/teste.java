@@ -41,29 +41,26 @@ public class teste {
 		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, btAddress, 1);
 		Log.i("CONNECTION", "Creating Connection Manager");
 		
-//		if(connection==null){
-//			return 0;
-//		} else {
-//			try {
-//				// Create the connection and connect using HDLC
-//				connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
-//				
-//				//getObjectEx(connection);
-//				//getObjectWithSelectorEx(connection);
-//				//setActionEx(connection);
-//				//setObjectEx(connection);
-//
-//				//connection.disconnect(false);
-//				
-//			} catch (IOException ex) {
-//				//System.out.println("Deu merda!" + ex.toString());
-//				//connection.disconnect(false);
-//				return 0;
-//			} catch (Exception ex) {
-//				//System.out.println("N�o sei, n�o sei...!" + ex.toString());
-//				return 0;
-//			}
-//		}
+			try {
+				// Create the connection and connect using HDLC
+				connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
+				
+				//getObjectEx(connection);
+				//getObjectWithSelectorEx(connection);
+				//setActionEx(connection);
+				//setObjectEx(connection);
+
+				//connection.disconnect(false);
+				
+			} catch (IOException ex) {
+				//System.out.println("Deu merda!" + ex.toString());
+				//connection.disconnect(false);
+				return 0;
+			} catch (Exception ex) {
+				//System.out.println("N�o sei, n�o sei...!" + ex.toString());
+				return 0;
+			}
+			
 		return 1;
 	}
 
