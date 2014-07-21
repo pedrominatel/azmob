@@ -51,14 +51,6 @@ public abstract class ClientConnectionSettings<E extends ClientConnectionSetting
 		if (factory == null) {
 			synchronized (lock) {
 				if (factory == null) {
-					
-//				      ServiceLoader<IClientConnectionFactory> serviceLoader = ServiceLoader.load(IClientConnectionFactory.class);
-//
-//				      //checking if load was successful
-//				      for (IClientConnectionFactory provider : serviceLoader) {
-//				         return provider;
-//				      }
-
 					factory = ServiceLoader.load(IClientConnectionFactory.class).iterator().next();
 				}
 			}
