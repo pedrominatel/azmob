@@ -1,4 +1,4 @@
-package test;
+package meter_test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import org.openmuc.jdlms.client.MethodResult;
 import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
-import driver.meter.*;
+import meter_management.*;
 import file_parser.itr_driver_parse_pduXml;
 
 public class meter_test {
@@ -27,7 +27,7 @@ public class meter_test {
 	static itr_driver_dataExchange data = new itr_driver_dataExchange();
 	static itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
 	
-	public static void connect(String device) throws InterruptedException {
+	public String connect(String device) throws InterruptedException {
 		// TODO Auto-generated method stub
 		
 		//parse.readXmlStructure("C:\\read.xml");
@@ -39,24 +39,24 @@ public class meter_test {
 		IClientConnection connection = connManager.buildHDLCConnection(
 				hdlcAddress, device, 1);
 
-//		try {
-//			// Create the connection and connect using HDLC
-//			connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
-//			
-//			//getObjectEx(connection);
-//			//getObjectWithSelectorEx(connection);
-//			//setActionEx(connection);
-//			setObjectEx(connection);
-//
-//			connection.disconnect(false);
-//			
-//		} catch (IOException ex) {
-//			System.out.println("Deu merda!" + ex.toString());
-//			connection.disconnect(false);
-//		} catch (Exception ex) {
-//			System.out.println("N�o sei, n�o sei...!" + ex.toString());
-//		}
-		
+		try {
+			// Create the connection and connect using HDLC
+			connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
+			
+			//getObjectEx(connection);
+			//getObjectWithSelectorEx(connection);
+			//setActionEx(connection);
+			//setObjectEx(connection);
+
+			connection.disconnect(false);
+			
+		} catch (IOException ex) {
+			connection.disconnect(false);
+			return ex.toString();
+		} catch (Exception ex) {
+			return ex.toString();
+		}
+		return "Ok";
 	}
 
 //	public static void getObjectEx(IClientConnection connection) {

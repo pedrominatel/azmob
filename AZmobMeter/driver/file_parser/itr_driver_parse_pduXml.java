@@ -528,7 +528,7 @@ public class itr_driver_parse_pduXml {
 	}
 	
 	private void readXml(NodeList nodeList, List<Data> elementsList) {
-
+/*
 		for (int count = 0; count < nodeList.getLength(); count++) {
 
 			Node tempNode = nodeList.item(count);
@@ -537,6 +537,10 @@ public class itr_driver_parse_pduXml {
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 				
 				String cosemType = tempNode.getNodeName();
+				
+				
+				//XXX Fix it!!!!!
+				
 				
 				switch (cosemType) {
 				case COSEM_ELEMENT:
@@ -644,7 +648,7 @@ public class itr_driver_parse_pduXml {
 			}//if
 			
 		}//for
-
+*/
 	}
 
 }
