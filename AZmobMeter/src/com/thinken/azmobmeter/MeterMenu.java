@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import driver.teste.*;
 
 public class MeterMenu extends Activity {
 	
@@ -48,11 +47,11 @@ public class MeterMenu extends Activity {
 	
 	public void connect(View view) {
 		Log.i("CONNECTION", "Starting Connection");
-		teste tst = new teste();
+		//driver.teste tst = new driver.teste();
 		
 		try {
-			int ret = tst.connect(btAddress);
-			Toast.makeText(getApplicationContext(),"Ret: " + ret, 0).show();
+			//int ret = tst.connect(btAddress);
+			//Toast.makeText(getApplicationContext(),"Ret: " + ret, 0).show();
 		} catch (Exception e) {
 			// TODO: handle exception
 		    Log.i("CONNECTION", "Error: "+e.toString());
