@@ -47,7 +47,7 @@ public class MeterMenu extends Activity {
 	
 	public void connect(View view) {
 		Log.i("CONNECTION", "Starting Connection");
-		//driver.teste tst = new driver.teste();
+		teste tst = new teste();
 		
 		try {
 			//int ret = tst.connect(btAddress);
