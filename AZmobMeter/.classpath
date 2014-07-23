@@ -7,6 +7,5 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="dlms_client"/>
 	<classpathentry kind="src" path="dlms_api"/>
-	<classpathentry kind="src" path="driver"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

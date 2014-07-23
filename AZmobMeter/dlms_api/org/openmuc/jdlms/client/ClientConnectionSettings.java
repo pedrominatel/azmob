@@ -22,6 +22,8 @@ package org.openmuc.jdlms.client;
 
 import java.util.ServiceLoader;
 
+import android.util.Log;
+
 /**
  * Basic settings all DLMS connections must at least have.
  * <p>
@@ -52,6 +54,7 @@ public abstract class ClientConnectionSettings<E extends ClientConnectionSetting
 			synchronized (lock) {
 				if (factory == null) {
 					factory = ServiceLoader.load(IClientConnectionFactory.class).iterator().next();
+					Log.i("CONNECTION", "factory = ServiceLoader.load...");
 				}
 			}
 		}

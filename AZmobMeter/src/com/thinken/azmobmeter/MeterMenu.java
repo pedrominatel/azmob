@@ -1,6 +1,7 @@
 package com.thinken.azmobmeter;
 
-import meter_test.*;
+import com.thinken.azmobmeter.driver.*;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,9 +48,10 @@ public class MeterMenu extends Activity {
 	}
 	
 	public void connect(View view) {
+		
 		Log.i("CONNECTION", "Starting Connection");
 		
-		meter_test tst = new meter_test();		
+		DriverTest tst = new DriverTest();		
 		try {
 			String ret = tst.connect(btAddress);
 			Toast.makeText(getApplicationContext(),"Ret: " + ret, 0).show();
