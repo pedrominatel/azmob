@@ -107,11 +107,11 @@ public class PhysicalConnection implements IPhysicalConnection {
 
 	}
 
-//	@Override
-//	public void setSerialParams(int baud, int databits, int stopbits, int parity) {
-//		// port.setSerialPortParams(baud, databits, stopbits, parity);
-//		// port.enableReceiveTimeout(5);
-//	}
+	@Override
+	public void setSerialParams(int baud, int databits, int stopbits, int parity) {
+		// port.setSerialPortParams(baud, databits, stopbits, parity);
+		// port.enableReceiveTimeout(5);
+	}
 
 	@Override
 	public void registerListener(IPhysicalConnectionListener listener)

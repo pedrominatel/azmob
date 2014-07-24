@@ -41,7 +41,7 @@ public class PhysicalConnectionFactory {
 	 * @throws IOException
 	 * @throws UnsupportedCommOperationException
 	 */
-	public IPhysicalConnection acquireSerialPort(String btDevice)
+	public IPhysicalConnection acquireBluetoothConnection(String btDevice)
 			throws IOException {
 		Log.i("CONNECTION", "acquireSerialPort: "+btDevice);
 		return null;

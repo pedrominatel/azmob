@@ -25,15 +25,15 @@ public class DriverTest {
 	public String connect(String device) throws InterruptedException {
 		// TODO Auto-generated method stub
 
-//		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress,
-//				dlms_lowerAddress, dlms_addressSize);
-//		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, device, 1);
+		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress,
+				dlms_lowerAddress, dlms_addressSize);
+		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, device, 1);
 
 		try {
-			PhysicalConnection phy = new PhysicalConnection(device);
+			//PhysicalConnection phy = new PhysicalConnection(device);
 			// Create the connection and connect using HDLC
 			Log.i("CONNECTION", "Trying to connect...");
-			//connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
+			connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
 			
 			//getObjectEx(connection);
 			//getObjectWithSelectorEx(connection);
