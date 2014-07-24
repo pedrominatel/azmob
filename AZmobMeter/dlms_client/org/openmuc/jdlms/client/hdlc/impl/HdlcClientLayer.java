@@ -38,6 +38,8 @@ import org.openmuc.jdlms.client.hdlc.common.FrameType;
 import org.openmuc.jdlms.client.hdlc.common.HdlcAddressPair;
 import org.openmuc.jdlms.client.hdlc.common.HdlcFrame;
 
+import android.util.Log;
+
 /**
  * Class representing a HDLC connection sub layer. This class and its State classes (see {@link HdlcClientLayerState})
  * implement the subset of the HDLC standard stated in IEC 62056-46
@@ -83,7 +85,9 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	@Override
 	public void connect(long timeout) throws IOException {
+		Log.i("CONNECTION", "connect HDLC: "+timeout);
 		try {
+			Log.i("CONNECTION", "HDLC Connect: Timeout = " + timeout);
 			state.connect(this, timeout);
 		} catch (IOException e) {
 			lowerLayer.removeReceivingListener(this);

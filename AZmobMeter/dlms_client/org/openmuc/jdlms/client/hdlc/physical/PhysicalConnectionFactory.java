@@ -22,6 +22,8 @@ package org.openmuc.jdlms.client.hdlc.physical;
 
 import java.io.IOException;
 
+import android.util.Log;
+
 /**
  * Factory class to create a PhysicalConnection object using RXTX serial
  * communication library
@@ -39,9 +41,9 @@ public class PhysicalConnectionFactory {
 	 * @throws IOException
 	 * @throws UnsupportedCommOperationException
 	 */
-	public IPhysicalConnection acquireSerialPort(String portName)
+	public IPhysicalConnection acquireSerialPort(String btDevice)
 			throws IOException {
-
+		Log.i("CONNECTION", "acquireSerialPort: "+btDevice);
 		return null;
 	}
 }

@@ -88,6 +88,8 @@ import org.openmuc.jdlms.client.cosem.context.MechanismName;
 import org.openmuc.jdlms.client.cosem.context.PduHelper;
 import org.openmuc.jdlms.util.ConformanceHelper;
 
+import android.util.Log;
+
 /**
  * Variant of the connection class using unencrypted messages with logical name referencing to communicate with the
  * remote smart meter
@@ -126,6 +128,7 @@ public class LNConnection extends Connection {
 
 	@Override
 	public void connect(long timeout, byte[] secret) throws IOException {
+		Log.i("CONNECTION", "Connect LN");
 		connect(timeout, secret, null);
 	}
 
@@ -139,7 +142,9 @@ public class LNConnection extends Connection {
 	 */
 	@Override
 	public void connect(long timeout, byte[] secret, HlsSecretProcessor processor) throws IOException {
+		Log.i("CONNECTION", "establishConnection");
 		establishConnection(timeout, secret, processor);
+		Log.i("CONNECTION", "establishConnection after");
 		// If the last byte of the Conformance bit string is 0, then neither
 		// get, set nor action are allowed, a sign that this smart meter cannot
 		// communicate with LN referencing.

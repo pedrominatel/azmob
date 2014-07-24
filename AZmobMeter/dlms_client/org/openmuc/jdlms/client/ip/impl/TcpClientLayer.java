@@ -31,6 +31,8 @@ import org.openmuc.jdlms.client.ip.common.ConnectionIdentifier;
 import org.openmuc.jdlms.client.ip.common.ITcpLayer;
 import org.openmuc.jdlms.client.ip.common.Wpdu;
 
+import android.util.Log;
+
 /**
  * Communication layer to wrap CosemPDUs inside a WPDU and send it out using a TCP connection
  * 
@@ -73,6 +75,7 @@ public class TcpClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	@Override
 	public void connect(long timeout) throws IOException {
+		Log.i("CONNECTION", "connect TCP");
 		lowerLayer.connect();
 		try {
 			lowerLayer.registerListener(identifier, this);

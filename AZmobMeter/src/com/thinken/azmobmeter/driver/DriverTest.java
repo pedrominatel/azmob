@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import org.openmuc.jdlms.client.IClientConnection;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
+import org.openmuc.jdlms.client.hdlc.physical.PhysicalConnection;
+
+import android.util.Log;
 
 
 
@@ -21,31 +24,29 @@ public class DriverTest {
 
 	public String connect(String device) throws InterruptedException {
 		// TODO Auto-generated method stub
-		
-		//parse.readXmlStructure("C:\\read.xml");
 
-		//setup.loadDefaultHdlcValues(); // String password = setup.get_Password();
-
-		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress,
-				dlms_lowerAddress, dlms_addressSize);
-		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, device, 1);
+//		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress,
+//				dlms_lowerAddress, dlms_addressSize);
+//		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, device, 1);
 
 		try {
+			PhysicalConnection phy = new PhysicalConnection(device);
 			// Create the connection and connect using HDLC
-			connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
+			Log.i("CONNECTION", "Trying to connect...");
+			//connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
 			
 			//getObjectEx(connection);
 			//getObjectWithSelectorEx(connection);
 			//setActionEx(connection);
 			//setObjectEx(connection);
 
-			connection.disconnect(false);
+			//connection.disconnect(false);
 			
-		} catch (IOException ex) {
-			connection.disconnect(false);
-			return ex.toString();
+		//} catch (IOException ex) {
+			//connection.disconnect(false);
+			//return "IOException "+ex.toString();
 		} catch (Exception ex) {
-			return ex.toString();
+			return "Exception "+ex.toString();
 		}
 		return "Ok";
 	}

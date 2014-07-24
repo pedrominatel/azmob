@@ -47,6 +47,8 @@ import org.openmuc.jdlms.client.communication.IUpperLayer;
 import org.openmuc.jdlms.client.cosem.context.ApplicationContext;
 import org.openmuc.jdlms.client.cosem.context.MechanismName;
 
+import android.util.Log;
+
 /**
  * Base class used by all application level DLMS/Cosem connections
  * 
@@ -154,9 +156,11 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 	protected InitiateResponse establishConnection(long timeout, byte[] secret, HlsSecretProcessor processor)
 			throws IOException {
 		if (connected == false) {
+			Log.i("CONNECTION", "establishConnection == false ");
 			lowerLayer.connect(timeout);
-
+			Log.i("CONNECTION", "after lowerLayer.connect(timeout)");
 			try {
+				Log.i("CONNECTION", "establishConnection try");
 				InitiateResponse xdlmsResponse = connectModule.establishConnection(this, timeout, secret, processor);
 				negotiatedFeatures = xdlmsResponse.negotiated_conformance;
 				maxSendPduSize = (int) xdlmsResponse.server_max_receive_pdu_size.getValue();

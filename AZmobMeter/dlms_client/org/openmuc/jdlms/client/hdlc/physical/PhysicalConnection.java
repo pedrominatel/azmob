@@ -84,8 +84,8 @@ public class PhysicalConnection implements IPhysicalConnection {
 
 	private final byte[] buffer = new byte[1024];
 
-	public PhysicalConnection(String deviceMAC)
-			throws TooManyListenersException {
+	public PhysicalConnection(String deviceMAC)	throws TooManyListenersException {
+		Log.i("CONNECTION", "PhysicalConnection: "+deviceMAC);
 		this.deviceMAC = deviceMAC;
 		btdevice = btAdapter.getRemoteDevice(deviceMAC);
 		connectBt = new ConnectThread(btdevice);
