@@ -14,6 +14,7 @@ import android.widget.Toast;
 public class MeterMenu extends Activity {
 	
 	private String btAddress = "";
+	DriverTest tst = new DriverTest();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,7 @@ public class MeterMenu extends Activity {
 	public void connect(View view) {
 		
 		Log.i("CONNECTION", "Starting Connection");
-		
-		DriverTest tst = new DriverTest();		
+				
 		try {
 			String ret = tst.connect(btAddress);
 			Toast.makeText(getApplicationContext(),"Ret: " + ret, 0).show();
@@ -60,9 +60,7 @@ public class MeterMenu extends Activity {
 		    Log.i("CONNECTION", "Error: "+e.toString());
 			Toast.makeText(getApplicationContext(),"Error: "+e.toString(), 0).show();
 		}
-		
 	}
-	
 	
 	public void openReadouts(View view) {
 		Intent intent = new Intent(MeterMenu.this,MeterReadout.class);

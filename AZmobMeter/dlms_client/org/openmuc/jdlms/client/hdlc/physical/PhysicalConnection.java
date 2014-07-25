@@ -40,18 +40,17 @@ import java.util.UUID;
  */
 public class PhysicalConnection implements IPhysicalConnection {
 
-	public static final UUID MY_UUID = UUID
-			.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	protected static final int SUCCESS_CONNECT = 0;
 	protected static final int MESSAGE_READ = 1;
 	protected static final int MESSAGE_READ_OK = 2;
 	String tag = "debugging";
-	private String deviceMAC = "";
+	
+	public String btAddress = "";
+	BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+	BluetoothDevice btDevice;
 
-	BluetoothAdapter btAdapter;
-	BluetoothDevice btdevice;
-
-	ConnectThread connectBt;
+	ConnectThread connectThread;
 	ConnectedThread connectedThread;
 
 	Handler mHandler = new Handler() {
@@ -82,13 +81,14 @@ public class PhysicalConnection implements IPhysicalConnection {
 
 	private boolean isClosed;
 
-	private final byte[] buffer = new byte[1024];
-
-	public PhysicalConnection(String deviceMAC)	throws TooManyListenersException {
-		Log.i("CONNECTION", "PhysicalConnection: "+deviceMAC);
-		this.deviceMAC = deviceMAC;
-		btdevice = btAdapter.getRemoteDevice(deviceMAC);
-		connectBt = new ConnectThread(btdevice);
+	public PhysicalConnection(String btAddressStr) {
+		this.btAddress = btAddressStr;
+		Log.i("CONNECTION", "Physical Connection Start: "+btAddress);
+		Log.i("CONNECTION", "Physical Connection BT: "+btAddress);
+		btDevice = btAdapter.getRemoteDevice(btAddress);
+		Log.i("CONNECTION", "Physical Connection Device: "+btAddress);
+		connectThread = new ConnectThread(btDevice);
+		connectThread.start();
 		isClosed = false;
 	}
 
@@ -99,19 +99,18 @@ public class PhysicalConnection implements IPhysicalConnection {
 
 	@Override
 	public void close() {
-		if (isClosed == false) {
-			connectedThread.cancel();
-			connectBt.cancel();
+		if (isClosed == false) {		
+			connectThread.cancel();
 			isClosed = true;
 		}
 
 	}
 
-	@Override
-	public void setSerialParams(int baud, int databits, int stopbits, int parity) {
-		// port.setSerialPortParams(baud, databits, stopbits, parity);
-		// port.enableReceiveTimeout(5);
-	}
+//	@Override
+//	public void setSerialParams(int baud, int databits, int stopbits, int parity) {
+//		// port.setSerialPortParams(baud, databits, stopbits, parity);
+//		// port.enableReceiveTimeout(5);
+//	}
 
 	@Override
 	public void registerListener(IPhysicalConnectionListener listener)
