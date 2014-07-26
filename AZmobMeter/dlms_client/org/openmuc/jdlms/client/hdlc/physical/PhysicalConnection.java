@@ -44,8 +44,8 @@ public class PhysicalConnection implements IPhysicalConnection {
 	protected static final int SUCCESS_CONNECT = 0;
 	protected static final int MESSAGE_READ = 1;
 	protected static final int MESSAGE_READ_OK = 2;
-	String tag = "debugging";
-	
+	String tag = "DEBUG";
+	public boolean connected = false;	
 	public String btAddress = "";
 	BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
 	BluetoothDevice btDevice;
@@ -62,16 +62,22 @@ public class PhysicalConnection implements IPhysicalConnection {
 			switch (msg.what) {
 			case SUCCESS_CONNECT:
 				isClosed = false;
+				//Start Thread for BluetoothSocket
 				connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
 				connectedThread.start(); // start the read thread
-				Log.i(tag, "connected"); // TODO Use R.string.xxx
+				Log.i(tag, "Bluetooth Layer Connected"); // TODO Use R.string.xxx
+				String data = "PEDRO-HENRIQUE-MINATEL";
+				try {
+					send(data.getBytes());
+				} catch (IOException e) {
+					Log.i("CONNECTION", "Physical Connection Error: "+e.toString());
+				}
 				break;
 			case MESSAGE_READ:
 				byte[] readBuf = (byte[]) msg.obj;
 				serialEvent(readBuf);
 				break;
 			case MESSAGE_READ_OK:
-
 				break;
 			}
 		}
@@ -88,22 +94,28 @@ public class PhysicalConnection implements IPhysicalConnection {
 		btDevice = btAdapter.getRemoteDevice(btAddress);
 		Log.i("CONNECTION", "Physical Connection Device: "+btAddress);
 		connectThread = new ConnectThread(btDevice);
-		connectThread.start();
+		connectThread.start();		
 		isClosed = false;
+	}
+	
+	public boolean isConnecting() {
+		return connected;
 	}
 
 	@Override
 	public void send(byte[] data) throws IOException {
+		Log.i("CONNECTION", "Sending: "+data.toString());
 		connectedThread.write(data);
 	}
 
 	@Override
 	public void close() {
-		if (isClosed == false) {		
+		if (isClosed == false) {
+			connectedThread.cancel();
 			connectThread.cancel();
 			isClosed = true;
+			connected = false;
 		}
-
 	}
 
 //	@Override
@@ -149,14 +161,13 @@ public class PhysicalConnection implements IPhysicalConnection {
 			// because mmSocket is final
 			BluetoothSocket tmp = null;
 			mmDevice = device;
-			Log.i(tag, "construct");
+			Log.i(tag, "Bluetooth Connect Constructor");
 			// Get a BluetoothSocket to connect with the given BluetoothDevice
 			try {
 				// MY_UUID is the app's UUID string, also used by the server
-				// code
 				tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
 			} catch (IOException e) {
-				Log.i(tag, "get socket failed");
+				Log.i(tag, "Get Socket Failed");
 
 			}
 			mmSocket = tmp;
@@ -165,14 +176,15 @@ public class PhysicalConnection implements IPhysicalConnection {
 		public void run() {
 			// Cancel discovery because it will slow down the connection
 			btAdapter.cancelDiscovery();
-			Log.i(tag, "connect - run");
+			Log.i(tag, "Connect - Run");
 			try {
 				// Connect the device through the socket. This will block
 				// until it succeeds or throws an exception
 				mmSocket.connect();
-				Log.i(tag, "connect - succeeded");
+				Log.i(tag, "Connect - Succeeded");
+				connected = true;
 			} catch (IOException connectException) {
-				Log.i(tag, "connect failed");
+				Log.i(tag, "Connect Failed");
 				// Unable to connect; close the socket and get out
 				try {
 					mmSocket.close();
@@ -180,9 +192,7 @@ public class PhysicalConnection implements IPhysicalConnection {
 				}
 				return;
 			}
-
 			// Do work to manage the connection (in a separate thread)
-
 			mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
 		}
 
@@ -237,6 +247,7 @@ public class PhysicalConnection implements IPhysicalConnection {
 		/* Call this from the main activity to send data to the remote device */
 		public void write(byte[] bytes) {
 			try {
+				Log.i("CONNECTION", "Sending.....");
 				mmOutStream.write(bytes);
 			} catch (IOException e) {
 			}
