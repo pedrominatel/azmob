@@ -7,5 +7,10 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="dlms_client"/>
 	<classpathentry kind="src" path="dlms_api"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/libdlms/lib/jdlms/build/libs/antlr.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/libdlms/lib/jdlms/build/libs/axdr-compiler-0.9.0.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/libdlms/lib/jdlms/build/libs/lineargs.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/libdlms/lib/jdlms/build/libs/logback-classic-1.0.9.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/libdlms/lib/jdlms/build/libs/logback-core-1.0.9.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

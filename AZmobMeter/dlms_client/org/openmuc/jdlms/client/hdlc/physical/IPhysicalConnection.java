@@ -20,6 +20,8 @@
  */
 package org.openmuc.jdlms.client.hdlc.physical;
 
+//import gnu.io.UnsupportedCommOperationException;
+
 import java.io.IOException;
 import java.util.TooManyListenersException;
 
@@ -56,7 +58,8 @@ public interface IPhysicalConnection {
 	 *            Parity Bit (Range 0-2)
 	 * @throws UnsupportedCommOperationException
 	 */
-	//public void setBtParams(int baud, int databits, int stopbits, int parity);
+	public void setSerialParams(int baud, int databits, int stopbits, int parity);
+			//throws UnsupportedCommOperationException;
 
 	/**
 	 * Registers an upper layer as Listener for incoming data

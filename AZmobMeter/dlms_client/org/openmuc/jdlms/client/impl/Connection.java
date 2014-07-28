@@ -46,8 +46,9 @@ import org.openmuc.jdlms.client.communication.ILowerLayer;
 import org.openmuc.jdlms.client.communication.IUpperLayer;
 import org.openmuc.jdlms.client.cosem.context.ApplicationContext;
 import org.openmuc.jdlms.client.cosem.context.MechanismName;
-
-import android.util.Log;
+//import org.openmuc.jdlms.util.LoggingHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
  * Base class used by all application level DLMS/Cosem connections
@@ -55,6 +56,8 @@ import android.util.Log;
  * @author Karsten Mueller-Bier
  */
 public abstract class Connection implements IClientConnection, IUpperLayer, IAssociation {
+
+//	private static Logger logger = LoggerFactory.getLogger(Connection.class);
 
 	private IEventListener eventListener;
 
@@ -156,11 +159,9 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 	protected InitiateResponse establishConnection(long timeout, byte[] secret, HlsSecretProcessor processor)
 			throws IOException {
 		if (connected == false) {
-			Log.i("CONNECTION", "establishConnection == false ");
 			lowerLayer.connect(timeout);
-			Log.i("CONNECTION", "after lowerLayer.connect(timeout)");
+
 			try {
-				Log.i("CONNECTION", "establishConnection try");
 				InitiateResponse xdlmsResponse = connectModule.establishConnection(this, timeout, secret, processor);
 				negotiatedFeatures = xdlmsResponse.negotiated_conformance;
 				maxSendPduSize = (int) xdlmsResponse.server_max_receive_pdu_size.getValue();
@@ -206,7 +207,7 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 				connected = false;
 				lowerLayer.disconnect();
 			} catch (IOException e) {
-				//TODO LoggingHelper.logStackTrace(e, logger);
+//				LoggingHelper.logStackTrace(e, logger);
 			}
 		}
 	}
@@ -245,7 +246,7 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 			processPdu(pdu);
 			timeoutCounter = 0;
 		} catch (IOException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 

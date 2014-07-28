@@ -30,8 +30,9 @@ import org.openmuc.jdlms.client.communication.IUpperLayer;
 import org.openmuc.jdlms.client.ip.common.ConnectionIdentifier;
 import org.openmuc.jdlms.client.ip.common.ITcpLayer;
 import org.openmuc.jdlms.client.ip.common.Wpdu;
-
-import android.util.Log;
+//import org.openmuc.jdlms.util.LoggingHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
  * Communication layer to wrap CosemPDUs inside a WPDU and send it out using a TCP connection
@@ -40,6 +41,7 @@ import android.util.Log;
  */
 public class TcpClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
+//	private static Logger logger = LoggerFactory.getLogger(TcpClientLayer.class);
 
 	private IUpperLayer upperLayer;
 	private final ITcpLayer lowerLayer;
@@ -62,7 +64,7 @@ public class TcpClientLayer implements IUpperLayer, ILowerLayer<Object> {
 				upperLayer.dataReceived(pdu.getData());
 			}
 		} catch (IOException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 
@@ -75,7 +77,6 @@ public class TcpClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	@Override
 	public void connect(long timeout) throws IOException {
-		Log.i("CONNECTION", "connect TCP");
 		lowerLayer.connect();
 		try {
 			lowerLayer.registerListener(identifier, this);

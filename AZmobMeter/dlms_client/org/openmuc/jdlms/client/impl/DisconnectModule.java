@@ -29,6 +29,9 @@ import org.openmuc.jasn1.ber.BerByteArrayOutputStream;
 import org.openmuc.jasn1.ber.types.BerInteger;
 import org.openmuc.jdlms.client.communication.ILowerLayer;
 import org.openmuc.jdlms.client.communication.IUpperLayer;
+//import org.openmuc.jdlms.util.LoggingHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
  * Helper object that provides all Connection types with the same disconnection algorithm
@@ -36,6 +39,8 @@ import org.openmuc.jdlms.client.communication.IUpperLayer;
  * @author Karsten Mueller-Bier
  */
 public class DisconnectModule implements IUpperLayer {
+
+//	private static Logger logger = LoggerFactory.getLogger(DisconnectModule.class);
 
 	private final Object waitForResponseLock = new Object();
 	private Thread waitingThread;
@@ -65,7 +70,7 @@ public class DisconnectModule implements IUpperLayer {
 				rlrq.encode(oStream, true);
 				lowerLayer.send(oStream.getArray());
 			} catch (IOException e) {
-				//TODO LoggingHelper.logStackTrace(e, logger);
+//				LoggingHelper.logStackTrace(e, logger);
 			}
 
 			synchronized (waitForResponseLock) {
@@ -95,7 +100,7 @@ public class DisconnectModule implements IUpperLayer {
 				waitForResponseLock.notify();
 			}
 		} catch (IOException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 

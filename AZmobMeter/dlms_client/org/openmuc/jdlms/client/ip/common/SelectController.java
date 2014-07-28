@@ -28,8 +28,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+//import org.openmuc.jdlms.util.LoggingHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+
 public class SelectController extends Thread {
 
+//	private static Logger logger = LoggerFactory.getLogger(SelectController.class);
 	private static SelectController instance;
 
 	private final List<ISelectableChannel> registeredChannel = new LinkedList<ISelectableChannel>();
@@ -66,7 +71,7 @@ public class SelectController extends Thread {
 		try {
 			select = Selector.open();
 		} catch (IOException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 			instance = null;
 			return;
 		}
@@ -100,8 +105,8 @@ public class SelectController extends Thread {
 					}
 				}
 			} catch (IOException e) {
-				//TODO logger.debug("Error on select");
-				//TODO LoggingHelper.logStackTrace(e, logger);
+//				logger.debug("Error on select");
+//				LoggingHelper.logStackTrace(e, logger);
 			}
 		}
 	}

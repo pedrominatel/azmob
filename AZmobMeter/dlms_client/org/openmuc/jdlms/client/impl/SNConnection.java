@@ -68,7 +68,10 @@ import org.openmuc.jdlms.client.communication.ILowerLayer;
 import org.openmuc.jdlms.client.cosem.context.ApplicationContext;
 import org.openmuc.jdlms.client.cosem.context.MechanismName;
 import org.openmuc.jdlms.util.ConformanceHelper;
+//import org.openmuc.jdlms.util.LoggingHelper;
 import org.openmuc.jdlms.util.QueueHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
  * Variant of the connection class using unencrypted messages with short name referencing to communicate with the remote
@@ -101,6 +104,8 @@ public class SNConnection extends Connection {
 			return version;
 		}
 	}
+
+//	private static Logger logger = LoggerFactory.getLogger(SNConnection.class);
 
 	// Allow read/write
 	// Allow unconfirmed write
@@ -183,7 +188,7 @@ public class SNConnection extends Connection {
 			}
 		} catch (InterruptedException e) {
 			receiveTimedOut(pdu);
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 			throw new IOException("Interrupted while waiting for incoming response");
 		}
 
@@ -228,7 +233,7 @@ public class SNConnection extends Connection {
 			try {
 				response = QueueHelper.waitPoll(writeResponseQueue, timeout);
 			} catch (InterruptedException e) {
-				//TODO LoggingHelper.logStackTrace(e, logger);
+//				LoggingHelper.logStackTrace(e, logger);
 				throw new IOException("Interrupted while waiting for incoming response");
 			}
 
@@ -325,7 +330,7 @@ public class SNConnection extends Connection {
 				try {
 					responseWithoutReturn = QueueHelper.waitPoll(writeResponseQueue, timeout);
 				} catch (InterruptedException e) {
-					//TODO LoggingHelper.logStackTrace(e, logger);
+//					LoggingHelper.logStackTrace(e, logger);
 					throw new IOException("Interrupted while waiting for incoming response");
 				}
 			}
@@ -339,7 +344,7 @@ public class SNConnection extends Connection {
 				try {
 					responseWithReturn = QueueHelper.waitPoll(readResponseQueue, timeout);
 				} catch (InterruptedException e) {
-					//TODO LoggingHelper.logStackTrace(e, logger);
+//					LoggingHelper.logStackTrace(e, logger);
 					throw new IOException("Interrupted while waiting for incoming response");
 				}
 			}
@@ -423,9 +428,9 @@ public class SNConnection extends Connection {
 				}
 			}
 		} catch (InterruptedException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 		} catch (IOException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 
@@ -512,7 +517,7 @@ public class SNConnection extends Connection {
 		try {
 			response = QueueHelper.waitPoll(readResponseQueue, timeout);
 		} catch (InterruptedException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 			throw new IOException("Interrupted while waiting for incoming response");
 		}
 
@@ -544,7 +549,7 @@ public class SNConnection extends Connection {
 					try {
 						response = QueueHelper.waitPoll(readResponseQueue, timeout);
 					} catch (InterruptedException e) {
-						//TODO LoggingHelper.logStackTrace(e, logger);
+//						LoggingHelper.logStackTrace(e, logger);
 						throw new IOException("Interrupted while waiting for incoming response");
 					}
 

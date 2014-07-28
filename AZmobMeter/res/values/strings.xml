@@ -57,7 +57,7 @@
     <string name="activity_readout_menu">Leitura do Medidor</string>
     <string name="readout_menu">Menu de Leitura</string>
     <string name="read_meter">Ler Medidor</string>
-    <string name="clock_adjust">Ajuste de Relógio</string>
+    <string name="clock_adjust">Ajuste de Relogio</string>
     <string name="billing">Ver Faturamento</string>
     <string name="alarm_clean">Limpar Alarmes</string>
     <string name="meter_info">Status do Medidor</string>

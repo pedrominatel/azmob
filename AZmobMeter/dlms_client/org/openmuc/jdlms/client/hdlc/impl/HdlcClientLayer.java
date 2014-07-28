@@ -37,8 +37,9 @@ import org.openmuc.jdlms.client.hdlc.common.FrameInvalidException;
 import org.openmuc.jdlms.client.hdlc.common.FrameType;
 import org.openmuc.jdlms.client.hdlc.common.HdlcAddressPair;
 import org.openmuc.jdlms.client.hdlc.common.HdlcFrame;
-
-import android.util.Log;
+//import org.openmuc.jdlms.util.LoggingHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
  * Class representing a HDLC connection sub layer. This class and its State classes (see {@link HdlcClientLayerState})
@@ -47,6 +48,8 @@ import android.util.Log;
  * @author Karsten Mueller-Bier
  */
 public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
+
+	//private static Logger logger = LoggerFactory.getLogger(HdlcClientLayer.class);
 
 	private static byte FLAG = 0x7E;
 	private static byte[] LLCREQUEST = new byte[] { (byte) 0xE6, (byte) 0xE6, (byte) 0x00 };
@@ -85,9 +88,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	@Override
 	public void connect(long timeout) throws IOException {
-		Log.i("CONNECTION", "connect HDLC: "+timeout);
 		try {
-			Log.i("CONNECTION", "HDLC Connect: Timeout = " + timeout);
 			state.connect(this, timeout);
 		} catch (IOException e) {
 			lowerLayer.removeReceivingListener(this);

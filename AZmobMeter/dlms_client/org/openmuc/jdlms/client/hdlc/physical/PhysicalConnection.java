@@ -20,113 +20,68 @@
  */
 package org.openmuc.jdlms.client.hdlc.physical;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+//import gnu.io.SerialPort;
+//import gnu.io.SerialPortEvent;
+//import gnu.io.SerialPortEventListener;
+//import gnu.io.UnsupportedCommOperationException;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.TooManyListenersException;
-import java.util.UUID;
+
+import org.openmuc.jdlms.util.LoggingHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
- * Wrapper class around the actual SerialPort object, abstracting sending and
- * receiving of data.
+ * Wrapper class around the actual SerialPort object, abstracting sending and receiving of data.
  * 
  * @author Karsten Mueller-Bier
  */
-public class PhysicalConnection implements IPhysicalConnection {
+public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEventListener*/ {
 
-	public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	protected static final int SUCCESS_CONNECT = 0;
-	protected static final int MESSAGE_READ = 1;
-	protected static final int MESSAGE_READ_OK = 2;
-	String tag = "DEBUG";
-	public boolean connected = false;	
-	public String btAddress = "";
-	BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-	BluetoothDevice btDevice;
+	//private static Logger logger = LoggerFactory.getLogger(PhysicalConnection.class);
 
-	ConnectThread connectThread;
-	ConnectedThread connectedThread;
-
-	Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			Log.i(tag, "in handler");
-			super.handleMessage(msg);
-			switch (msg.what) {
-			case SUCCESS_CONNECT:
-				isClosed = false;
-				//Start Thread for BluetoothSocket
-				connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
-				connectedThread.start(); // start the read thread
-				Log.i(tag, "Bluetooth Layer Connected"); // TODO Use R.string.xxx
-				String data = "PEDRO-HENRIQUE-MINATEL";
-				try {
-					send(data.getBytes());
-				} catch (IOException e) {
-					Log.i("CONNECTION", "Physical Connection Error: "+e.toString());
-				}
-				break;
-			case MESSAGE_READ:
-				byte[] readBuf = (byte[]) msg.obj;
-				serialEvent(readBuf);
-				break;
-			case MESSAGE_READ_OK:
-				break;
-			}
-		}
-	};
-
+	//private final SerialPort port;
 	private IPhysicalConnectionListener listener = null;
 
 	private boolean isClosed;
 
-	public PhysicalConnection(String btAddressStr) {
-		this.btAddress = btAddressStr;
-		Log.i("CONNECTION", "Physical Connection Start: "+btAddress);
-		Log.i("CONNECTION", "Physical Connection BT: "+btAddress);
-		btDevice = btAdapter.getRemoteDevice(btAddress);
-		Log.i("CONNECTION", "Physical Connection Device: "+btAddress);
-		connectThread = new ConnectThread(btDevice);
-		connectThread.start();		
+	private final byte[] buffer = new byte[1024];
+
+	public PhysicalConnection(SerialPort port) throws TooManyListenersException/*, UnsupportedCommOperationException*/ {
+		//this.port = port;
+		port.addEventListener(this);
+		port.notifyOnDataAvailable(true);
+		port.enableReceiveTimeout(35);
 		isClosed = false;
-	}
-	
-	public boolean isConnecting() {
-		return connected;
 	}
 
 	@Override
 	public void send(byte[] data) throws IOException {
-		Log.i("CONNECTION", "Sending: "+data.toString());
-		connectedThread.write(data);
+		//LoggingHelper.logBytes(data, data.length, "Sending over " + port.getName(), logger);
+		//port.getOutputStream().write(data);
+		//port.getOutputStream().flush();
 	}
 
 	@Override
 	public void close() {
 		if (isClosed == false) {
-			connectedThread.cancel();
-			connectThread.cancel();
+			//port.removeEventListener();
+			//port.close();
 			isClosed = true;
-			connected = false;
 		}
+
 	}
 
-//	@Override
-//	public void setSerialParams(int baud, int databits, int stopbits, int parity) {
-//		// port.setSerialPortParams(baud, databits, stopbits, parity);
-//		// port.enableReceiveTimeout(5);
-//	}
+	@Override
+	public void setSerialParams(int baud, int databits, int stopbits, int parity)
+			/*throws UnsupportedCommOperationException*/ {
+		//port.setSerialPortParams(baud, databits, stopbits, parity);
+		//port.enableReceiveTimeout(5);
+	}
 
 	@Override
-	public void registerListener(IPhysicalConnectionListener listener)
-			throws TooManyListenersException {
+	public void registerListener(IPhysicalConnectionListener listener) throws TooManyListenersException {
 		if (this.listener != null) {
 			throw new TooManyListenersException();
 		}
@@ -141,125 +96,24 @@ public class PhysicalConnection implements IPhysicalConnection {
 	/**
 	 * Callback method when data is received from the wrapped SerialPort object
 	 */
-	public void serialEvent(byte[] buffer) {
-		int dataLen = buffer.length;
-		listener.dataReceived(buffer, dataLen);
+	@Override
+	public void serialEvent(SerialPortEvent arg0) {
+		int data;
+
+		try {
+			int len = 0;
+			while ((data = port.getInputStream().read()) > -1) {
+				buffer[len++] = (byte) data;
+			}
+			//LoggingHelper.logBytes(buffer, len, "Received from " + port.getName(), logger);
+			listener.dataReceived(buffer, len);
+		} catch (IOException e) {
+			//LoggingHelper.logStackTrace(e, logger);
+		}
 	}
 
 	@Override
 	public boolean isClosed() {
 		return isClosed;
 	}
-
-	private class ConnectThread extends Thread {
-
-		private final BluetoothSocket mmSocket;
-		private final BluetoothDevice mmDevice;
-
-		public ConnectThread(BluetoothDevice device) {
-			// Use a temporary object that is later assigned to mmSocket,
-			// because mmSocket is final
-			BluetoothSocket tmp = null;
-			mmDevice = device;
-			Log.i(tag, "Bluetooth Connect Constructor");
-			// Get a BluetoothSocket to connect with the given BluetoothDevice
-			try {
-				// MY_UUID is the app's UUID string, also used by the server
-				tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-			} catch (IOException e) {
-				Log.i(tag, "Get Socket Failed");
-
-			}
-			mmSocket = tmp;
-		}
-
-		public void run() {
-			// Cancel discovery because it will slow down the connection
-			btAdapter.cancelDiscovery();
-			Log.i(tag, "Connect - Run");
-			try {
-				// Connect the device through the socket. This will block
-				// until it succeeds or throws an exception
-				mmSocket.connect();
-				Log.i(tag, "Connect - Succeeded");
-				connected = true;
-			} catch (IOException connectException) {
-				Log.i(tag, "Connect Failed");
-				// Unable to connect; close the socket and get out
-				try {
-					mmSocket.close();
-				} catch (IOException closeException) {
-				}
-				return;
-			}
-			// Do work to manage the connection (in a separate thread)
-			mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
-		}
-
-		/** Will cancel an in-progress connection, and close the socket */
-		public void cancel() {
-			try {
-				mmSocket.close();
-			} catch (IOException e) {
-			}
-		}
-	}
-
-	private class ConnectedThread extends Thread {
-		private final BluetoothSocket mmSocket;
-		private final InputStream mmInStream;
-		private final OutputStream mmOutStream;
-
-		public ConnectedThread(BluetoothSocket socket) {
-			mmSocket = socket;
-			InputStream tmpIn = null;
-			OutputStream tmpOut = null;
-
-			// Get the input and output streams, using temp objects because
-			// member streams are final
-			try {
-				tmpIn = socket.getInputStream();
-				tmpOut = socket.getOutputStream();
-			} catch (IOException e) {
-			}
-			mmInStream = tmpIn;
-			mmOutStream = tmpOut;
-		}
-
-		public void run() {
-			byte[] buffer = new byte[1024]; // buffer store for the stream
-			int bytes; // bytes returned from read()
-
-			// Keep listening to the InputStream until an exception occurs
-			while (true) {
-				try {
-					// Read from the InputStream
-					bytes = mmInStream.read(buffer);
-					// Send the obtained bytes to the UI activity
-					mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
-							.sendToTarget();
-				} catch (IOException e) {
-					break;
-				}
-			}
-		}
-
-		/* Call this from the main activity to send data to the remote device */
-		public void write(byte[] bytes) {
-			try {
-				Log.i("CONNECTION", "Sending.....");
-				mmOutStream.write(bytes);
-			} catch (IOException e) {
-			}
-		}
-
-		/* Call this from the main activity to shutdown the connection */
-		public void cancel() {
-			try {
-				mmSocket.close();
-			} catch (IOException e) {
-			}
-		}
-	}
-
 }

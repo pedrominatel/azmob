@@ -31,7 +31,8 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 
 	private HdlcAddress clientAddress = null;
 	private HdlcAddress serverAddress = null;
-	private String btAddress = null;
+	private String portName = null;
+	private int baudrate = 0;
 	private boolean useHandshake = true;
 
 	/**
@@ -44,10 +45,10 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 	 * @param referencing
 	 *            The object referencing method used on the remote station
 	 */
-	public HdlcClientConnectionSettings(String btAddress, HdlcAddress client, HdlcAddress server,
+	public HdlcClientConnectionSettings(String portName, HdlcAddress client, HdlcAddress server,
 			ReferencingMethod referencing) {
 		super(referencing);
-		this.btAddress = btAddress;
+		this.portName = portName;
 		clientAddress = client;
 		serverAddress = server;
 	}
@@ -60,8 +61,12 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		return serverAddress;
 	}
 
-	public String getBtAddress() {
-		return btAddress;
+	public String getPortName() {
+		return portName;
+	}
+
+	public int getBaudrate() {
+		return baudrate;
 	}
 
 	public boolean doesUseHandshake() {
@@ -78,8 +83,13 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		return this;
 	}
 
-	public HdlcClientConnectionSettings setBtAddress(String value) {
-		btAddress = value;
+	public HdlcClientConnectionSettings setPortName(String value) {
+		portName = value;
+		return this;
+	}
+
+	public HdlcClientConnectionSettings setBaudrate(int baudrate) {
+		this.baudrate = baudrate;
 		return this;
 	}
 
@@ -93,13 +103,13 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		if (o instanceof HdlcClientConnectionSettings) {
 			HdlcClientConnectionSettings other = (HdlcClientConnectionSettings) o;
 			return super.equals(o) && clientAddress.equals(other.clientAddress)
-					&& serverAddress.equals(other.serverAddress) && btAddress.equals(other.btAddress);
+					&& serverAddress.equals(other.serverAddress) && portName.equals(other.portName);
 		}
 		return false;
 	}
 
 	@Override
 	public boolean isFullyParametrized() {
-		return super.isFullyParametrized() && clientAddress != null && serverAddress != null && btAddress != null;
+		return super.isFullyParametrized() && clientAddress != null && serverAddress != null && portName != null;
 	}
 }

@@ -87,8 +87,9 @@ import org.openmuc.jdlms.client.cosem.context.ApplicationContext;
 import org.openmuc.jdlms.client.cosem.context.MechanismName;
 import org.openmuc.jdlms.client.cosem.context.PduHelper;
 import org.openmuc.jdlms.util.ConformanceHelper;
-
-import android.util.Log;
+//import org.openmuc.jdlms.util.LoggingHelper;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 /**
  * Variant of the connection class using unencrypted messages with logical name referencing to communicate with the
@@ -99,6 +100,8 @@ import android.util.Log;
 public class LNConnection extends Connection {
 
 	private static long DEFAULT_TIMEOUT = 30000;
+
+//	private static Logger logger = LoggerFactory.getLogger(LNConnection.class);
 
 	// Allow GET/SET/ACTION/EVENT
 	// Allow selective access
@@ -128,7 +131,6 @@ public class LNConnection extends Connection {
 
 	@Override
 	public void connect(long timeout, byte[] secret) throws IOException {
-		Log.i("CONNECTION", "Connect LN");
 		connect(timeout, secret, null);
 	}
 
@@ -142,9 +144,7 @@ public class LNConnection extends Connection {
 	 */
 	@Override
 	public void connect(long timeout, byte[] secret, HlsSecretProcessor processor) throws IOException {
-		Log.i("CONNECTION", "establishConnection");
 		establishConnection(timeout, secret, processor);
-		Log.i("CONNECTION", "establishConnection after");
 		// If the last byte of the Conformance bit string is 0, then neither
 		// get, set nor action are allowed, a sign that this smart meter cannot
 		// communicate with LN referencing.
@@ -177,7 +177,7 @@ public class LNConnection extends Connection {
 			}
 		} catch (InterruptedException e) {
 			receiveTimedOut(pdu);
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 			throw new IOException("Interrupted while waiting for incoming response");
 		}
 
@@ -212,7 +212,7 @@ public class LNConnection extends Connection {
 					}
 				} catch (InterruptedException e) {
 					receiveTimedOut(pdu);
-					//TODO LoggingHelper.logStackTrace(e, logger);
+//					LoggingHelper.logStackTrace(e, logger);
 					throw new IOException("Interrupted while waiting for incoming response");
 				}
 			}
@@ -257,7 +257,7 @@ public class LNConnection extends Connection {
 			try {
 				response = setResponseQueue.poll(invokeId, timeout);
 			} catch (InterruptedException e) {
-				//TODO LoggingHelper.logStackTrace(e, logger);
+//				LoggingHelper.logStackTrace(e, logger);
 				throw new IOException("Interrupted while waiting for incoming response");
 			}
 
@@ -266,7 +266,7 @@ public class LNConnection extends Connection {
 				try {
 					response = setResponseQueue.poll(invokeId, timeout);
 				} catch (InterruptedException e) {
-					//TODO LoggingHelper.logStackTrace(e, logger);
+//					LoggingHelper.logStackTrace(e, logger);
 					throw new IOException("Interrupted while waiting for incoming response");
 				}
 			}
@@ -313,7 +313,7 @@ public class LNConnection extends Connection {
 			try {
 				response = actionResponseQueue.poll(invokeId, timeout);
 			} catch (InterruptedException e) {
-				//TODO LoggingHelper.logStackTrace(e, logger);
+//				LoggingHelper.logStackTrace(e, logger);
 				throw new IOException("Interrupted while waiting for incoming response");
 			}
 
@@ -323,7 +323,7 @@ public class LNConnection extends Connection {
 				try {
 					response = actionResponseQueue.poll(invokeId, timeout);
 				} catch (InterruptedException e) {
-					//TODO LoggingHelper.logStackTrace(e, logger);
+//					LoggingHelper.logStackTrace(e, logger);
 					throw new IOException("Interrupted while waiting for incoming response");
 				}
 			}
@@ -364,7 +364,7 @@ public class LNConnection extends Connection {
 					try {
 						response = actionResponseQueue.poll(invokeId, timeout);
 					} catch (InterruptedException e) {
-						//TODO LoggingHelper.logStackTrace(e, logger);
+//						LoggingHelper.logStackTrace(e, logger);
 						throw new IOException("Interrupted while waiting for incoming response");
 					}
 				}
@@ -407,7 +407,7 @@ public class LNConnection extends Connection {
 				}
 			}
 		} catch (InterruptedException e) {
-			//TODO LoggingHelper.logStackTrace(e, logger);
+//			LoggingHelper.logStackTrace(e, logger);
 		}
 	}
 
