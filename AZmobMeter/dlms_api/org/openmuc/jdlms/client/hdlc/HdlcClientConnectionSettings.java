@@ -31,8 +31,8 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 
 	private HdlcAddress clientAddress = null;
 	private HdlcAddress serverAddress = null;
-	private String portName = null;
-	private int baudrate = 0;
+	private String btAddress = null;
+	//XXX private int baudrate = 0;
 	private boolean useHandshake = true;
 
 	/**
@@ -45,10 +45,10 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 	 * @param referencing
 	 *            The object referencing method used on the remote station
 	 */
-	public HdlcClientConnectionSettings(String portName, HdlcAddress client, HdlcAddress server,
+	public HdlcClientConnectionSettings(String btAddr, HdlcAddress client, HdlcAddress server,
 			ReferencingMethod referencing) {
 		super(referencing);
-		this.portName = portName;
+		this.btAddress = btAddr;
 		clientAddress = client;
 		serverAddress = server;
 	}
@@ -61,13 +61,13 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		return serverAddress;
 	}
 
-	public String getPortName() {
-		return portName;
+	public String getBluetoothDevice() {
+		return btAddress;
 	}
 
-	public int getBaudrate() {
-		return baudrate;
-	}
+//XXX	public int getBaudrate() {
+//		return baudrate;
+//	}
 
 	public boolean doesUseHandshake() {
 		return useHandshake;
@@ -83,15 +83,15 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		return this;
 	}
 
-	public HdlcClientConnectionSettings setPortName(String value) {
-		portName = value;
+	public HdlcClientConnectionSettings setBluetoothDevice(String value) {
+		btAddress = value;
 		return this;
 	}
 
-	public HdlcClientConnectionSettings setBaudrate(int baudrate) {
-		this.baudrate = baudrate;
-		return this;
-	}
+//XXX	public HdlcClientConnectionSettings setBaudrate(int baudrate) {
+//		this.baudrate = baudrate;
+//		return this;
+//	}
 
 	public HdlcClientConnectionSettings setUseHandshake(boolean useHandshake) {
 		this.useHandshake = useHandshake;
@@ -103,13 +103,13 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		if (o instanceof HdlcClientConnectionSettings) {
 			HdlcClientConnectionSettings other = (HdlcClientConnectionSettings) o;
 			return super.equals(o) && clientAddress.equals(other.clientAddress)
-					&& serverAddress.equals(other.serverAddress) && portName.equals(other.portName);
+					&& serverAddress.equals(other.serverAddress) && btAddress.equals(other.btAddress);
 		}
 		return false;
 	}
 
 	@Override
 	public boolean isFullyParametrized() {
-		return super.isFullyParametrized() && clientAddress != null && serverAddress != null && portName != null;
+		return super.isFullyParametrized() && clientAddress != null && serverAddress != null && btAddress != null;
 	}
 }

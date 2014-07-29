@@ -61,12 +61,12 @@ public class HdlcClientLayerFactory implements ILowerLayerFactory {
 		HdlcClientLayer result;
 
 		HdlcLayersKey key = new HdlcLayersKey(new HdlcAddressPair(settings.getClientAddress(),
-				settings.getServerAddress()), settings.getPortName());
+				settings.getServerAddress()), settings.getBluetoothDevice());
 		if (hdlcLayers.containsKey(key)) {
 			result = hdlcLayers.get(key);
 		}
 		else {
-			lowerLayer = lowerLayerBuilder.build(settings.getPortName(), settings.doesUseHandshake());
+			lowerLayer = lowerLayerBuilder.build(settings.getBluetoothDevice(), settings.doesUseHandshake());
 
 			result = new HdlcClientLayer(lowerLayer, settings.getClientAddress(), settings.getServerAddress(),
 					HdlcClientLayerState.beginningState(), settings.getConfirmedMode() == ConfirmedMode.CONFIRMED);
