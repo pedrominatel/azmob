@@ -44,6 +44,8 @@ import org.openmuc.jdlms.util.QueueHelper;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+import android.util.Log;
+
 /**
  * This class represents a connection on the physical layer according to IEC 62056-21 in protocol mode E
  * 
@@ -68,19 +70,21 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	private final BlockingQueue<byte[]> receivingQueue = new ArrayBlockingQueue<byte[]>(3);
 
 	private PhysicalConnectionFactory factory = null;
-	private final String portName;
+	//XXX Refactoring Pedro Minatel
+	private final String btAddress;
+	private final String tag = "LocalDataExchangeClient";
 
-	private final int maxBaudrate;
+	//XXX	private final int maxBaudrate;
 	private final boolean useHandshake;
 
 	private final ByteBuffer receivingDataBuffer = ByteBuffer.allocate(2048);
 
-	public LocalDataExchangeClient(String portName, PhysicalConnectionFactory factory, int baudrate,
-			boolean useHandshake) {
-		this.portName = portName;
+	//XXX Refactoring
+	public LocalDataExchangeClient(String btAddr, PhysicalConnectionFactory factory, boolean useHandshake) {
+		this.btAddress = btAddr;
 		this.factory = factory;
 		listeners = new HashMap<Object, IUpperLayer>(8);
-		maxBaudrate = baudrate;
+		//XXX maxBaudrate = baudrate;
 		this.useHandshake = useHandshake;
 	}
 
@@ -95,15 +99,17 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 				}
 
 				receivingQueue.clear();
-
+				//XXX change to Bluetooth
 				openPhysicalConnection();
 
 				//XXX
 				if (!useHandshake) {
 					try {
-						connection.setSerialParams(maxBaudrate, 8, 1, 0);
+						//XXX Not needed when using bluetooth
+						//connection.setSerialParams(maxBaudrate, 8, 1, 0);
 					} catch (/*UnsupportedCommOperationException*/Exception e) {
-						throw new IOException("Serial Port does not support " + maxBaudrate + "bd 8N1");
+						//XXX not needed!
+						//throw new IOException("Serial Port does not support " + maxBaudrate + "bd 8N1");
 					}
 				}
 				else {
@@ -325,13 +331,14 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	private void openPhysicalConnection() throws IOException {
 		if (connection == null || connection.isClosed()) {
 			try {
-				connection = factory.acquireSerialPort(portName);
+				connection = factory.acquireBluetooth(btAddress);
 			} catch (/*UnsupportedCommOperationException*/Exception e) {
 				//TODO throw new IOException("Cannot intialize port", e);
 			//} catch (NoSuchPortException e) {
 				//TODO throw new IOException("No such port", e);
 			//} catch (PortInUseException e) {
 				//TODO throw new IOException("Por/t already in use", e);
+				Log.i(tag, "Error on acquireBluetooth " + e.toString());
 			}
 		}
 

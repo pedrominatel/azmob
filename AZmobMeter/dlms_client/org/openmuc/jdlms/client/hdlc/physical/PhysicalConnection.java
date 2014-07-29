@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.util.TooManyListenersException;
 
 import org.openmuc.jdlms.util.LoggingHelper;
+
+import android.bluetooth.BluetoothSocket;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
@@ -48,11 +50,11 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 
 	private final byte[] buffer = new byte[1024];
 
-	public PhysicalConnection(SerialPort port) throws TooManyListenersException/*, UnsupportedCommOperationException*/ {
-		//this.port = port;
-		port.addEventListener(this);
-		port.notifyOnDataAvailable(true);
-		port.enableReceiveTimeout(35);
+	public PhysicalConnection(BluetoothSocket btAddr) throws TooManyListenersException/*, UnsupportedCommOperationException*/ {
+//		this.port = port;
+//		port.addEventListener(this);
+//		port.notifyOnDataAvailable(true);
+//		port.enableReceiveTimeout(35);
 		isClosed = false;
 	}
 
