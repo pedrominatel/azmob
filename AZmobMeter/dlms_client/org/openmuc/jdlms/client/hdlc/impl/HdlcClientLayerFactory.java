@@ -66,8 +66,7 @@ public class HdlcClientLayerFactory implements ILowerLayerFactory {
 			result = hdlcLayers.get(key);
 		}
 		else {
-			lowerLayer = lowerLayerBuilder.build(settings.getPortName(), settings.getBaudrate(),
-					settings.doesUseHandshake());
+			lowerLayer = lowerLayerBuilder.build(settings.getPortName(), settings.doesUseHandshake());
 
 			result = new HdlcClientLayer(lowerLayer, settings.getClientAddress(), settings.getServerAddress(),
 					HdlcClientLayerState.beginningState(), settings.getConfirmedMode() == ConfirmedMode.CONFIRMED);

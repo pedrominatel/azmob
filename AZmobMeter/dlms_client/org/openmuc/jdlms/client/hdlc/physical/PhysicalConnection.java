@@ -51,10 +51,10 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 	private final byte[] buffer = new byte[1024];
 
 	public PhysicalConnection(BluetoothSocket btAddr) throws TooManyListenersException/*, UnsupportedCommOperationException*/ {
-//		this.port = port;
-//		port.addEventListener(this);
-//		port.notifyOnDataAvailable(true);
-//		port.enableReceiveTimeout(35);
+//XXX		this.port = port;
+//XXX		port.addEventListener(this);
+//XXX		port.notifyOnDataAvailable(true);
+//XXX		port.enableReceiveTimeout(35);
 		isClosed = false;
 	}
 
