@@ -48,8 +48,8 @@ public class PhysicalConnectionFactory {
 
 	private String tag = "PhysicalConnectionFactory";
 	private BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-	private BluetoothDevice btDevice;
-	private BluetoothSocket btSocket;
+	private BluetoothDevice btDevice = null;
+	private BluetoothSocket btSocket = null;
 	private ConnectThread connectThread;
 	
 	public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -66,12 +66,12 @@ public class PhysicalConnectionFactory {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case SUCCESS_CONNECT:
-				btSocket = (BluetoothSocket) msg.obj;
+				//btSocket = (BluetoothSocket) msg.obj;
 				//isClosed = false;
 				//Start Thread for BluetoothSocket
 				//connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
 				//connectedThread.start(); // start the read thread
-				Log.i(tag, "Bluetooth Layer Connected"); // TODO Use R.string.xxx
+				//Log.i(tag, "Bluetooth Layer Connected"); // TODO Use R.string.xxx
 				try {
 					//send(data.getBytes());
 				} catch (Exception e) {
@@ -139,6 +139,8 @@ public class PhysicalConnectionFactory {
             	Log.i(tag, "Thread Failed" + e.toString());
             }
         }
+        
+        
 		
 		//XXX Send the Bluetooth Socket to PhysicalConnection
 		PhysicalConnection result;
@@ -196,8 +198,10 @@ public class PhysicalConnectionFactory {
 				//XXX Check if it works here? notify();
 				
 				if(mmSocket.isConnected()){
+					Log.i(tag, "mHandler");
 					mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
 					Log.i(tag, "Thread notify!");
+					btSocket = mmSocket;
 					notify();
 				}
 			}

@@ -48,6 +48,7 @@ public class DriverTest {
 			//connection.disconnect(false);
 			//return "IOException "+ex.toString();
 		} catch (Exception ex) {
+			connection.disconnect(false);
 			return "Exception "+ex.toString();
 		}
 		return "Ok";

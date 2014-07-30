@@ -84,7 +84,7 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 		//XXX LoggingHelper.logBytes(data, data.length, "Sending over " + port.getName(), logger);
 		//XXX port.getOutputStream().write(data);
 		//XXX port.getOutputStream().flush();
-		Log.i(tag, "Sending: "+data.toString());
+		//XXX Log.i(tag, "Sending: "+data);
 		connectedThread.write(data);
 	}
 
