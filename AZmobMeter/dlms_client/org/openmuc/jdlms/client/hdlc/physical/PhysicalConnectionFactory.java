@@ -62,7 +62,7 @@ public class PhysicalConnectionFactory {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
-			Log.i(tag, "in handler");
+			Log.i(tag, "...in handler");
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case SUCCESS_CONNECT:
@@ -143,6 +143,7 @@ public class PhysicalConnectionFactory {
 		//XXX Send the Bluetooth Socket to PhysicalConnection
 		PhysicalConnection result;
 		try {
+			Log.i(tag, "Starting PhysicalConnection...");
 			result = new PhysicalConnection(btSocket);
 		} catch (TooManyListenersException e) {
 			throw new IOException();
@@ -181,7 +182,7 @@ public class PhysicalConnectionFactory {
 					// Connect the device through the socket. This will block
 					// until it succeeds or throws an exception
 					mmSocket.connect();
-					Log.i(tag, "Connect - Succeeded");
+					Log.i(tag, "Socket Connect - Succeeded");
 				} catch (IOException connectException) {
 					Log.i(tag, "Connect Failed");
 					// Unable to connect; close the socket and get out
@@ -193,8 +194,12 @@ public class PhysicalConnectionFactory {
 				}
 				// Do work to manage the connection (in a separate thread)
 				//XXX Check if it works here? notify();
-				mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
-				notify();
+				
+				if(mmSocket.isConnected()){
+					mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
+					Log.i(tag, "Thread notify!");
+					notify();
+				}
 			}
 		}
 

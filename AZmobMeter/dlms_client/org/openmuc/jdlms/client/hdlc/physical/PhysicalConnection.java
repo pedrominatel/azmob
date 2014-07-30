@@ -141,6 +141,7 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 		private final OutputStream mmOutStream;
 
 		public ConnectedThread(BluetoothSocket socket) {
+			Log.i(tag, "Creating Socket Thread!");
 			mmSocket = socket;
 			InputStream tmpIn = null;
 			OutputStream tmpOut = null;
