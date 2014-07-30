@@ -189,6 +189,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	public void disconnect() throws IOException {
 		connectedClients--;
 		if (connectedClients <= 0) {
+			Log.i(tag, "Disconnect from meter...");
 			isConnected = false;
 			connection.removeListener();
 			connection.close();
