@@ -252,6 +252,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 							|| HdlcAddress.isNoStation(parser.getLastValidSource())) {
 						// Source is not defined, discard
 						//TODO logger.debug("Source is not defined. Frame discarded");
+						Log.i(tag, "Source is not defined. Frame discarded");
 					}
 					else if (listeners.containsKey(key)) {
 						listeners.get(key).dataReceived(frame);
@@ -260,8 +261,10 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 
 			} catch (IOException e) {
 				//TODO LoggingHelper.logStackTrace(e, logger);
+				Log.i(tag, "Error: "+e.toString());
 			} catch (FrameInvalidException e) {
 				//TODO LoggingHelper.logStackTrace(e, logger);
+				Log.i(tag, "Error: "+e.toString());
 				ByteBuffer copy = ByteBuffer.wrap(receivingDataBuffer.array());
 				copy.position(receivingDataBuffer.position());
 				copy.flip();
@@ -280,6 +283,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 			try {
 				receivingQueue.put(receivedData);
 			} catch (InterruptedException e) {
+				Log.i(tag, "Error: "+e.toString());
 				//TODO LoggingHelper.logStackTrace(e, logger);
 			}
 		}

@@ -198,8 +198,8 @@ public class PhysicalConnectionFactory {
 				//XXX Check if it works here? notify();
 				
 				if(mmSocket.isConnected()){
-					Log.i(tag, "mHandler");
-					mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
+					//Log.i(tag, "mHandler");
+					//mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
 					Log.i(tag, "Thread notify!");
 					btSocket = mmSocket;
 					notify();

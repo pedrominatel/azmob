@@ -42,13 +42,13 @@ public class DriverTest {
 			//setActionEx(connection);
 			//setObjectEx(connection);
 
-			connection.disconnect(false);
+			//connection.disconnect(false);
 			
 		//} catch (IOException ex) {
 			//connection.disconnect(false);
 			//return "IOException "+ex.toString();
 		} catch (Exception ex) {
-			connection.disconnect(false);
+			//connection.disconnect(false);
 			return "Exception "+ex.toString();
 		}
 		return "Ok";
