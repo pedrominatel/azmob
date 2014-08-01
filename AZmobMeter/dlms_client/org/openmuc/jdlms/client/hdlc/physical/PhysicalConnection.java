@@ -61,6 +61,7 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case MESSAGE_READ:
+				Log.i(tag, "Receiving data over Bluetooth.....");
 				byte[] readBuf = (byte[]) msg.obj;
 				serialEvent(readBuf);
 				break;
@@ -124,6 +125,7 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 	 */
 	public void serialEvent(byte[] buffer) {
 		int dataLen = buffer.length;
+		Log.i(tag, "Receiving data over Bluetooth.....");
 		listener.dataReceived(buffer, dataLen);
 	}
 
@@ -167,7 +169,8 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 					// Read from the InputStream
 					bytes = mmInStream.read(buffer);
 					// Send the obtained bytes to the UI activity
-					mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+					//XXX mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+					serialEvent(buffer);
 				} catch (IOException e) {
 					break;
 				}
