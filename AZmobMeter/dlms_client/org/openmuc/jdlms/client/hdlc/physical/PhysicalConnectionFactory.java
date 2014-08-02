@@ -47,40 +47,6 @@ import android.util.Log;
 public class PhysicalConnectionFactory {
 
 	private String tag = "PhysicalConnectionFactory";
-	private BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-	private BluetoothDevice btDevice = null;
-	private BluetoothSocket btSocket = null;
-	private ConnectThread connectThread;
-	
-	public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	protected static final int SUCCESS_CONNECT = 0;
-	protected static final int MESSAGE_READ = 1;
-	protected static final int MESSAGE_READ_OK = 2;
-	
-	
-	Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			Log.i(tag, "...in handler");
-			super.handleMessage(msg);
-			switch (msg.what) {
-			case SUCCESS_CONNECT:
-				//btSocket = (BluetoothSocket) msg.obj;
-				//isClosed = false;
-				//Start Thread for BluetoothSocket
-				//connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
-				//connectedThread.start(); // start the read thread
-				//Log.i(tag, "Bluetooth Layer Connected"); // TODO Use R.string.xxx
-				try {
-					//send(data.getBytes());
-				} catch (Exception e) {
-					Log.i("CONNECTION", "Physical Connection Error: "+e.toString());
-				}
-				break;
-			}
-		}
-	};
 	
 	/**
 	 * Tries to acquire the port named in the constructor
@@ -92,6 +58,18 @@ public class PhysicalConnectionFactory {
 	 */
 	//XXX Refactored by Pedro Minatel
 	public IPhysicalConnection acquireBluetooth(String btAddr) throws IOException {
+		
+		//XXX Send the Bluetooth Address to PhysicalConnection
+		PhysicalConnection result;
+		try {
+			Log.i(tag, "Starting PhysicalConnection...");
+			result = new PhysicalConnection(btAddr);
+		} catch (TooManyListenersException e) {
+			throw new IOException();
+		}
+
+		return result;
+
 		
 //XXX SerialPort socket;
 //XXX Refactoring
@@ -120,100 +98,6 @@ public class PhysicalConnectionFactory {
 		REFACTORING to Android Bluetooth
 		*/
 		
-		//XXX Gets the ConnectThread
-		//Gets the Bluetooth MAC address
-		String btAddress = btAddr;
-		Log.i(tag, "Physical Connection Start: "+btAddress);
-		btDevice = btAdapter.getRemoteDevice(btAddress);
-		//XXX Create Thread
-		Log.i(tag, "Creating Bluetooth Connect Thread");
-		connectThread = new ConnectThread(btDevice);
-		connectThread.start();
-		
-		//XXX Sync thread until Bluetooth connects!
-        synchronized(connectThread){
-            try{
-            	Log.i(tag, "Waiting Bluetooth Connection...");
-                connectThread.wait();
-            }catch(InterruptedException e){
-            	Log.i(tag, "Thread Failed" + e.toString());
-            }
-        }
-        
-        
-		
-		//XXX Send the Bluetooth Socket to PhysicalConnection
-		PhysicalConnection result;
-		try {
-			Log.i(tag, "Starting PhysicalConnection...");
-			result = new PhysicalConnection(btSocket);
-		} catch (TooManyListenersException e) {
-			throw new IOException();
-		}
-
-		return result;
-	}
-
-	private class ConnectThread extends Thread {
-
-		private final BluetoothSocket mmSocket;
-
-		public ConnectThread(BluetoothDevice device) {
-			// Use a temporary object that is later assigned to mmSocket,
-			// because mmSocket is final
-			BluetoothSocket tmp = null;
-			BluetoothDevice mmDevice = device;
-			Log.i(tag, "Bluetooth Connect Constructor");
-			// Get a BluetoothSocket to connect with the given BluetoothDevice
-			try {
-				// MY_UUID is the app's UUID string, also used by the server
-				tmp = mmDevice.createRfcommSocketToServiceRecord(MY_UUID);
-			} catch (IOException e) {
-				Log.i(tag, "Get Socket Failed");
-
-			}
-			mmSocket = tmp;
-		}
-
-		public void run() {
-			synchronized (this) {
-				// Cancel discovery because it will slow down the connection
-				btAdapter.cancelDiscovery();
-				Log.i(tag, "Connect - Run");
-				try {
-					// Connect the device through the socket. This will block
-					// until it succeeds or throws an exception
-					mmSocket.connect();
-					Log.i(tag, "Socket Connect - Succeeded");
-				} catch (IOException connectException) {
-					Log.i(tag, "Connect Failed");
-					// Unable to connect; close the socket and get out
-					try {
-						mmSocket.close();
-					} catch (IOException closeException) {
-					}
-					return;
-				}
-				// Do work to manage the connection (in a separate thread)
-				//XXX Check if it works here? notify();
-				
-				if(mmSocket.isConnected()){
-					//Log.i(tag, "mHandler");
-					//mHandler.obtainMessage(SUCCESS_CONNECT, mmSocket).sendToTarget();
-					Log.i(tag, "Thread notify!");
-					btSocket = mmSocket;
-					notify();
-				}
-			}
-		}
-
-		/** Will cancel an in-progress connection, and close the socket */
-		public void cancel() {
-			try {
-				mmSocket.close();
-			} catch (IOException e) {
-			}
-		}
 	}
 
 }

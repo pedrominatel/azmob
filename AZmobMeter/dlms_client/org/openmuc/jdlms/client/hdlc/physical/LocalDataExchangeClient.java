@@ -262,6 +262,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 			} catch (IOException e) {
 				//TODO LoggingHelper.logStackTrace(e, logger);
 				Log.i(tag, "Error: "+e.toString());
+				
 			} catch (FrameInvalidException e) {
 				//TODO LoggingHelper.logStackTrace(e, logger);
 				Log.i(tag, "Error: "+e.toString());
