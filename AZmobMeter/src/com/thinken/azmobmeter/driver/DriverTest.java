@@ -42,6 +42,10 @@ public class DriverTest {
 			//setActionEx(connection);
 			//setObjectEx(connection);
 
+			if(connection.isConnected()){
+				connection.disconnect(false);
+			}
+			
 			//connection.disconnect(false);
 			
 		//} catch (IOException ex) {
