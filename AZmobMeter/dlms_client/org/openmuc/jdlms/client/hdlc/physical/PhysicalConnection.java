@@ -40,20 +40,25 @@ import android.os.Message;
 import android.util.Log;
 
 /**
- * Wrapper class around the actual SerialPort object, abstracting sending and receiving of data.
+ * Wrapper class around the actual SerialPort object, abstracting sending and
+ * receiving of data.
  * 
  * @author Karsten Mueller-Bier
  */
-public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEventListener*/ {
+public class PhysicalConnection implements IPhysicalConnection/*
+															 * ,
+															 * SerialPortEventListener
+															 */{
 
-	//private static Logger logger = LoggerFactory.getLogger(PhysicalConnection.class);
-	//private final SerialPort port;
+	// private static Logger logger =
+	// LoggerFactory.getLogger(PhysicalConnection.class);
+	// private final SerialPort port;
 	private IPhysicalConnectionListener listener = null;
 	private boolean isClosed;
 	protected static final int MESSAGE_READ = 0;
 	private ConnectedThread connectedThread;
 	private String tag = "PhysicalConnection";
-	
+
 	Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -69,11 +74,15 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 		}
 	};
 
-	public PhysicalConnection(BluetoothSocket btSocket) throws TooManyListenersException/*, UnsupportedCommOperationException*/ {
-//XXX		this.port = port;
-//XXX		port.addEventListener(this);
-//XXX		port.notifyOnDataAvailable(true);
-//XXX		port.enableReceiveTimeout(35);
+	public PhysicalConnection(BluetoothSocket btSocket)
+			throws TooManyListenersException/*
+											 * ,
+											 * UnsupportedCommOperationException
+											 */{
+		// XXX this.port = port;
+		// XXX port.addEventListener(this);
+		// XXX port.notifyOnDataAvailable(true);
+		// XXX port.enableReceiveTimeout(35);
 		Log.i(tag, "Creating Bluetooth Socket!");
 		connectedThread = new ConnectedThread(btSocket);
 		connectedThread.start(); // start the read thread
@@ -82,18 +91,19 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 
 	@Override
 	public void send(byte[] data) throws IOException {
-		//XXX LoggingHelper.logBytes(data, data.length, "Sending over " + port.getName(), logger);
-		//XXX port.getOutputStream().write(data);
-		//XXX port.getOutputStream().flush();
-		//XXX Log.i(tag, "Sending: "+data);
+		// XXX LoggingHelper.logBytes(data, data.length, "Sending over " +
+		// port.getName(), logger);
+		// XXX port.getOutputStream().write(data);
+		// XXX port.getOutputStream().flush();
+		// XXX Log.i(tag, "Sending: "+data);
 		connectedThread.write(data);
 	}
 
 	@Override
 	public void close() {
 		if (isClosed == false) {
-			//XXX port.removeEventListener();
-			//XXX port.close();
+			// XXX port.removeEventListener();
+			// XXX port.close();
 			connectedThread.cancel();
 			isClosed = true;
 		}
@@ -102,13 +112,14 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 
 	@Override
 	public void setSerialParams(int baud, int databits, int stopbits, int parity)
-			/*throws UnsupportedCommOperationException*/ {
-		//XXX port.setSerialPortParams(baud, databits, stopbits, parity);
-		//XXX port.enableReceiveTimeout(5);
+	/* throws UnsupportedCommOperationException */{
+		// XXX port.setSerialPortParams(baud, databits, stopbits, parity);
+		// XXX port.enableReceiveTimeout(5);
 	}
 
 	@Override
-	public void registerListener(IPhysicalConnectionListener listener) throws TooManyListenersException {
+	public void registerListener(IPhysicalConnectionListener listener)
+			throws TooManyListenersException {
 		if (this.listener != null) {
 			throw new TooManyListenersException();
 		}
@@ -133,14 +144,14 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 	public boolean isClosed() {
 		return isClosed;
 	}
-	
-	
-	//XXX Refactoring by Pedro Minatel
-	//Thread to create Socket connection
+
+	// XXX Refactoring by Pedro Minatel
+	// Thread to create Socket connection
 	private class ConnectedThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final InputStream mmInStream;
 		private final OutputStream mmOutStream;
+		private int curLength;
 
 		public ConnectedThread(BluetoothSocket socket) {
 			Log.i(tag, "Creating Socket Thread!");
@@ -160,21 +171,44 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 		}
 
 		public void run() {
-			byte[] buffer = new byte[1024]; // buffer store for the stream
-			int bytes; // bytes returned from read()
 
-			// Keep listening to the InputStream until an exception occurs
-			while (true) {
-				try {
+			try {
+				byte[] buffer = new byte[1024]; // buffer store for the stream
+				int bytes; // bytes returned from read()
+
+				// Keep listening to the InputStream until an exception occurs
+				while (true) {
 					// Read from the InputStream
-					bytes = mmInStream.read(buffer);
-					// Send the obtained bytes to the UI activity
-					//XXX mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
-					serialEvent(buffer);
-				} catch (IOException e) {
-					break;
+					bytes = mmInStream.read(buffer, curLength, buffer.length - curLength);
+					if (bytes > 0) {
+						// still reading
+						curLength += bytes;
+					}
+
+					// check if reading is done
+					if (curLength > 0) {
+						// reading finished
+						listener.dataReceived(buffer, curLength);
+						curLength = bytes = 0;
+					}
 				}
+			} catch (Exception e) {
+				Log.i(tag, "Receive Error: " + e.toString());
 			}
+
+			// /XXX Refactoring
+			// while (true) {
+			// try {
+			// // Read from the InputStream
+			// bytes = mmInStream.read(buffer);
+			// // Send the obtained bytes to the UI activity
+			// //XXX mHandler.obtainMessage(MESSAGE_READ, bytes, -1,
+			// buffer).sendToTarget();
+			// serialEvent(buffer);
+			// } catch (IOException e) {
+			// break;
+			// }
+			// }
 		}
 
 		/* Call this from the main activity to send data to the remote device */
@@ -194,10 +228,5 @@ public class PhysicalConnection implements IPhysicalConnection/*, SerialPortEven
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
+
 }
