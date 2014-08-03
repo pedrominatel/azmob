@@ -33,7 +33,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:contentDescription="Home"
             android:drawableLeft="@drawable/gear"
             android:onClick="connectBluetooth"
             android:text="@string/bt_connect" />
@@ -44,7 +43,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:contentDescription="Home"
             android:drawableLeft="@drawable/gear"
             android:onClick="todo"
             android:text="@string/bt_reports" />
@@ -63,7 +61,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:contentDescription="Home"
             android:drawableLeft="@drawable/gear"
             android:onClick="openReadouts"
             android:text="@string/engineering_mode" />
@@ -74,7 +71,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:contentDescription="Home"
             android:drawableLeft="@drawable/gear"
             android:onClick="exit"
             android:text="@string/exit" />

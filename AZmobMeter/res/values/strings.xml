@@ -23,7 +23,7 @@
     <string name="bt_off">Desligar Bluetooth</string>
     <string name="bt_paired">Dispositivos pareados</string>
     <string name="bt_connect_confirm">Conectar ao dispositivo?</string>
-    <string name="exit">Sair</string>
+    <string name="exit">Desconectar e Sair</string>
     <string name="exit_question">Sair?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
