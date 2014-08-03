@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/linearlayout_bg"
         android:orientation="vertical"
@@ -47,9 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:background="@drawable/bt_blue"
+            android:onClick="todo"
             android:padding="10dp"
-            android:text="@string/bt_reports"
-            android:onClick="todo" />
+            android:text="@string/bt_reports" />
 
         <Button
             android:id="@+id/bt_engineering"
@@ -58,9 +59,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:background="@drawable/bt_blue"
+            android:onClick="openReadouts"
             android:padding="10dp"
-            android:text="@string/engineering_mode"
-            android:onClick="openReadouts" />
+            android:text="@string/engineering_mode" />
 
         <Button
             android:id="@+id/bt_exit"
@@ -69,9 +70,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:background="@drawable/bt_red"
+            android:onClick="exit"
             android:padding="10dp"
-            android:text="@string/exit"
-            android:onClick="exit" />
+            android:text="@string/exit" />
     </LinearLayout>
 
 </RelativeLayout>
