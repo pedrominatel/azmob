@@ -23,13 +23,11 @@ public class DriverTest {
 	// private itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
 	private String tag = "TEST";
 
-	public String connect(String device) throws InterruptedException {
+	public IClientConnection connect(String device) throws InterruptedException {
 		// TODO Auto-generated method stub
 
-		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress,
-				dlms_lowerAddress, dlms_addressSize);
-		IClientConnection connection = connManager.buildHDLCConnection(
-				hdlcAddress, device, 1);
+		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress, dlms_lowerAddress, dlms_addressSize);
+		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, device, 1);
 
 		try {
 			Log.i(tag, "Trying to connect...");
@@ -37,29 +35,40 @@ public class DriverTest {
 			Log.i(tag, "Connecting...");
 
 			if (!connection.isConnected()) {
-				connection.connect(CONN_TIMEOUT,"ABCDEFGH".getBytes("US-ASCII"));
+				connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
 			}
 
 			if (connection.isConnected()) {
-				// getObjectEx(connection);
-				// getObjectWithSelectorEx(connection);
-				
-				// if(setActionEx(connection))
-				connection.disconnect(false);
-				
-				// setObjectEx(connection);
+				Log.i(tag, "Connected!");
+
+				// // getObjectEx(connection);
+				// // getObjectWithSelectorEx(connection);
+				//
+				// //Thread.sleep(1000);
+				// //if(setActionEx(connection))
+				// connection.disconnect(false);
+				//
+				// // setObjectEx(connection);
 			}
 
 			// connection.disconnect(false);
 
 		} catch (IOException ex) {
 			connection.disconnect(false);
-			return "IOException " + ex.toString();
+			return null;
 		} catch (Exception ex) {
 			connection.disconnect(false);
-			return "Exception " + ex.toString();
+			return null;
 		}
-		return "Ok";
+		return connection;
+	}
+
+	public void disconnect(IClientConnection conn) {
+
+		if (conn.isConnected()) {
+			conn.disconnect(false);
+		}
+
 	}
 
 	// public static void getObjectEx(IClientConnection connection) {
@@ -142,10 +151,10 @@ public class DriverTest {
 	//
 	public boolean setActionEx(IClientConnection connection) {
 		// TODO: Action example
+		Log.i(tag, "Action...");
 		// ResetNonFatalAlarmScriptTable
 		ObisCode obisAction = new ObisCode(0, 0, 10, 1, 0, 255);
-		MethodResult actionResult = data
-				.Action(connection, obisAction, 9, 1, 1);
+		MethodResult actionResult = data.Action(connection, obisAction, 9, 1, 1);
 
 		if (actionResult.isSuccess()) {
 			Log.i(tag, "Action success...");

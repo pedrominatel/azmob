@@ -1,5 +1,7 @@
 package com.thinken.azmobmeter;
 
+import org.openmuc.jdlms.client.IClientConnection;
+
 import com.thinken.azmobmeter.driver.*;
 
 import android.app.Activity;
@@ -9,12 +11,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class MeterMenu extends Activity {
 	
 	private String btAddress = "";
 	DriverTest tst = new DriverTest();
+	IClientConnection conn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +28,15 @@ public class MeterMenu extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 		    btAddress = extras.getString("btAddress");
-		    Toast.makeText(getApplicationContext(), "Bluetooth Address: "+btAddress, 0).show();
+			Log.i("CONNECTION", "Starting Connection");
+			
+			try {
+				conn = tst.connect(btAddress);
+			} catch (Exception e) {
+				// TODO: handle exception
+			    Log.i("CONNECTION", "Error: "+e.toString());
+				Toast.makeText(getApplicationContext(),"Error: "+e.toString(), 0).show();
+			}
 		}
 		
 	}
@@ -48,18 +60,20 @@ public class MeterMenu extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void connect(View view) {
+	public void clearAlarms(View view) {
+		tst.setActionEx(conn);
 		
-		Log.i("CONNECTION", "Starting Connection");
-				
-		try {
-			String ret = tst.connect(btAddress);
-			Toast.makeText(getApplicationContext(),"Ret: " + ret, 0).show();
-		} catch (Exception e) {
-			// TODO: handle exception
-		    Log.i("CONNECTION", "Error: "+e.toString());
-			Toast.makeText(getApplicationContext(),"Error: "+e.toString(), 0).show();
-		}
+		final Button btn = (Button)findViewById(R.id.bt_clearAlarms);
+		btn.setEnabled(false);
+		
+	}
+	
+	public void disconnect(View view) {
+		
+		tst.disconnect(conn);
+		
+		Intent intent = new Intent(MeterMenu.this,MainMenu.class);
+		startActivity(intent);
 	}
 	
 	public void openReadouts(View view) {

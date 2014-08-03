@@ -2,7 +2,7 @@
  * Copyright 2012-13 Fraunhofer ISE
  *
  * This file is part of jDLMS.
- * For more information visit http://www.openmuc.org
+ * For more inion visit http://www.openmuc.org
  *
  * jDLMS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

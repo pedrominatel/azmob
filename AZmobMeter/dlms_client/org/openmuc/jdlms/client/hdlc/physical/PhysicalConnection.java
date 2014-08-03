@@ -127,7 +127,16 @@ public class PhysicalConnection implements IPhysicalConnection {
 		// XXX port.getOutputStream().write(data);
 		// XXX port.getOutputStream().flush();
 		// XXX Log.i(tag, "Sending: "+data);
-		connectedThread.write(data);
+		
+        // Create temporary object
+        ConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (this) {
+            //if (mState != STATE_CONNECTED) return;
+            r = connectedThread;
+        }
+        // Perform the write unsynchronized
+        r.write(data);
 	}
 
 	@Override
@@ -137,7 +146,7 @@ public class PhysicalConnection implements IPhysicalConnection {
 			// XXX port.close();
 			Log.i(tag, "Closing...");
 			if (connectThread != null) {connectThread.cancel();	connectThread = null;}
-			//if (connectedThread != null) {connectedThread.cancel();	connectedThread = null;}
+			if (connectedThread != null) {connectedThread.cancel();	connectedThread = null;}
 			isClosed = true;
 			Log.i(tag, "Closed!");
 		}
@@ -175,7 +184,7 @@ public class PhysicalConnection implements IPhysicalConnection {
 	}
 
 	@Override
-	public boolean isClosed() {
+	public synchronized boolean isClosed() {
 		return isClosed;
 	}
 	
