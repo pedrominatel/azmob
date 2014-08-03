@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item><shape>
             <gradient 
                 android:type="linear"
@@ -8,5 +7,6 @@
 				android:endColor = '#FFD6D6D6'
 				android:angle="270"/>
         </shape></item>
-
 </selector>
+
+<!-- android:endColor = '#FF0d5495' -->
