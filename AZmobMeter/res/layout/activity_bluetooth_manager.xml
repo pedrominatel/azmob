@@ -33,6 +33,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/bt_title"
+        android:drawableLeft="@drawable/ic_bluetooth"
         android:onClick="update"
         android:text="@string/bt_scanBluetooth" />
 

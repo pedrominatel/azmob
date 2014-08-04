@@ -2,22 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wall001"
+    android:background="@drawable/gradient_background"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Menu do Medidor"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:src="@drawable/azmod_banner" />
 
     </LinearLayout>
 
@@ -28,20 +26,22 @@
         android:orientation="horizontal" >
 
         <Button
+            style="@style/ButtonText"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
+            android:drawableLeft="@drawable/ic_read"
             android:text="Leituras e Faturamento" />
 
         <Button
+            style="@style/ButtonText"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
-            android:text="Limpar Alarmes" />
+            android:drawableLeft="@drawable/ic_write"
+            android:text="Carga de Programa" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,20 +51,48 @@
         android:orientation="horizontal" >
 
         <Button
+            style="@style/ButtonText"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
+            android:drawableLeft="@drawable/ic_info"
+            android:text="Informacoes do Medidor" />
+
+        <Button
+            style="@style/ButtonText"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bt_title"
+            android:drawableLeft="@drawable/ic_battery"
+            android:text="Limpar Alarmes" />
+    </LinearLayout>
+    
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <Button
+            style="@style/ButtonText"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bt_title"
+            android:drawableLeft="@drawable/ic_clock"
             android:text="Ajuste de Relogio" />
 
         <Button
+            style="@style/ButtonText"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
+            android:background="@drawable/bt_red"
+            android:drawableLeft="@drawable/ic_off"
             android:text="Desconectar" />
     </LinearLayout>
+    
 
 </LinearLayout>

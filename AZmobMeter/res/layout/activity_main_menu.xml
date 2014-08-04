@@ -11,13 +11,11 @@
         android:layout_weight="1"
         android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Menu Principal"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:src="@drawable/azmod_banner" />
 
     </LinearLayout>
 
@@ -28,22 +26,25 @@
         android:orientation="horizontal" >
 
         <Button
+            style="@style/ButtonText"
             android:id="@+id/bt_connect"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_gravity="center"
             android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
+            android:drawableLeft="@drawable/ic_cable"
             android:onClick="connectBluetooth"
             android:text="@string/bt_connect" />
 
         <Button
+            style="@style/ButtonText"
             android:id="@+id/bt_reports"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
+            android:drawableLeft="@drawable/ic_report"
             android:onClick="todo"
             android:text="@string/bt_reports" />
         
@@ -56,22 +57,24 @@
         android:orientation="horizontal" >
 
         <Button
+            style="@style/ButtonText"
             android:id="@+id/bt_engineering"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
+            android:drawableLeft="@drawable/ic_tools"
             android:onClick="openReadouts"
             android:text="@string/engineering_mode" />
 
         <Button
+            style="@style/ButtonText"
             android:id="@+id/bt_exit"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/gear"
+            android:background="@drawable/bt_red"
+            android:drawableLeft="@drawable/ic_off"
             android:onClick="exit"
             android:text="@string/exit" />
     </LinearLayout>
