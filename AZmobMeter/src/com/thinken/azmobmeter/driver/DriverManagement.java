@@ -8,15 +8,16 @@ import org.openmuc.jdlms.client.ClientConnectionSettings.ReferencingMethod;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 import org.openmuc.jdlms.client.hdlc.HdlcClientConnectionSettings;
 
+import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 public class DriverManagement {
 	
-	public IClientConnection buildHDLCConnection(HdlcAddress hdlcAddress, String btDevice, int clientProfile){
+	public IClientConnection buildHDLCConnection(HdlcAddress hdlcAddress, BluetoothSocket btSocket, int clientProfile){
 		
 		IClientConnection connection = null;
 		
-		HdlcClientConnectionSettings hdlcConnSettings = new HdlcClientConnectionSettings(btDevice,
+		HdlcClientConnectionSettings hdlcConnSettings = new HdlcClientConnectionSettings(btSocket,
 		        new HdlcAddress(clientProfile), hdlcAddress, ReferencingMethod.LN);
 		
 		//Log.i("CONNECTION", "btDevice = "+hdlcConnSettings.getBtAddress());

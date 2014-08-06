@@ -8,6 +8,7 @@ import org.openmuc.jdlms.client.MethodResult;
 import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
+import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 public class DriverTest {
@@ -23,11 +24,11 @@ public class DriverTest {
 	// private itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
 	private String tag = "TEST";
 
-	public IClientConnection connect(String device) throws InterruptedException {
+	public IClientConnection connect(BluetoothSocket socket) throws InterruptedException {
 		// TODO Auto-generated method stub
 
 		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress, dlms_lowerAddress, dlms_addressSize);
-		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, device, 1);
+		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, socket, 1);
 
 		try {
 			Log.i(tag, "Trying to connect...");
@@ -180,6 +181,7 @@ public class DriverTest {
 	// }
 	// }
 	//
+	
 	public void setClockObjectEx(IClientConnection connection) {
 		// TODO: Set clock example
 
@@ -187,13 +189,8 @@ public class DriverTest {
 
 		byte[] dateOctet = { (byte) 0x07, (byte) 0xde, (byte) 0x01,
 				(byte) 0x01, (byte) 0xFF, (byte) 0x00, (byte) 0x00,
-				(byte) 0x00, (byte) 0xff, (byte) 0x80, (byte) 0x00, (byte) 0x00 };// Octet
-																					// string
-																					// with
-																					// date
-																					// and
-																					// time
-
+				(byte) 0x00, (byte) 0xff, (byte) 0x80, (byte) 0x00, (byte) 0x00 };
+		
 		AccessResultCode setResult = data.SetDateTimeObject(connection,
 				obisSet, 8, 2, dateOctet); // Set clock using octet string
 		// AccessResultCode setResult = data.SetDateTimeObject(connection, obis,

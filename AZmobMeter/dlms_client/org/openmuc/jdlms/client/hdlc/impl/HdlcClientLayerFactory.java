@@ -33,6 +33,8 @@ import org.openmuc.jdlms.client.hdlc.physical.LocalDataExchangeClient;
 import org.openmuc.jdlms.client.hdlc.physical.LocalDataExchangeFactory;
 import org.openmuc.jdlms.client.impl.ILowerLayerFactory;
 
+import android.bluetooth.BluetoothSocket;
+
 /**
  * Creates and pools all HDLC sub layer that are requested
  * 
@@ -60,13 +62,13 @@ public class HdlcClientLayerFactory implements ILowerLayerFactory {
 		LocalDataExchangeClient lowerLayer;
 		HdlcClientLayer result;
 
-		HdlcLayersKey key = new HdlcLayersKey(new HdlcAddressPair(settings.getClientAddress(),
-				settings.getServerAddress()), settings.getBluetoothDevice());
+		HdlcLayersKey key = new HdlcLayersKey(new HdlcAddressPair(settings.getClientAddress(), settings.getServerAddress()), settings.getBluetoothSocket());
+		
 		if (hdlcLayers.containsKey(key)) {
 			result = hdlcLayers.get(key);
 		}
 		else {
-			lowerLayer = lowerLayerBuilder.build(settings.getBluetoothDevice(), settings.doesUseHandshake());
+			lowerLayer = lowerLayerBuilder.build(settings.getBluetoothSocket(), settings.doesUseHandshake());
 
 			result = new HdlcClientLayer(lowerLayer, settings.getClientAddress(), settings.getServerAddress(),
 					HdlcClientLayerState.beginningState(), settings.getConfirmedMode() == ConfirmedMode.CONFIRMED);
@@ -83,23 +85,23 @@ public class HdlcClientLayerFactory implements ILowerLayerFactory {
 
 	private class HdlcLayersKey {
 		private final HdlcAddressPair addressPair;
-		private final String portName;
+		private final BluetoothSocket btSocket;
 
-		public HdlcLayersKey(HdlcAddressPair pair, String port) {
+		public HdlcLayersKey(HdlcAddressPair pair, BluetoothSocket btSock) {
 			addressPair = pair;
-			portName = port;
+			btSocket = btSock;
 		}
 
 		@Override
 		public int hashCode() {
-			return addressPair.hashCode() ^ portName.hashCode();
+			return addressPair.hashCode() ^ btSocket.hashCode();
 		}
 
 		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof HdlcLayersKey) {
 				HdlcLayersKey o = (HdlcLayersKey) obj;
-				return addressPair.equals(o.addressPair) && portName.equals(o.portName);
+				return addressPair.equals(o.addressPair) && btSocket.equals(o.btSocket);
 			}
 			return false;
 		}

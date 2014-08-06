@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:background="@drawable/bt_blue"
-            android:onClick="todo"
+            android:onClick="connectToMeter"
             android:padding="10dp"
             android:text="@string/read_meter" />
 

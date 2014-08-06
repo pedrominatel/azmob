@@ -24,25 +24,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.bluetooth.BluetoothSocket;
+
 /**
  * Acquires and pools all serial interfaces that are used
  * 
  * @author Karsten Mueller-Bier
  */
 public class LocalDataExchangeFactory {
-	private final Map<String, LocalDataExchangeClient> localConnections = new HashMap<String, LocalDataExchangeClient>();
+	private final Map<BluetoothSocket, LocalDataExchangeClient> localConnections = new HashMap<BluetoothSocket, LocalDataExchangeClient>();
 
 	private final PhysicalConnectionFactory physicalFactory = new PhysicalConnectionFactory();
 
-	public LocalDataExchangeClient build(String btAddr, boolean useHandshake) throws IOException {
+	public LocalDataExchangeClient build(BluetoothSocket btSock, boolean useHandshake) throws IOException {
 		LocalDataExchangeClient result = null;
 
-		if (localConnections.containsKey(btAddr)) {
-			result = localConnections.get(btAddr);
+		if (localConnections.containsKey(btSock)) {
+			result = localConnections.get(btSock);
 		}
 		else {
-			result = new LocalDataExchangeClient(btAddr, physicalFactory, useHandshake);
-			localConnections.put(btAddr, result);
+			result = new LocalDataExchangeClient(btSock, physicalFactory, useHandshake);
+			localConnections.put(btSock, result);
 		}
 		return result;
 	}

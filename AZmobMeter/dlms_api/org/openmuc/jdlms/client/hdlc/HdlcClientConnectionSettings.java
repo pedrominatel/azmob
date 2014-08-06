@@ -22,6 +22,8 @@ package org.openmuc.jdlms.client.hdlc;
 
 import org.openmuc.jdlms.client.ClientConnectionSettings;
 
+import android.bluetooth.BluetoothSocket;
+
 /**
  * Subclass of {@link ClientConnectionSettings} to create connections using HDLC as sub layer
  * 
@@ -31,7 +33,7 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 
 	private HdlcAddress clientAddress = null;
 	private HdlcAddress serverAddress = null;
-	private String btAddress = null;
+	private BluetoothSocket btSocket = null;
 	//XXX private int baudrate = 0;
 	private boolean useHandshake = true;
 
@@ -45,10 +47,10 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 	 * @param referencing
 	 *            The object referencing method used on the remote station
 	 */
-	public HdlcClientConnectionSettings(String btAddr, HdlcAddress client, HdlcAddress server,
+	public HdlcClientConnectionSettings(BluetoothSocket btSock, HdlcAddress client, HdlcAddress server,
 			ReferencingMethod referencing) {
 		super(referencing);
-		this.btAddress = btAddr;
+		this.btSocket = btSock;
 		clientAddress = client;
 		serverAddress = server;
 	}
@@ -61,8 +63,8 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		return serverAddress;
 	}
 
-	public String getBluetoothDevice() {
-		return btAddress;
+	public BluetoothSocket getBluetoothSocket() {
+		return btSocket;
 	}
 
 //XXX	public int getBaudrate() {
@@ -83,8 +85,8 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		return this;
 	}
 
-	public HdlcClientConnectionSettings setBluetoothDevice(String value) {
-		btAddress = value;
+	public HdlcClientConnectionSettings setBluetoothSocket(BluetoothSocket btSock) {
+		btSocket = btSock;
 		return this;
 	}
 
@@ -103,13 +105,13 @@ public class HdlcClientConnectionSettings extends ClientConnectionSettings<HdlcC
 		if (o instanceof HdlcClientConnectionSettings) {
 			HdlcClientConnectionSettings other = (HdlcClientConnectionSettings) o;
 			return super.equals(o) && clientAddress.equals(other.clientAddress)
-					&& serverAddress.equals(other.serverAddress) && btAddress.equals(other.btAddress);
+					&& serverAddress.equals(other.serverAddress) && btSocket.equals(other.btSocket);
 		}
 		return false;
 	}
 
 	@Override
 	public boolean isFullyParametrized() {
-		return super.isFullyParametrized() && clientAddress != null && serverAddress != null && btAddress != null;
+		return super.isFullyParametrized() && clientAddress != null && serverAddress != null && btSocket != null;
 	}
 }

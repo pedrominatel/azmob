@@ -57,13 +57,13 @@ public class PhysicalConnectionFactory {
 	 * @throws UnsupportedCommOperationException
 	 */
 	//XXX Refactored by Pedro Minatel
-	public IPhysicalConnection acquireBluetooth(String btAddr) throws IOException {
+	public IPhysicalConnection acquireBluetooth(BluetoothSocket btSock) throws IOException {
 		
 		//XXX Send the Bluetooth Address to PhysicalConnection
 		PhysicalConnection result;
 		try {
 			Log.i(tag, "Starting PhysicalConnection...");
-			result = new PhysicalConnection(btAddr);
+			result = new PhysicalConnection(btSock);
 		} catch (TooManyListenersException e) {
 			throw new IOException();
 		}

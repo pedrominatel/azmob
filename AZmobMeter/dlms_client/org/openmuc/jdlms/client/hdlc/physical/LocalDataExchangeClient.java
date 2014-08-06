@@ -44,6 +44,8 @@ import org.openmuc.jdlms.util.QueueHelper;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+
+import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 /**
@@ -71,7 +73,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 
 	private PhysicalConnectionFactory factory = null;
 	//XXX Refactoring Pedro Minatel
-	private final String btAddress;
+	private final BluetoothSocket btSocket;
 	private final String tag = "LocalDataExchangeClient";
 
 	//XXX	private final int maxBaudrate;
@@ -80,8 +82,8 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	private final ByteBuffer receivingDataBuffer = ByteBuffer.allocate(2048);
 
 	//XXX Refactoring
-	public LocalDataExchangeClient(String btAddr, PhysicalConnectionFactory factory, boolean useHandshake) {
-		this.btAddress = btAddr;
+	public LocalDataExchangeClient(BluetoothSocket btSock, PhysicalConnectionFactory factory, boolean useHandshake) {
+		this.btSocket = btSock;
 		this.factory = factory;
 		listeners = new HashMap<Object, IUpperLayer>(8);
 		//XXX maxBaudrate = baudrate;
@@ -188,8 +190,9 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	@Override
 	public void disconnect() throws IOException {
 		connectedClients--;
+		Log.i(tag, "Disconnect from meter...");
 		if (connectedClients <= 0) {
-			Log.i(tag, "Disconnect from meter...");
+			Log.i(tag, "Disconnect from connectedClients...");
 			isConnected = false;
 			connection.removeListener();
 			connection.close();
@@ -337,7 +340,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	private void openPhysicalConnection() throws IOException {
 		if (connection == null || connection.isClosed()) {
 			try {
-				connection = factory.acquireBluetooth(btAddress);
+				connection = factory.acquireBluetooth(btSocket);
 			} catch (/*UnsupportedCommOperationException*/Exception e) {
 				//TODO throw new IOException("Cannot intialize port", e);
 			//} catch (NoSuchPortException e) {

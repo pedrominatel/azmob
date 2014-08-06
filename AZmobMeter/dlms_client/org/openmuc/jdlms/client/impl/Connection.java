@@ -50,6 +50,8 @@ import org.openmuc.jdlms.client.cosem.context.MechanismName;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+import android.util.Log;
+
 /**
  * Base class used by all application level DLMS/Cosem connections
  * 
@@ -76,6 +78,7 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 	private int invokeId = 0;
 
 	private boolean connected;
+	private String tag = "Connection";
 
 	protected Connection(boolean confirmedMode, MechanismName authName, ApplicationContext appContext,
 			ILowerLayer<Object> lowerLayer, ConnectModule connectModule) {
@@ -198,16 +201,20 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 
 	@Override
 	public void disconnect(boolean sendDisconnectMessage) {
+		Log.i(tag, "Disconnecting...");
 		if (isConnected()) {
+			Log.i(tag, "Disconnecting isConnected...");
 			try {
 				lowerLayer.removeReceivingListener(this);
 				if (sendDisconnectMessage) {
 					disconnectModule.gracefulDisconnect(this);
 				}
 				connected = false;
+				Log.i(tag, "Disconnecting Lower Layer...");
 				lowerLayer.disconnect();
 			} catch (IOException e) {
 //				LoggingHelper.logStackTrace(e, logger);
+				Log.i(tag, "Disconnecting Error: "+e.toString());
 			}
 		}
 	}
@@ -247,6 +254,7 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 			timeoutCounter = 0;
 		} catch (IOException e) {
 //			LoggingHelper.logStackTrace(e, logger);
+			Log.i(tag, "Data Received Error: "+e.toString());
 		}
 	}
 
