@@ -25,7 +25,7 @@ package org.openmuc.jdlms.client.hdlc.physical;
 //import gnu.io.SerialPortEventListener;
 //import gnu.io.UnsupportedCommOperationException;
 
-import java.io.IOException;
+import java.io.*;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.TooManyListenersException;
@@ -79,19 +79,18 @@ public class PhysicalConnection implements IPhysicalConnection {
 		// Close any open connection before connect
 		if (connectedThread != null) {
 			Log.i(tag, "Socket Connection not NULL! Reusing Connection");
-			// connectedThread.cancel();
-			// connectedThread = null;
-		} else {
+			connectedThread.cancel();
+			connectedThread = null;
+		}
 			// Creates the Socket Thread
 			connectedThread = new ConnectedThread(btSocket);
 			connectedThread.start(); // start the read thread
-		}
 	}
 
 	@Override
 	public synchronized void send(byte[] data) throws IOException {
 		// XXX LoggingHelper.logBytes(data, data.length, "Sending over " +
-		// port.getName(), logger);
+		// XXX port.getName(), logger);
 		// XXX port.getOutputStream().write(data);
 		// XXX port.getOutputStream().flush();
 		// XXX Log.i(tag, "Sending: "+data);
@@ -113,7 +112,7 @@ public class PhysicalConnection implements IPhysicalConnection {
 			// XXX port.removeEventListener();
 			// XXX port.close();
 			Log.i(tag, "Closing...");
-			// if (connectedThread != null) {connectedThread.cancel();}
+			if (connectedThread != null) {connectedThread.cancel(); connectedThread = null;}
 			isClosed = true;
 			Log.i(tag, "Closed!");
 		}
@@ -161,9 +160,9 @@ public class PhysicalConnection implements IPhysicalConnection {
 	// Thread to create Socket connection
 	private class ConnectedThread extends Thread {
 
-		private final BluetoothSocket mmSocket;
-		private final InputStream mmInStream;
-		private final OutputStream mmOutStream;
+		private BluetoothSocket mmSocket;
+		private InputStream mmInStream;
+		private OutputStream mmOutStream;
 		private int curLength;
 
 		public ConnectedThread(BluetoothSocket socket) {
@@ -178,6 +177,7 @@ public class PhysicalConnection implements IPhysicalConnection {
 				tmpIn = mmSocket.getInputStream();
 				tmpOut = mmSocket.getOutputStream();
 			} catch (IOException e) {
+				Log.i(tag, "Creating Stream Error!" + e.toString());
 			}
 			mmInStream = tmpIn;
 			mmOutStream = tmpOut;
@@ -191,8 +191,7 @@ public class PhysicalConnection implements IPhysicalConnection {
 				// Keep listening to the InputStream until an exception occurs
 				while (true) {
 					// Read from the InputStream
-					bytes = mmInStream.read(buffer, curLength, buffer.length
-							- curLength);
+					bytes = mmInStream.read(buffer, curLength, buffer.length - curLength);
 
 					if (bytes > 0) {
 						// still reading
@@ -227,23 +226,31 @@ public class PhysicalConnection implements IPhysicalConnection {
 
 		/* Call this from the main activity to send data to the remote device */
 		public void write(byte[] bytes) {
+			
+			if(mmOutStream == null)
+				throw new IllegalStateException("Wait connection to be opened");
+				
 			try {
-				Log.i(tag, "Sending data over Bluetooth.....");
+				Log.i(tag, "Sending Stream");
 				mmOutStream.write(bytes);
 				mmOutStream.flush();
 			} catch (IOException e) {
+				Log.i(tag, "Sending Stream Error: " + e.toString());
 			}
+			
 		}
 
 		/* Call this from the main activity to shutdown the connection */
 		public void cancel() {
-			try {
-				mmInStream.close();
-				;
-				mmOutStream.close();
-			} catch (IOException e) {
-				Log.i(tag, "Closing Stream Error: " + e.toString());
-			}
+//			try {
+//				mmInStream.close();
+//				mmOutStream.close();
+//				mmInStream = null;
+//				mmOutStream = null;
+//				
+//			} catch (IOException e) {
+//				Log.i(tag, "Closing Stream Error: " + e.toString());
+//			}
 		}
 	}
 

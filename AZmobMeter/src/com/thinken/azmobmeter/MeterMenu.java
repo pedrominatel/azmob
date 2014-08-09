@@ -35,6 +35,7 @@ public class MeterMenu extends Activity {
 	private BluetoothSocket btSocket = null;
 	public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	
+	private boolean btOpen = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class MeterMenu extends Activity {
 			try {
 
 				startBluetooth(btAddress); //get the Bluetooth Device from MAC Address
-
+				btOpen = true;
 			} catch (Exception e) {
 				// TODO: handle exception
 			    Log.i("CONNECTION", "Error: "+e.toString());
@@ -82,6 +83,10 @@ public class MeterMenu extends Activity {
 	
 	public void connectToMeter(View view) {
 		
+		if (!btOpen) {
+			startBluetooth(btAddress);
+		}
+		
 		try {
 			conn = tst.connect(btSocket);
 		} catch (InterruptedException e) {
@@ -104,6 +109,8 @@ public class MeterMenu extends Activity {
 
 		try {
 			tst.disconnect(conn);
+			closeBluetooth();
+			btOpen = false;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.i(tag, "Disconnect Error: " + e.toString());

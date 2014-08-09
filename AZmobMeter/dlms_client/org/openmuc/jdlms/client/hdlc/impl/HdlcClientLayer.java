@@ -41,6 +41,8 @@ import org.openmuc.jdlms.client.hdlc.common.HdlcFrame;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+import android.util.Log;
+
 /**
  * Class representing a HDLC connection sub layer. This class and its State classes (see {@link HdlcClientLayerState})
  * implement the subset of the HDLC standard stated in IEC 62056-46
@@ -75,6 +77,8 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	private byte[] lastFrame = null;
 	private int duplicatedFrames = 0;
+	
+	private String tag = "HdlcClientLayer";
 
 	public HdlcClientLayer(ILowerLayer<HdlcAddressPair> lowerLayer, HdlcAddress clientAddress,
 			HdlcAddress serverAddress, HdlcClientLayerState initialState, boolean isConfirmed) {
@@ -127,6 +131,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	@Override
 	public void disconnect() throws IOException {
+		Log.i(tag, "State Disconnect");
 		state.disconnect(this);
 		sendSeq = 0;
 		receiveSeq = 0;
@@ -278,6 +283,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 				lowerLayer.send(m.getData());
 			}
 		} catch (IOException e) {
+			Log.i(tag, "Error: "+e.toString());
 			//TODO LoggingHelper.logStackTrace(e, logger);
 		}
 
@@ -341,6 +347,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 		} catch (FrameInvalidException e) {
 		} catch (IOException e) {
+			Log.i(tag, "Error: "+e.toString());
 			//TODO LoggingHelper.logStackTrace(e, logger);
 		}
 	}
@@ -393,6 +400,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 		try {
 			segmentBuffer.write(segment.getInformationField());
 		} catch (IOException e) {
+			Log.i(tag, "Error: "+e.toString());
 			//TODO LoggingHelper.logStackTrace(e, logger);
 		}
 	}

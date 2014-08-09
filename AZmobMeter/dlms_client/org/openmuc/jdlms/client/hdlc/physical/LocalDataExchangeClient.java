@@ -108,10 +108,10 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 				if (!useHandshake) {
 					try {
 						//XXX Not needed when using bluetooth
-						//connection.setSerialParams(maxBaudrate, 8, 1, 0);
+						//XXX connection.setSerialParams(maxBaudrate, 8, 1, 0);
 					} catch (/*UnsupportedCommOperationException*/Exception e) {
 						//XXX not needed!
-						//throw new IOException("Serial Port does not support " + maxBaudrate + "bd 8N1");
+						//XXX throw new IOException("Serial Port does not support " + maxBaudrate + "bd 8N1");
 					}
 				}
 				else {
@@ -268,7 +268,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 				
 			} catch (FrameInvalidException e) {
 				//TODO LoggingHelper.logStackTrace(e, logger);
-				Log.i(tag, "Error: "+e.toString());
+				Log.i(tag, "Frame Error: "+e.toString());
 				ByteBuffer copy = ByteBuffer.wrap(receivingDataBuffer.array());
 				copy.position(receivingDataBuffer.position());
 				copy.flip();
@@ -340,6 +340,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	private void openPhysicalConnection() throws IOException {
 		if (connection == null || connection.isClosed()) {
 			try {
+				Log.i(tag, "Open Physical Connection");
 				connection = factory.acquireBluetooth(btSocket);
 			} catch (/*UnsupportedCommOperationException*/Exception e) {
 				//TODO throw new IOException("Cannot intialize port", e);
