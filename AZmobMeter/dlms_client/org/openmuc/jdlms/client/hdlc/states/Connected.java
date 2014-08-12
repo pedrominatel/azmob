@@ -32,9 +32,12 @@ import org.openmuc.jdlms.client.hdlc.impl.HdlcClientLayerState;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+import android.util.Log;
+
 public class Connected extends HdlcClientLayerState {
 
 	public static final Connected instance = new Connected();
+	private String tag = "Connected";
 
 //	private static Logger logger = LoggerFactory.getLogger(Connected.class);
 
@@ -80,9 +83,11 @@ public class Connected extends HdlcClientLayerState {
 		try {
 			frame.decode(new ByteArrayInputStream(data));
 		} catch (IOException e) {
+			Log.i(tag, "Error"+e.toString());
 //			LoggingHelper.logStackTrace(e, logger);
 			return;
 		} catch (FrameInvalidException e) {
+			Log.i(tag, "Error"+e.toString());
 //			LoggingHelper.logStackTrace(e, logger);
 			return;
 		}
@@ -93,6 +98,7 @@ public class Connected extends HdlcClientLayerState {
 			try {
 				wrapper.acknowledgeReceive();
 			} catch (IOException e) {
+				Log.i(tag, "Error"+e.toString());
 //				LoggingHelper.logStackTrace(e, logger);
 			}
 		}

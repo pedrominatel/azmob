@@ -32,9 +32,12 @@ import org.openmuc.jdlms.client.hdlc.impl.HdlcClientLayerState;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+import android.util.Log;
+
 public class Disconnecting extends HdlcClientLayerState {
 
 	public static final Disconnecting instance = new Disconnecting();
+	private String tag = "Disconnecting"; 
 
 //	private static Logger logger = LoggerFactory.getLogger(Disconnecting.class);
 
@@ -72,6 +75,7 @@ public class Disconnecting extends HdlcClientLayerState {
 //			LoggingHelper.logStackTrace(e, logger);
 			return;
 		} catch (FrameInvalidException e) {
+			Log.i(tag, "Error"+e.toString());
 //			LoggingHelper.logStackTrace(e, logger);
 			return;
 		}

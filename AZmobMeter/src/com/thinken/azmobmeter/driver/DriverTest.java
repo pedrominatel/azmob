@@ -3,6 +3,7 @@ package com.thinken.azmobmeter.driver;
 import java.io.IOException;
 
 import org.openmuc.jdlms.client.AccessResultCode;
+import org.openmuc.jdlms.client.GetResult;
 import org.openmuc.jdlms.client.IClientConnection;
 import org.openmuc.jdlms.client.MethodResult;
 import org.openmuc.jdlms.client.ObisCode;
@@ -42,7 +43,7 @@ public class DriverTest {
 			if (connection.isConnected()) {
 				Log.i(tag, "Connected!");
 
-				// // getObjectEx(connection);
+				getObjectEx(connection);
 				// // getObjectWithSelectorEx(connection);
 				//
 				// //Thread.sleep(1000);
@@ -55,10 +56,10 @@ public class DriverTest {
 			// connection.disconnect(false);
 
 		} catch (IOException ex) {
-			connection.disconnect(false);
+			//connection.disconnect(false);
 			return null;
 		} catch (Exception ex) {
-			connection.disconnect(false);
+			//connection.disconnect(false);
 			return null;
 		}
 		return connection;
@@ -72,29 +73,29 @@ public class DriverTest {
 
 	}
 
-	// public static void getObjectEx(IClientConnection connection) {
-	// // TODO: Get clock example
-	// // ObisCode obis = new ObisCode(0,0,98,133,5,255);//this function create
-	// // the OBIS code structure using the six elements as integer
-	// // GetResult getResult = data.GetObject(connection, obis, 7, 0);
-	//
-	// ObisCode obis = new ObisCode(0,0,130,0,2,255);
-	// int classId = 1;
-	// int attribute = 2;
-	//
-	// GetResult getResult = data.GetObject(connection, obis, classId,
-	// attribute);
-	//
-	// if (getResult.isSuccess()) {
-	// System.out.println("Success!");
-	// parse.createXml("C:\\teste.xml", getResult, obis, classId, attribute); //
-	// this function create the XML file using the GetResult
-	// // parse.printLog(getResult);
-	// } else {
-	// System.out.println("Reading Error. ErrorCode: "
-	// + getResult.getResultCode());
-	// }
-	// }
+	public void getObjectEx(IClientConnection connection) {
+		// TODO: Get clock example
+		// ObisCode obis = new ObisCode(0,0,98,133,5,255);//this function create
+		// the OBIS code structure using the six elements as integer
+		// GetResult getResult = data.GetObject(connection, obis, 7, 0);
+
+		ObisCode obis = new ObisCode(0, 0, 130, 0, 2, 255);
+		int classId = 1;
+		int attribute = 2;
+
+		GetResult getResult = data.GetObject(connection, obis, classId,
+				attribute);
+
+		if (getResult.isSuccess()) {
+			Log.i(tag, "Success!");
+			// parse.createXml("C:\\teste.xml", getResult, obis, classId,
+			// attribute); //this function create the XML file using the
+			// GetResult
+			// parse.printLog(getResult);
+		} else {
+			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+		}
+	}
 	//
 	// public void getObjectWithSelectorEx(IClientConnection connection) {
 	//

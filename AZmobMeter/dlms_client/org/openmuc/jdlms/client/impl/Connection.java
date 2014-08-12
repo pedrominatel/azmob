@@ -203,7 +203,7 @@ public abstract class Connection implements IClientConnection, IUpperLayer, IAss
 	public void disconnect(boolean sendDisconnectMessage) {
 		Log.i(tag, "Disconnecting...");
 		if (isConnected()) {
-			Log.i(tag, "Disconnecting isConnected...");
+			Log.i(tag, "is Connected...");
 			try {
 				lowerLayer.removeReceivingListener(this);
 				if (sendDisconnectMessage) {

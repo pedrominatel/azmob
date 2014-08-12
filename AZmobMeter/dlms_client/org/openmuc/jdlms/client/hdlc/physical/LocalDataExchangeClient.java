@@ -192,7 +192,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 		connectedClients--;
 		Log.i(tag, "Disconnect from meter...");
 		if (connectedClients <= 0) {
-			Log.i(tag, "Disconnect from connectedClients...");
+			Log.i(tag, "Disconnect from connected Clients...");
 			isConnected = false;
 			connection.removeListener();
 			connection.close();
@@ -220,6 +220,7 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 	public void dataReceived(byte[] data, int length) {
 		if (isConnected) {
 			try {
+				
 				receivingDataBuffer.put(data, 0, length);
 
 				ByteBuffer copy = ByteBuffer.wrap(receivingDataBuffer.array());
@@ -269,16 +270,21 @@ public class LocalDataExchangeClient implements ILowerLayer<HdlcAddressPair>, IP
 			} catch (FrameInvalidException e) {
 				//TODO LoggingHelper.logStackTrace(e, logger);
 				Log.i(tag, "Frame Error: "+e.toString());
-				ByteBuffer copy = ByteBuffer.wrap(receivingDataBuffer.array());
-				copy.position(receivingDataBuffer.position());
-				copy.flip();
-				copy.get(); // Read over first 0x7E Flag
-
-				// Read until end of buffer or next 0x7E Flag
-				while (copy.remaining() > 0 && copy.get() != 0x7E) {
-				}
-				copy.compact();
-				receivingDataBuffer.position(copy.position());
+								
+				// XXX Test by Pedro Minatel
+				
+//				ByteBuffer copy = ByteBuffer.wrap(receivingDataBuffer.array());
+//				copy.position(receivingDataBuffer.position());
+//				copy.flip();
+//				copy.get(); // Read over first 0x7E Flag
+//
+//				Log.i(tag, "Frame Error: "+e.toString());
+//				
+//				// Read until end of buffer or next 0x7E Flag
+//				while (copy.remaining() > 0 && copy.get() != 0x7E) {
+//				}
+//				copy.compact();
+//				receivingDataBuffer.position(copy.position());
 			}
 		}
 		else {

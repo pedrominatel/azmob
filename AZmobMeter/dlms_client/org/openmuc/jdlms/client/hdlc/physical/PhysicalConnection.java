@@ -26,16 +26,10 @@ package org.openmuc.jdlms.client.hdlc.physical;
 //import gnu.io.UnsupportedCommOperationException;
 
 import java.io.*;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.TooManyListenersException;
-import java.util.UUID;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
-import android.os.Message;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import android.util.Log;
@@ -51,7 +45,13 @@ public class PhysicalConnection implements IPhysicalConnection {
 	// private static Logger logger =
 	// LoggerFactory.getLogger(PhysicalConnection.class);
 	// private final SerialPort port;
-
+	
+	 //Constants Connection State 
+	public static final int STATE_NONE = 0; // we're doing nothing
+	public static final int STATE_LISTEN = 1; // now listening for incoming connections
+	public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
+	public static final int STATE_CONNECTED = 3; // now connected to a remote device
+	
 	// PM Threads
 	private ConnectedThread connectedThread;
 	// PM Others
@@ -95,15 +95,10 @@ public class PhysicalConnection implements IPhysicalConnection {
 		// XXX port.getOutputStream().flush();
 		// XXX Log.i(tag, "Sending: "+data);
 
-		// Create temporary object
-		ConnectedThread r;
-		// Synchronize a copy of the ConnectedThread
+		// Synchronize
 		synchronized (this) {
-			// if (mState != STATE_CONNECTED) return;
-			r = connectedThread;
+			connectedThread.write(data);
 		}
-		// Perform the write unsynchronized
-		r.write(data);
 	}
 
 	@Override
@@ -187,23 +182,28 @@ public class PhysicalConnection implements IPhysicalConnection {
 
 			try {
 				byte[] buffer = new byte[1024]; // buffer store for the stream
-				int bytes; // bytes returned from read()
+				int bytes = -1; // bytes returned from read()
 				// Keep listening to the InputStream until an exception occurs
 				while (true) {
+						
 					// Read from the InputStream
 					bytes = mmInStream.read(buffer, curLength, buffer.length - curLength);
 
-					if (bytes > 0) {
-						// still reading
-						curLength += bytes;
-					}
+					if (bytes != -1) {
+						if (bytes > 0) {
+							// still reading
+							curLength += bytes;
+						}
 
-					// check if reading is done
-					if (curLength > 0) {
-						// reading finished
-						listener.dataReceived(buffer, curLength);
-						curLength = bytes = 0;
+						// check if reading is done
+						if (curLength > 0) {
+							// reading finished
+							listener.dataReceived(buffer, curLength);
+							curLength = bytes = 0;
+						}
+						
 					}
+					
 				}
 			} catch (Exception e) {
 				Log.i(tag, "Receive Error: " + e.toString());
@@ -233,7 +233,6 @@ public class PhysicalConnection implements IPhysicalConnection {
 			try {
 				Log.i(tag, "Sending Stream");
 				mmOutStream.write(bytes);
-				mmOutStream.flush();
 			} catch (IOException e) {
 				Log.i(tag, "Sending Stream Error: " + e.toString());
 			}
