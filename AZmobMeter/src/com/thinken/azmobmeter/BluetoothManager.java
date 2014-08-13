@@ -228,6 +228,7 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 			Intent i = new Intent(getApplicationContext(), MeterMenu.class);
 			i.putExtra("btAddress",btAddress);
 			startActivity(i);
+			BluetoothManager.this.finish();
 
 		} else {
 			Toast.makeText(getApplicationContext(), "device is not paired", 0)

@@ -98,7 +98,11 @@ public class MeterMenu extends Activity {
 	
 	public void clearAlarms(View view) {
 		
-		tst.setActionEx(conn);
+		if(tst.setActionEx(conn)) {
+			Toast.makeText(getApplicationContext(),"Sucesso na operacao!", 0).show();
+		} else {
+			Toast.makeText(getApplicationContext(),"Erro na operacao!", 0).show();
+		}
 		
 		final Button btn = (Button)findViewById(R.id.bt_clearAlarms);
 		btn.setEnabled(false);
@@ -115,13 +119,11 @@ public class MeterMenu extends Activity {
 			// TODO Auto-generated catch block
 			Log.i(tag, "Disconnect Error: " + e.toString());
 		}
-
-//		Intent intent = new Intent(MeterMenu.this,MainMenu.class);
-//		startActivity(intent);
+		MeterMenu.this.finish();
 	}
 	
 	public void openReadouts(View view) {
-		Intent intent = new Intent(MeterMenu.this,MeterReadout.class);
+		Intent intent = new Intent(this,MeterReadout.class);
 		startActivity(intent);
 	}
 	
@@ -161,9 +163,7 @@ public class MeterMenu extends Activity {
 	}
 	
 	private void closeBluetooth() {
-		
 		connectThread.cancel();
-		
 	}
 	
 	// XXX Refactoring by Pedro Minatel

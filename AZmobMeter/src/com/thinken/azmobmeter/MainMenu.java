@@ -79,7 +79,7 @@ public class MainMenu extends Activity {
 	
 	public void exit(View view) 
 	{
-		MainMenu.this.finish(); 
+		MainMenu.this.finish();
 	}
 	
 	public void todo(View view) 

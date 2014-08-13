@@ -65,7 +65,7 @@
             android:background="@drawable/bt_title"
             android:drawableLeft="@drawable/ic_tools"
             android:onClick="openReadouts"
-            android:text="@string/engineering_mode" />
+            android:text="@string/bt_settings" />
 
         <Button
             style="@style/ButtonText"
