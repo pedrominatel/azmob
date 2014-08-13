@@ -93,9 +93,26 @@ public class MeterMenu extends Activity {
 			Log.i(tag, "Connecting Error: " + e.toString());
 		}
 		
+		if(tst.getObjectEx(conn)){
+			Toast.makeText(getApplicationContext(),"Leitura Realizada!", 0).show();
+		} else {
+			Toast.makeText(getApplicationContext(),"Erro na Leitura!!", 0).show();
+		}
+		
 	}
 	
 	public void clearAlarms(View view) {
+		
+		if (!btOpen) {
+			startBluetooth(btAddress);
+		}
+		
+		try {
+			conn = tst.connect(btSocket);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			Log.i(tag, "Connecting Error: " + e.toString());
+		}
 		
 		if(tst.setActionEx(conn)) {
 			Toast.makeText(getApplicationContext(),"Sucesso na operacao!", 0).show();

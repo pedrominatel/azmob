@@ -11,6 +11,7 @@ import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DriverTest {
 
@@ -43,7 +44,6 @@ public class DriverTest {
 			if (connection.isConnected()) {
 				Log.i(tag, "Connected!");
 
-				getObjectEx(connection);
 				// // getObjectWithSelectorEx(connection);
 				//
 				// //Thread.sleep(1000);
@@ -73,13 +73,13 @@ public class DriverTest {
 
 	}
 
-	public void getObjectEx(IClientConnection connection) {
+	public boolean getObjectEx(IClientConnection connection) {
 		// TODO: Get clock example
 		// ObisCode obis = new ObisCode(0,0,98,133,5,255);//this function create
 		// the OBIS code structure using the six elements as integer
 		// GetResult getResult = data.GetObject(connection, obis, 7, 0);
 
-		ObisCode obis = new ObisCode(0, 0, 130, 0, 2, 255);
+		ObisCode obis = new ObisCode(0, 0, 130, 0, 2, 255);//index parameters
 		int classId = 1;
 		int attribute = 2;
 
@@ -92,8 +92,10 @@ public class DriverTest {
 			// attribute); //this function create the XML file using the
 			// GetResult
 			// parse.printLog(getResult);
+			return true;
 		} else {
 			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+			return false;
 		}
 	}
 	//

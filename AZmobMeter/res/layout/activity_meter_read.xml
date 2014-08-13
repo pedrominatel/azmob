@@ -80,15 +80,6 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/ic_clock"
-            android:text="Ajuste de Relogio" />
-
-        <Button
-            style="@style/bt_text_white"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@drawable/bt_red"
             android:drawableLeft="@drawable/ic_off"
             android:text="Desconectar" />

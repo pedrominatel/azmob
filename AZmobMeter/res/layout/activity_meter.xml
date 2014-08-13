@@ -105,6 +105,5 @@
             android:onClick="disconnect"
             android:text="Desconectar" />
     </LinearLayout>
-    
 
 </LinearLayout>
