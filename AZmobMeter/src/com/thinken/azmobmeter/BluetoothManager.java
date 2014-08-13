@@ -113,7 +113,7 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 		listView = (ListView) findViewById(R.id.list_bluetooth);
 		listView.setOnItemClickListener(this);
 		listAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_single_choice, 0);
+				android.R.layout.simple_list_item_1, 0);
 		listView.setAdapter(listAdapter);
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 		pairedDevices = new ArrayList<String>();

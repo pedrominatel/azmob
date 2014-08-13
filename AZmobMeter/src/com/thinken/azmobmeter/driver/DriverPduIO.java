@@ -34,9 +34,14 @@ public class DriverPduIO {
 		private static final String COSEM_ELEMENT = "CosemElement";	
 		private static final String COSEM_TYPE = "CosemType";
 
-		public enum cosemType {
+		public enum elementType {
 			Structure, Array, Unsigned8, Unsigned16, Unsigned32, Integer8, Integer16, Integer32, BitString, Boolean, VisibleString, Enumerated, OctetString
 		}
+		
+		public enum cosemType {
+			ELEMENT, CONTAINER, DATA
+		}
+
 
 		public void pduToXmlDebug(GetResult logObject) {
 			pduToXmlDebugDecode(logObject.getResultData(), 0);
@@ -525,7 +530,10 @@ public class DriverPduIO {
 		}
 		
 		private void readXml(NodeList nodeList, List<Data> elementsList) {
-	/*
+			
+			cosemType cosemTypeId = cosemType.ELEMENT;
+			elementType elementTypeId = elementType.Unsigned8;
+	
 			for (int count = 0; count < nodeList.getLength(); count++) {
 
 				Node tempNode = nodeList.item(count);
@@ -533,65 +541,65 @@ public class DriverPduIO {
 				// make sure it's element node.
 				if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 					
-					String cosemType = tempNode.getNodeName();
+					String cosem = tempNode.getNodeName();
 					
-					
-					//XXX Fix it!!!!!
-					
-					
-					switch (cosemType) {
-					case COSEM_ELEMENT:
-						String elementType = tempNode.getAttributes().item(0).getTextContent();
+					cosemTypeId = getCosemType(cosem);
 
+					switch (cosemTypeId) {
+					case ELEMENT:
+						
+						String elementType = tempNode.getAttributes().item(0).getTextContent();
+						elementTypeId = getElementType(elementType);
+						
 						Data dataElement = new Data();
 						String tagValueString = tempNode.getTextContent();
 						int tagValueInt = 0;
 						
-						switch (elementType) {
-						case "Unsigned8":
+						switch (elementTypeId) {
+						case Unsigned8:
 							tagValueInt = Integer.parseInt(tagValueString);
 							dataElement.setUnsigned8(tagValueInt);
 							break;
-						case "Unsigned16":
+						case Unsigned16:
 							tagValueInt = Integer.parseInt(tagValueString);
 							dataElement.setUnsigned16(tagValueInt);
 							break;
-						case "Unsigned32":
+						case Unsigned32:
 							tagValueInt = Integer.parseInt(tagValueString);
 							dataElement.setUnsigned32(tagValueInt);
 							break;
-						case "Integer8":
+						case Integer8:
 							tagValueInt = Integer.parseInt(tagValueString);
 							dataElement.setInteger8(tagValueInt);
 							break;
-						case "Integer16":
+						case Integer16:
 							tagValueInt = Integer.parseInt(tagValueString);
 							dataElement.setInteger16(tagValueInt);
 							break;
-						case "Integer32":
+						case Integer32:
 							tagValueInt = Integer.parseInt(tagValueString);
 							dataElement.setInteger32(tagValueInt);
 							break;
-						case "OctetString":
+						case OctetString:
 							String[] octetString = tagValueString.split(";");
 							dataElement.setOctetString(convertToBytes(octetString));
 							break;
-						case "BitString":
+						case BitString:
 							String[] bitString = tagValueString.split(";");
 							dataElement.setBitString(convertToBytes(bitString),bitString.length);
 							break;
-						case "Boolean":
+						case Boolean:
 							if(tagValueString.equals("1")){
 								dataElement.setbool(true);
 							} else {
 								dataElement.setbool(false);
 							}
 							break;
-						case "Enumerated":
+						case Enumerated:
 							tagValueInt = Integer.parseInt(tagValueString);
 							dataElement.setEnumerate(tagValueInt);
 							break;
-						case "VisibleString":	
+						case VisibleString:	
 								dataElement.setVisibleString(tagValueString.getBytes());
 							break;
 						default:
@@ -602,7 +610,7 @@ public class DriverPduIO {
 						elementsList.add(dataElement);
 						
 						break;
-					case COSEM_CONTAINER:
+					case CONTAINER:
 						
 						String containerType = tempNode.getAttributes().item(0).getTextContent();
 						
@@ -633,7 +641,7 @@ public class DriverPduIO {
 						}
 
 						break;
-					case COSEM_DATA:
+					case DATA:
 						if (tempNode.hasChildNodes()) {
 							readXml(tempNode.getChildNodes(), elementsList);
 						}//if
@@ -643,8 +651,51 @@ public class DriverPduIO {
 					}
 				
 				}//if
-				
 			}//for
-	*/
 		}
+
+	private cosemType getCosemType(String cosem) {
+
+		cosemType cosemTypeId = cosemType.ELEMENT;
+
+		if (cosem == COSEM_ELEMENT)
+			cosemTypeId = cosemType.ELEMENT;
+		if (cosem == COSEM_CONTAINER)
+			cosemTypeId = cosemType.CONTAINER;
+		if (cosem == COSEM_DATA)
+			cosemTypeId = cosemType.DATA;
+
+		return cosemTypeId;
+	}
+
+	private elementType getElementType(String element) {
+
+		elementType elementTypeId = elementType.Unsigned8;
+		
+		if(element=="Unsigned8")
+			elementTypeId = elementType.Unsigned8;
+		if(element=="Unsigned16")
+			elementTypeId = elementType.Unsigned16;
+		if(element=="Unsigned32")
+			elementTypeId = elementType.Unsigned32;
+		if(element=="Integer8")
+			elementTypeId = elementType.Integer8;
+		if(element=="Integer16")
+			elementTypeId = elementType.Integer16;
+		if(element=="Integer32")
+			elementTypeId = elementType.Integer32;
+		if(element=="OctetString")
+			elementTypeId = elementType.OctetString;
+		if(element=="BitString")
+			elementTypeId = elementType.BitString;
+		if(element=="Boolean")
+			elementTypeId = elementType.Boolean;
+		if(element=="Enumerated")
+			elementTypeId = elementType.Enumerated;
+		if(element=="VisibleString")
+			elementTypeId = elementType.VisibleString;
+
+		return elementTypeId;
+	}
+		
 }

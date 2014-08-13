@@ -27,7 +27,7 @@
 
         <Button
             android:id="@+id/bt_read"
-            style="@style/ButtonText"
+            style="@style/bt_text_white"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -38,7 +38,7 @@
 
         <Button
             android:id="@+id/bt_meterConfig"
-            style="@style/ButtonText"
+            style="@style/bt_text_white"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -56,7 +56,7 @@
 
         <Button
             android:id="@+id/bt_meterInfo"
-            style="@style/ButtonText"
+            style="@style/bt_text_white"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -67,7 +67,7 @@
 
         <Button
             android:id="@+id/bt_clearAlarms"
-            style="@style/ButtonText"
+            style="@style/bt_text_white"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -85,7 +85,7 @@
 
         <Button
             android:id="@+id/bt_clockAdjust"
-            style="@style/ButtonText"
+            style="@style/bt_text_white"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -96,7 +96,7 @@
 
         <Button
             android:id="@+id/bt_meterDisconnect"
-            style="@style/ButtonText"
+            style="@style/bt_text_white"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -59,7 +59,6 @@ public class MeterMenu extends Activity {
 				Toast.makeText(getApplicationContext(),"Error: "+e.toString(), 0).show();
 			}
 		}
-		
 	}
 
 	@Override
