@@ -1,10 +1,17 @@
 package com.thinken.azmobmeter;
 
 
+import java.io.IOException;
+
+import com.thinken.azmobmeter.utils.DeviceInfo;
+import com.thinken.azmobmeter.utils.Filesys;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -17,6 +24,7 @@ import android.view.WindowManager;
 public class SplashScreen extends Activity {
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 4000;
+    private String tag = "SplashScreen";
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +35,20 @@ public class SplashScreen extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.activity_splash_screen);
- 
+
+        Filesys fsys = new Filesys();
+        try {
+			fsys.fsSys_createFs(SplashScreen.this.getApplicationContext());
+			Log.i(tag, "FS created...");
+		} catch (IOException e) {
+			Log.i(tag, "FS Error" + e.toString());
+			
+		}
+        
+        DeviceInfo dInfo = new DeviceInfo();
+        Log.i(tag, "IMEI " + dInfo.getIMEI(SplashScreen.this.getApplicationContext()));
+        Log.i(tag, "Subscribed Id " + dInfo.getSubId(SplashScreen.this.getApplicationContext()));
+        
         new Handler().postDelayed(new Runnable() {
  
             /*

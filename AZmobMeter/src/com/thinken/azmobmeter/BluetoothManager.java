@@ -45,12 +45,13 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bluetooth_manager);
 		init();
+		
 		if (btAdapter == null) {
-			Toast.makeText(getApplicationContext(), "No bluetooth detected", 0)
-					.show();
+			Toast.makeText(getApplicationContext(), "No bluetooth detected", 0).show();
 			finish();
 		} else {
 			if (!btAdapter.isEnabled()) {

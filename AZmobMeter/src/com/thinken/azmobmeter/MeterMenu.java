@@ -28,7 +28,6 @@ public class MeterMenu extends Activity {
 	private String tag = "MeterMenu";
 	//Threads
 	private ConnectThread connectThread;
-	
 	//PM Bluetooth
 	private BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
 	private BluetoothDevice btDevice = null;
@@ -45,19 +44,8 @@ public class MeterMenu extends Activity {
 		Bundle extras = getIntent().getExtras();
 		
 		if (extras != null) {
-			
 		    btAddress = extras.getString("btAddress");
-			Log.i("CONNECTION", "Starting Connection");
-			
-			try {
-
-				startBluetooth(btAddress); //get the Bluetooth Device from MAC Address
-				btOpen = true;
-			} catch (Exception e) {
-				// TODO: handle exception
-			    Log.i("CONNECTION", "Error: "+e.toString());
-				Toast.makeText(getApplicationContext(),"Error: "+e.toString(), 0).show();
-			}
+			Log.i(tag, "Bluetooth MAC Address: "+btAddress);
 		}
 	}
 

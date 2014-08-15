@@ -21,9 +21,7 @@ public class DriverTest {
 	private static final int CONN_TIMEOUT = 5000;
 
 	private DriverManagement connManager = new DriverManagement();
-	// private DriverSetup setup = new DriverSetup();
 	private DriverDataExchange data = new DriverDataExchange();
-	// private itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
 	private String tag = "TEST";
 
 	public IClientConnection connect(BluetoothSocket socket) throws InterruptedException {
@@ -88,8 +86,7 @@ public class DriverTest {
 
 		if (getResult.isSuccess()) {
 			Log.i(tag, "Success!");
-			// parse.createXml("C:\\teste.xml", getResult, obis, classId,
-			// attribute); //this function create the XML file using the
+			parse.createXml("C:\\teste.xml", getResult, obis, classId, attribute); //this function create the XML file using the
 			// GetResult
 			// parse.printLog(getResult);
 			return true;
