@@ -25,6 +25,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.thinken.azmobmeter.utils.Filesys;
+
 import android.util.Log;
 
 public class DriverPduIO {
@@ -37,6 +39,8 @@ public class DriverPduIO {
 	private static final String COSEM_CONTAINER = "CosemContainer";
 	private static final String COSEM_ELEMENT = "CosemElement";
 	private static final String COSEM_TYPE = "CosemType";
+	
+	private String readoutFolder = "readout";
 
 	public enum elementType {
 		Structure, Array, Unsigned8, Unsigned16, Unsigned32, Integer8, Integer16, Integer32, BitString, Boolean, VisibleString, Enumerated, OctetString
@@ -276,7 +280,7 @@ public class DriverPduIO {
 		return dateArray;
 	}
 
-	public boolean createXml(String filePathName, GetResult pdu, ObisCode obis,
+	public boolean createXml(String fileName, GetResult pdu, ObisCode obis,
 			int classId, int attribute) {
 		try {
 
@@ -309,8 +313,7 @@ public class DriverPduIO {
 			pduToXml(pdu.getResultData(), xml, cosemData);
 
 			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory
-					.newInstance();
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 
 			// Set ident
@@ -318,8 +321,12 @@ public class DriverPduIO {
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
 			DOMSource source = new DOMSource(xml);
-
-			StreamResult result = new StreamResult(new File(filePathName));
+	
+			StreamResult result = new StreamResult(new File(readoutFolder, fileName));
+			
+			File(activity.getExternalCacheDir().getAbsolutePath()+"/readout.xml"));
+			
+			
 
 			transformer.transform(source, result);
 

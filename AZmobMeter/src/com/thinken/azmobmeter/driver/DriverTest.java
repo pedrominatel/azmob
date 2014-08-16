@@ -22,6 +22,8 @@ public class DriverTest {
 
 	private DriverManagement connManager = new DriverManagement();
 	private DriverDataExchange data = new DriverDataExchange();
+	private DriverPduIO parser = new DriverPduIO();
+	
 	private String tag = "TEST";
 
 	public IClientConnection connect(BluetoothSocket socket) throws InterruptedException {
@@ -51,8 +53,6 @@ public class DriverTest {
 				// // setObjectEx(connection);
 			}
 
-			// connection.disconnect(false);
-
 		} catch (IOException ex) {
 			//connection.disconnect(false);
 			return null;
@@ -81,13 +81,11 @@ public class DriverTest {
 		int classId = 1;
 		int attribute = 2;
 
-		GetResult getResult = data.GetObject(connection, obis, classId,
-				attribute);
+		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
 		if (getResult.isSuccess()) {
 			Log.i(tag, "Success!");
-			parse.createXml("C:\\teste.xml", getResult, obis, classId, attribute); //this function create the XML file using the
-			// GetResult
+			parser.createXml("read.xml", getResult, obis, classId, attribute); //this function create the XML file using the
 			// parse.printLog(getResult);
 			return true;
 		} else {

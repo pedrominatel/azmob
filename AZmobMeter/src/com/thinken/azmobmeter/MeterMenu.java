@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.openmuc.jdlms.client.IClientConnection;
 
 import com.thinken.azmobmeter.driver.*;
+import com.thinken.azmobmeter.utils.Filesys;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -33,6 +34,8 @@ public class MeterMenu extends Activity {
 	private BluetoothDevice btDevice = null;
 	private BluetoothSocket btSocket = null;
 	public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	
+	Filesys fsys = new Filesys();
 	
 	private boolean btOpen = false;
 
@@ -79,6 +82,12 @@ public class MeterMenu extends Activity {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			Log.i(tag, "Connecting Error: " + e.toString());
+		}
+		
+		try {
+			fsys.fsSys_createFile(MeterMenu.this.getApplicationContext(), "readouts", "read.xml");
+		} catch (IOException e) {
+			Log.i(tag, "FileSys Error: " + e.toString());
 		}
 		
 		if(tst.getObjectEx(conn)){
