@@ -25,11 +25,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import ch.qos.logback.core.Context;
+
 import com.thinken.azmobmeter.utils.Filesys;
 
+import android.app.Activity;
+import android.content.ContextWrapper;
 import android.util.Log;
 
-public class DriverPduIO {
+public class DriverPduIO extends Activity {
 	// XML tags definition
 
 	private static String tag = "DriverPduIO";
@@ -322,10 +326,11 @@ public class DriverPduIO {
 
 			DOMSource source = new DOMSource(xml);
 	
-			StreamResult result = new StreamResult(new File(readoutFolder, fileName));
+			//XXX StreamResult result = new StreamResult(new File(readoutFolder, fileName));
 			
-			File(activity.getExternalCacheDir().getAbsolutePath()+"/readout.xml"));
+			Context c = (Context) DriverPduIO.this.getApplicationContext();
 			
+			StreamResult result = new StreamResult(new File(((ContextWrapper) c).getExternalCacheDir().getAbsolutePath()+"/readout.xml"));
 			
 
 			transformer.transform(source, result);
