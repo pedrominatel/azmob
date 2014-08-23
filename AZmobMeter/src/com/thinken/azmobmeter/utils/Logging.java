@@ -13,10 +13,10 @@ import com.thinken.azmobmeter.utils.Filesys;
  */
 public class Logging {
 
-	public static final short DEBUG = 0;
-	public static final short ERROR = 1;
-	public static final short WARNING = 2;
-	public static final short INFO = 3;
+	public final short DEBUG = 0;
+	public final short ERROR = 1;
+	public final short WARNING = 2;
+	public final short INFO = 3;
 	
 	Filesys logFile = new Filesys();
 

@@ -50,18 +50,11 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 		setContentView(R.layout.activity_bluetooth_manager);
 		init();
 		
-		if (btAdapter == null) {
-			Toast.makeText(getApplicationContext(), "No bluetooth detected", 0).show();
-			finish();
-		} else {
-			if (!btAdapter.isEnabled()) {
-				turnOnBT();
-			}
-
+		if(btAdapter.isEnabled()) {
 			getPairedDevices();
 			startDiscovery();
 		}
-
+		
 	}
 
 	public class MyApplication extends Application {
@@ -85,6 +78,16 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 		btAdapter.cancelDiscovery();
 		btAdapter.startDiscovery();
 
+	}
+	
+	public void btMan_checkBtEn() {
+		if (btAdapter == null) {
+			//XXX log
+		} else {
+			if (!btAdapter.isEnabled()) {
+				turnOnBT();
+			}
+		}
 	}
 
 	private void turnOnBT() {
