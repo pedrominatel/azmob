@@ -84,11 +84,11 @@ public class MeterMenu extends Activity {
 			Log.i(tag, "Connecting Error: " + e.toString());
 		}
 		
-		try {
-			fsys.fsSys_createFile(MeterMenu.this.getApplicationContext(), "readouts", "read.xml");
-		} catch (IOException e) {
-			Log.i(tag, "FileSys Error: " + e.toString());
-		}
+//		try {
+//			fsys.fsSys_createFile(MeterMenu.this.getApplicationContext(), "readouts", "read.xml");
+//		} catch (IOException e) {
+//			Log.i(tag, "FileSys Error: " + e.toString());
+//		}
 		
 		if(tst.getObjectEx(conn)){
 			Toast.makeText(getApplicationContext(),"Leitura Realizada!", 0).show();

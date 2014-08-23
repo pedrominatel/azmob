@@ -37,6 +37,13 @@ public class SplashScreen extends Activity {
         setContentView(R.layout.activity_splash_screen);
 
         Filesys fsys = new Filesys();
+        
+        if (fsys.fsSys_checkExternalMedia()){
+        	//TODO Warn window
+        	//fsys.writeToSDFile();
+        	//fsys.readRaw();
+        }
+        
         try {
 			fsys.fsSys_createFs(SplashScreen.this.getApplicationContext());
 			Log.i(tag, "FS created...");

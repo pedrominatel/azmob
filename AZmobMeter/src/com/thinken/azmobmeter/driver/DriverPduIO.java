@@ -326,12 +326,7 @@ public class DriverPduIO extends Activity {
 
 			DOMSource source = new DOMSource(xml);
 	
-			//XXX StreamResult result = new StreamResult(new File(readoutFolder, fileName));
-			
-			Context c = (Context) DriverPduIO.this.getApplicationContext();
-			
-			StreamResult result = new StreamResult(new File(((ContextWrapper) c).getExternalCacheDir().getAbsolutePath()+"/readout.xml"));
-			
+			StreamResult result = new StreamResult(new File(readoutFolder, fileName));
 
 			transformer.transform(source, result);
 
