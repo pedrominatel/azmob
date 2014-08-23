@@ -54,6 +54,7 @@ public class SplashScreen extends Activity {
 		}
         
         Log.i(tag, fsys.fsSys_timeStamp());
+        fsys.fsSys_createLog("LOOOOOOOG!!", fsys.INFO);
         
         DeviceInfo dInfo = new DeviceInfo();
         Log.i(tag, "IMEI " + dInfo.getIMEI(SplashScreen.this.getApplicationContext()));

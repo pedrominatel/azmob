@@ -13,14 +13,14 @@ import com.thinken.azmobmeter.utils.Filesys;
  */
 public class Logging {
 
-	public static final int DEBUG = 0;
-	public static final int ERROR = 1;
-	public static final int WARNING = 2;
-	public static final int INFO = 3;
+	public static final short DEBUG = 0;
+	public static final short ERROR = 1;
+	public static final short WARNING = 2;
+	public static final short INFO = 3;
 	
 	Filesys logFile = new Filesys();
 
-	public void log(String module, int level, String strLog, boolean outputFile) {
+	public void log(String module, short level, String strLog, boolean outputFile) {
 		
 		switch (level) {
 		case DEBUG:
@@ -40,7 +40,7 @@ public class Logging {
 		}
 		
 		if(outputFile){
-			
+			logFile.fsSys_createLog(strLog, level);
 		}
 		
 	}

@@ -1,7 +1,10 @@
 package com.thinken.azmobmeter.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -16,10 +19,21 @@ public class Filesys extends Activity {
 	public static final String READOUTS_FOLDER = "/AZmob/readouts";
 	public static final String METER_OBJECTS_FOLDER = "/AZmob/meter";
 	public static final String UPLOADED_FOLDER = "/AZmob/uploaded";
-	public static final String LOG_FOLDER = "/AZmob/logs";	
+	public static final String LOG_FOLDER = "/AZmob/logs";
+	
+	public final short DEBUG = 0;
+	public final short ERROR = 1;
+	public final short WARNING = 2;
+	public final short INFO = 3;
 
 	public File fsSys_getExtStorageDir() {
 		return android.os.Environment.getExternalStorageDirectory();
+	}
+	
+	public File fsSys_getExtStorageDir(String folder) {
+		
+		File dir = new File(android.os.Environment.getExternalStorageDirectory() + folder);
+		return dir;
 	}
 
 	public boolean fsSys_checkExtMedia() {
@@ -114,11 +128,61 @@ public class Filesys extends Activity {
 		return false;
 	}
 
-	public void fsSys_createLog() {
+	public void fsSys_createLog(String log, short level) {
 		
+		String levelStr = "NONE";	
 		
+		switch (level) {
+		case DEBUG:
+			levelStr = "DEBUG";
+			break;
+		case ERROR:
+			levelStr = "ERROR";
+			break;
+		case WARNING:
+			levelStr = "WARNING";
+			break;
+		case INFO:
+			levelStr = "INFO";
+			break;
+		default:
+			levelStr = "UNKNOWN";
+			break;
+		}
 		
+		File logFolder = fsSys_getExtStorageDir(LOG_FOLDER);
 		
+		File file = new File(logFolder, fsSys_dateStamp()+"_log.txt");
+		
+		if(!file.exists()){
+			try {
+				FileOutputStream fileStream = new FileOutputStream(file);
+				PrintWriter fileWrite = new PrintWriter(fileStream);
+		        fileWrite.println(fsSys_timeStamp()+": "+levelStr+" >> File Created");
+		        fileWrite.flush();
+		        fileWrite.close();
+		        fileStream.close();
+				Log.i(tag, "Log File created!");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+		    	Log.i(tag, "Error :"+e.toString());
+		    } 
+		}
+		
+	    try {	    	
+	    	FileOutputStream fileStream = new FileOutputStream(file,true);
+	        PrintWriter fileWrite = new PrintWriter(fileStream);
+	        fileWrite.println(fsSys_timeStamp()+": "+levelStr+" >> "+log);
+	        fileWrite.flush();
+	        fileWrite.close();
+	        fileStream.close();
+	    } catch (FileNotFoundException e) {
+	        Log.i(tag, "File not found! "+e.toString());
+	    } catch (IOException e) {
+	    	Log.i(tag, "Error :"+e.toString());
+	    }   		
 	}
 	
 	public String fsSys_timeStamp() {
