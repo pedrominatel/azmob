@@ -38,19 +38,22 @@ public class SplashScreen extends Activity {
 
         Filesys fsys = new Filesys();
         
-        if (fsys.fsSys_checkExternalMedia()){
+        if (fsys.fsSys_checkExtMedia()){
         	//TODO Warn window
+        	fsys.fsSys_checkExtMediaFreeSize();
         	//fsys.writeToSDFile();
         	//fsys.readRaw();
         }
         
         try {
-			fsys.fsSys_createFs(SplashScreen.this.getApplicationContext());
+			fsys.fsSys_createFs();
 			Log.i(tag, "FS created...");
 		} catch (IOException e) {
 			Log.i(tag, "FS Error" + e.toString());
 			
 		}
+        
+        Log.i(tag, fsys.fsSys_timeStamp());
         
         DeviceInfo dInfo = new DeviceInfo();
         Log.i(tag, "IMEI " + dInfo.getIMEI(SplashScreen.this.getApplicationContext()));

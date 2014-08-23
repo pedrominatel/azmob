@@ -1,17 +1,11 @@
 package com.thinken.azmobmeter.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
-import android.R;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
@@ -54,21 +48,23 @@ public class Filesys extends Activity {
 		return false;
 	}
 	
-	public void fsSys_checkExtMediaFreeSize() {
+	public boolean fsSys_checkExtMediaFreeSize() {
 		
 		File sdcard = fsSys_getExtStorageDir();
 		
 		long totalSpace = sdcard.getTotalSpace();
 		long freeSpace = sdcard.getFreeSpace();
-		
 		long free = (freeSpace*100)/totalSpace;
 		
+		Log.i(tag, sdcard.getAbsolutePath()+": Total free space: "+free+"%");
+		
 		//compare the free space in %
-		if (free >= 10) {
-			
+		if (free<5) {
+			//XXX warn free space at sdcard
+			return true;
 		}
 		
-		
+		return false;
 	}
 
 	public void fsSys_createFs() throws IOException {
@@ -107,7 +103,6 @@ public class Filesys extends Activity {
 		return false;
 	}
 
-
 	public boolean fsSys_delete(File file) {
 		
 		if (file.delete()) {
@@ -119,4 +114,27 @@ public class Filesys extends Activity {
 		return false;
 	}
 
+	public void fsSys_createLog() {
+		
+		
+		
+		
+	}
+	
+	public String fsSys_timeStamp() {
+		
+		   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		   Date date = new Date(System.currentTimeMillis());
+		   
+		   return dateFormat.format(date);
+	}
+	
+	public String fsSys_dateStamp() {
+		
+		   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		   Date date = new Date(System.currentTimeMillis());
+		   
+		   return dateFormat.format(date);
+	}
+	
 }
