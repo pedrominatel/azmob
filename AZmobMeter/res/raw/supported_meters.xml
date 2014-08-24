@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CosemXML Version="1.0.0">
+	<Meter Model="SL7000" FirmwareVersion="Generic">
+		<ReadingGroup Id="GR0" Name="Faturamento" Desc="Executa faturamento e le registradores">
+		</ReadingGroup>
+		<ReadingGroup Id="GR1" Name="Verificacao" Desc="Le dados atuais">
+		</ReadingGroup>
+		<ReadingGroup Id="GR2" Name="Recuperacao" Desc="Le dados do ultimo faturamento">
+		</ReadingGroup>
+		<ReadingGroup Id="GR3" Name="Valores Instantaneos" Desc="Le valores instantaneos">
+		    <CosemObject Name="AllRmsValues" LogicalName="1;1;98;128;4;255;" ClassId="7" Index="2">
+			<CosemObject Name="AllInstantaneousPowers" LogicalName="1;1;98;128;3;255;" ClassId="7" Index="2">
+		</ReadingGroup>
+		<ReadingGroup Id="GR4" Name="Alarmes" Desc="Le dados do ultimo faturamento">
+		</ReadingGroup>
+		<ReadingGroup Id="GR5" Name="Memoria de massa" Desc="Le dados do ultimo faturamento">
+			<CosemObject Name="LoadProfile1ChannelParameters" LogicalName="0;0;136;0;2;255;" ClassId="1" Index="2" />
+			<CosemObject Name="LoadProfile1RecordingIntervalDuration" LogicalName="1;1;0;8;4;255;" ClassId="3" Index="2" />
+			<CosemObject Name="LoadProfile1Data" LogicalName="0;0;99;1;0;255;" ClassId="7" Index="2" />
+			<CosemObject Name="LoadProfile2ChannelParameters" LogicalName="0;0;136;1;2;255;" ClassId="1" Index="2" />
+			<CosemObject Name="LoadProfile2RecordingIntervalDuration" LogicalName="1;1;0;8;5;255;" ClassId="3" Index="2" />
+			<CosemObject Name="LoadProfile2Data" LogicalName="0;0;99;2;0;255;" ClassId="7" Index="2" />
+		</ReadingGroup>
+	</Meter>
+	<Meter Model="SL7000" FirmwareVersion="06.28A.22">
+		<ReadingGroup Id="GR0" Name="Faturamento" Desc="Executa faturamento e le registradores">
+		</ReadingGroup>
+		<ReadingGroup Id="GR1" Name="Verificacao" Desc="Le dados atuais">
+		</ReadingGroup>
+		<ReadingGroup Id="GR2" Name="Recuperacao" Desc="Le dados do ultimo faturamento">
+		</ReadingGroup>
+		<ReadingGroup Id="GR3" Name="Valores Instantaneos" Desc="Le valores instantaneos">
+			<CosemObject Name="AllRmsValues" LogicalName="1;1;98;128;4;255;" ClassId="7" Index="2">
+		</ReadingGroup>
+		<ReadingGroup Id="GR4" Name="Alarmes" Desc="Le dados do ultimo faturamento">
+		</ReadingGroup>
+		<ReadingGroup Id="GR5" Name="Memoria de massa" Desc="Le dados do ultimo faturamento">
+			<CosemObject Name="LoadProfile1ChannelParameters" LogicalName="0;0;136;0;2;255;" ClassId="1" Index="2" />
+			<CosemObject Name="LoadProfile1RecordingIntervalDuration" LogicalName="1;1;0;8;4;255;" ClassId="3" Index="2" />
+			<CosemObject Name="LoadProfile1Data" LogicalName="0;0;99;1;0;255;" ClassId="7" Index="2" />
+			<CosemObject Name="LoadProfile2ChannelParameters" LogicalName="0;0;136;1;2;255;" ClassId="1" Index="2" />
+			<CosemObject Name="LoadProfile2RecordingIntervalDuration" LogicalName="1;1;0;8;5;255;" ClassId="3" Index="2" />
+			<CosemObject Name="LoadProfile2Data" LogicalName="0;0;99;2;0;255;" ClassId="7" Index="2" />
+		</ReadingGroup>
+	</Meter>
+</CosemXML>

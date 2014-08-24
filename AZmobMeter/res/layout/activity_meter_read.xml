@@ -17,72 +17,12 @@
             android:layout_height="wrap_content"
             android:src="@drawable/azmod_banner" />
 
-    </LinearLayout>
+        <ExpandableListView
+            android:id="@+id/expandableListView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ExpandableListView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:orientation="horizontal" >
-
-        <Button
-            style="@style/bt_text_white"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/ic_read"
-            android:text="Leituras e Faturamento" />
-
-        <Button
-            style="@style/bt_text_white"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/ic_write"
-            android:text="Carga de Programa" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:orientation="horizontal" >
-
-        <Button
-            style="@style/bt_text_white"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/ic_info"
-            android:text="Informacoes do Medidor" />
-
-        <Button
-            style="@style/bt_text_white"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_title"
-            android:drawableLeft="@drawable/ic_battery"
-            android:text="Limpar Alarmes" />
-    </LinearLayout>
-    
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:orientation="horizontal" >
-
-        <Button
-            style="@style/bt_text_white"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_red"
-            android:drawableLeft="@drawable/ic_off"
-            android:text="Desconectar" />
     </LinearLayout>
     
 

@@ -54,10 +54,8 @@ public class DriverTest {
 			}
 
 		} catch (IOException ex) {
-			//connection.disconnect(false);
 			return null;
 		} catch (Exception ex) {
-			//connection.disconnect(false);
 			return null;
 		}
 		return connection;
@@ -86,13 +84,44 @@ public class DriverTest {
 		if (getResult.isSuccess()) {
 			Log.i(tag, "Success!");
 			parser.createXml("1234567890", "read.xml", getResult, obis, classId, attribute); //this function create the XML file using the
-			// parse.printLog(getResult);
 			return true;
 		} else {
 			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
 			return false;
 		}
 	}
+	
+	public boolean getObjectEx(IClientConnection connection, String serialNumber, String object, ObisCode obis, int classId, int attribute) {
+
+		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
+
+		if (getResult.isSuccess()) {
+			Log.i(tag, "Success!");
+			parser.createXml(serialNumber, object+".xml", getResult, obis, classId, attribute); //this function create the XML file using the
+			return true;
+		} else {
+			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+			return false;
+		}
+	}
+	
+	public String getSerialNumber() {
+		//XXX get serial number
+		//<CosemObject Name="SerialNumber" LogicalName="0;0;96;1;0;255;" ClassId="1" Index="2">
+		return "";
+	}
+	
+	public String getFirmwareVersion() {
+		//XXX get firmware version
+		//<CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2">
+		return "";
+	}
+	
+	public String getDateTime() {
+		//XXX get firmware version
+		return "";
+	}
+	
 	//
 	// public void getObjectWithSelectorEx(IClientConnection connection) {
 	//
