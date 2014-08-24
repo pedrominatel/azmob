@@ -88,33 +88,31 @@ public class Filesys extends Activity {
 		// Check if the directories exists otherwise create it
 
 		File path = fsSys_getExtStorageDir();
-		Log.i(tag, "External file system root: " + path);
 
 		// create the directory to store the readouts folders and files
-		if(!fsSys_createFolder(path, READOUTS_FOLDER))
-			Log.i(tag, "Folder already exists!");
+		fsSys_createFolder(path, READOUTS_FOLDER);
 		// create the directory to store the XML files with OBIS codes
-		if(!fsSys_createFolder(path, METER_OBJECTS_FOLDER))
-			Log.i(tag, "Folder already exists!");
+		fsSys_createFolder(path, METER_OBJECTS_FOLDER);
 		// create the directory to store the uploaded files (backup folder)
-		if(!fsSys_createFolder(path, UPLOADED_FOLDER))
-			Log.i(tag, "Folder already exists!");
+		fsSys_createFolder(path, UPLOADED_FOLDER);
 		//log files folder
-		if(!fsSys_createFolder(path, LOG_FOLDER))
-			Log.i(tag, "Folder already exists!");
+		fsSys_createFolder(path, LOG_FOLDER);
 		
 		Log.i(tag, "File System Created");
 		
 	}
 
-	public boolean fsSys_createFolder(File path, String folder) {
+	public String fsSys_createFolder(File path, String folder) {
 		
 		File dir = new File(path.getAbsolutePath() + folder);
 		//Check if the directory already exists
-		if (!dir.isDirectory())
-			return dir.mkdirs();
+		if (dir.isDirectory()) {
+			Log.i(tag, "Folder already exists!");
+		} else {
+			dir.mkdirs();
+		}
 		
-		return false;
+		return dir.getAbsolutePath();
 	}
 
 	public boolean fsSys_delete(File file) {
@@ -199,8 +197,6 @@ public class Filesys extends Activity {
 		   Date date = new Date(System.currentTimeMillis());
 		   
 		   return dateFormat.format(date);
-	}
-		
 	}
 	
 }

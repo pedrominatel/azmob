@@ -324,10 +324,10 @@ public class DriverPduIO extends Activity {
 			
 			Filesys fsys = new Filesys();
 			
-			fsys.fsSys_createFolder(fsys.fsSys_getExtStorageDir(fsys.READOUTS_FOLDER), serialNumber+"/"+fsys.fsSys_dateStamp());
+			String path = fsys.fsSys_createFolder(fsys.fsSys_getExtStorageDir(fsys.READOUTS_FOLDER), "/"+fsys.fsSys_dateStamp()+"/"+serialNumber);
 			
 			DOMSource source = new DOMSource(xml);
-			StreamResult result = new StreamResult(new File(readoutFolder, fileName));
+			StreamResult result = new StreamResult(new File(path, fileName));
 
 			transformer.transform(source, result);
 

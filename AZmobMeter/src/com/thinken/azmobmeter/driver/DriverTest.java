@@ -85,7 +85,7 @@ public class DriverTest {
 
 		if (getResult.isSuccess()) {
 			Log.i(tag, "Success!");
-			parser.createXml("read.xml", getResult, obis, classId, attribute); //this function create the XML file using the
+			parser.createXml("1234567890", "read.xml", getResult, obis, classId, attribute); //this function create the XML file using the
 			// parse.printLog(getResult);
 			return true;
 		} else {
