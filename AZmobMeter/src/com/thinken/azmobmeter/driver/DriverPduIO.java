@@ -43,8 +43,6 @@ public class DriverPduIO extends Activity {
 	private static final String COSEM_CONTAINER = "CosemContainer";
 	private static final String COSEM_ELEMENT = "CosemElement";
 	private static final String COSEM_TYPE = "CosemType";
-	
-	private String readoutFolder = "readout";
 
 	public enum elementType {
 		Structure, Array, Unsigned8, Unsigned16, Unsigned32, Integer8, Integer16, Integer32, BitString, Boolean, VisibleString, Enumerated, OctetString
@@ -284,7 +282,7 @@ public class DriverPduIO extends Activity {
 		return dateArray;
 	}
 
-	public boolean createXml(String fileName, GetResult pdu, ObisCode obis,
+	public boolean createXml(String serialNumber, String fileName, GetResult pdu, ObisCode obis,
 			int classId, int attribute) {
 		try {
 
@@ -301,7 +299,7 @@ public class DriverPduIO extends Activity {
 
 			// CosemObject tag
 			Element cosemObject = xml.createElement(COSEM_OBJECT);
-			cosemObject.setAttribute("SerialNumber", "");
+			cosemObject.setAttribute("SerialNumber", serialNumber);
 			cosemObject.setAttribute("LogicalName", obis.getHexCode());
 			cosemObject.setAttribute("ClassId", Integer.toString(classId));
 			cosemObject.setAttribute("Index", Integer.toString(attribute));
@@ -323,9 +321,12 @@ public class DriverPduIO extends Activity {
 			// Set ident
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
+			
+			Filesys fsys = new Filesys();
+			
+			fsys.fsSys_createFolder(fsys.fsSys_getExtStorageDir(fsys.READOUTS_FOLDER), serialNumber+"/"+fsys.fsSys_dateStamp());
+			
 			DOMSource source = new DOMSource(xml);
-	
 			StreamResult result = new StreamResult(new File(readoutFolder, fileName));
 
 			transformer.transform(source, result);

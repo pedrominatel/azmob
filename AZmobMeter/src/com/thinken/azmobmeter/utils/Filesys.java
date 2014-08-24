@@ -16,10 +16,10 @@ public class Filesys extends Activity {
 
 	private String tag = "Filesys";
 	
-	public static final String READOUTS_FOLDER = "/AZmob/readouts";
-	public static final String METER_OBJECTS_FOLDER = "/AZmob/meter";
-	public static final String UPLOADED_FOLDER = "/AZmob/uploaded";
-	public static final String LOG_FOLDER = "/AZmob/logs";
+	public final String READOUTS_FOLDER = "/AZmob/readouts";
+	public final String METER_OBJECTS_FOLDER = "/AZmob/meter";
+	public final String UPLOADED_FOLDER = "/AZmob/uploaded";
+	public final String LOG_FOLDER = "/AZmob/logs";
 	
 	public final short DEBUG = 0;
 	public final short ERROR = 1;
@@ -199,6 +199,8 @@ public class Filesys extends Activity {
 		   Date date = new Date(System.currentTimeMillis());
 		   
 		   return dateFormat.format(date);
+	}
+		
 	}
 	
 }

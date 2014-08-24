@@ -30,6 +30,9 @@ public class SplashScreen extends Activity {
 	private static int SPLASH_TIME_OUT = 4000;
 	private String tag = "SplashScreen";
 	private static final int REQUEST_ENABLE_BT = 1;
+	
+	Filesys fsys = new Filesys();
+	Logging log = new Logging();
 
 	/** Called when the activity is first created. */
 	BluetoothAdapter bluetoothAdapter;
@@ -42,38 +45,55 @@ public class SplashScreen extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_splash_screen);
+		setContentView(R.layout.activity_splash_screen);		
+		
+		// Check if the application is registred
+		CheckRegistration();
+		//Check free space at external memory
+		CheckExternalMemory();
+		//Check folders creation
+		CheckFoldersCreation();
+		//Check Bluetooth radio
+		CheckBlueToothState();
 
-		Filesys fsys = new Filesys();
-		Logging log = new Logging();
+	}
 
+	/**
+	 * 
+	 */
+	private void CheckRegistration() {
+		// TODO Auto-generated method stub
+		Log.i(tag, fsys.fsSys_timeStamp());
+		DeviceInfo dInfo = new DeviceInfo();
+		Log.i(tag, "IMEI "	+ dInfo.getIMEI(SplashScreen.this.getApplicationContext()));
+		Log.i(tag, "Subscribed Id "	+ dInfo.getSubId(SplashScreen.this.getApplicationContext()));
+	}
+
+	/**
+	 * 
+	 */
+	private void CheckFoldersCreation() {
+		// TODO Auto-generated method stub
+		try {
+			fsys.fsSys_createFs();
+			Log.i(tag, "FS created");
+		} catch (IOException e) {
+			Log.i(tag, "FS Error" + e.toString());
+			log.log(tag, log.INFO, "FS Error" + e.toString(), true);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void CheckExternalMemory() {
+		// TODO Auto-generated method stub
+		log.log(tag, log.INFO, "Checking External Memory", true);
 		if (fsys.fsSys_checkExtMedia()) {
 			// TODO Warn window
 			if (fsys.fsSys_checkExtMediaFreeSize())
 				alert("Alerta de Memoria", "Nivel de memoria baixa!");
 		}
-
-		//CheckRegistration();
-		//CheckExternalMemory();
-		//CheckFoldersCreation();
-		CheckBlueToothState();
-
-		try {
-			fsys.fsSys_createFs();
-			Log.i(tag, "FS created...");
-		} catch (IOException e) {
-			Log.i(tag, "FS Error" + e.toString());
-
-		}
-
-		Log.i(tag, fsys.fsSys_timeStamp());
-
-		log.log(tag, log.INFO, "LOOOOOOOG!!", true);
-
-		DeviceInfo dInfo = new DeviceInfo();
-		Log.i(tag, "IMEI "	+ dInfo.getIMEI(SplashScreen.this.getApplicationContext()));
-		Log.i(tag, "Subscribed Id "	+ dInfo.getSubId(SplashScreen.this.getApplicationContext()));
-
 	}
 
 	/**
@@ -94,9 +114,12 @@ public class SplashScreen extends Activity {
 
 	private void CheckBlueToothState() {
 
+		log.log(tag, log.INFO, "Checking Bluetooth state", true);
+		
 		BluetoothAdapter myBTadapter = BluetoothAdapter.getDefaultAdapter();
 		if (myBTadapter == null) {
 			Toast.makeText(getApplicationContext(),	"Device doesn't support Bluetooth", Toast.LENGTH_LONG).show();
+			log.log(tag, log.INFO, "Device doesn't support Bluetooth", true);
 		}
 
 		if (!myBTadapter.isEnabled()) {
