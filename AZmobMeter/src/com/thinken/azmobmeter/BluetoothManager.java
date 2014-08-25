@@ -124,6 +124,7 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 		filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		devices = new ArrayList<BluetoothDevice>();
 		receiver = new BroadcastReceiver() {
+			
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				// TODO Auto-generated method stub
@@ -141,8 +142,7 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 							break;
 						}
 					}
-					listAdapter.add(device.getName() + " " + s + " " + "\n"
-							+ device.getAddress());
+					listAdapter.add(device.getName() + " " + s + " " + "\n"	+ device.getAddress());
 				}
 
 				else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED

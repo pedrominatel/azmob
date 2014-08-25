@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CosemXML Version="1.0.0">
+	<ObjectsList Name="Common" FirmwareVersion="Generic">
+		<CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2" />
+		<CosemObject Name="SerialNumber" LogicalName="0;0;96;1;0;255;" ClassId="1" Index="2" />
+		<CosemObject Name="BatteryVoltage" LogicalName="0;0;96;6;3;255;" ClassId="3" Index="2" />
+		<CosemObject Name="CurrentDateAndTime" LogicalName="0;0;1;0;0;255;" ClassId="8" Index="2" />
+		<CosemObject Name="UtilityId1Parameters" LogicalName="1;0;0;0;0;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId2Parameters" LogicalName="1;0;0;0;1;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId3Parameters" LogicalName="1;0;0;0;2;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId4Parameters" LogicalName="1;0;0;0;3;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId5Parameters" LogicalName="1;0;0;0;4;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId6Parameters" LogicalName="1;0;0;0;5;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId7Parameters" LogicalName="1;0;0;0;6;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId8Parameters" LogicalName="1;0;0;0;7;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId9Parameters" LogicalName="1;0;0;0;8;255;" ClassId="1" Index="2" />
+		<CosemObject Name="UtilityId10Parameters" LogicalName="1;0;0;0;9;255;" ClassId="1" Index="2" />
+		<CosemObject Name="AllPhaseAngles" LogicalName="1;1;98;128;1;255;" ClassId="7" Index="2" />
+		<CosemObject Name="CTDenominatorParameters" LogicalName="1;1;0;4;5;255;" ClassId="1" Index="2" />
+		<CosemObject Name="CTNumeratorParameters" LogicalName="1;1;0;4;2;255;" ClassId="1" Index="2" />
+		<CosemObject Name="VTDenominatorParameters" LogicalName="1;1;0;4;6;255;" ClassId="1" Index="2" />
+		<CosemObject Name="VTNumeratorParameters" LogicalName="1;1;0;4;3;255;" ClassId="1" Index="2" />
+	</ObjectsList>
+</CosemXML>
