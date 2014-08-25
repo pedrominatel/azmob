@@ -13,7 +13,7 @@ import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 import android.widget.Toast;
 
-public class DriverTest {
+public class DriverInterface {
 
 	private static final int dlms_upperAddress = 1;
 	private static final int dlms_lowerAddress = 17;

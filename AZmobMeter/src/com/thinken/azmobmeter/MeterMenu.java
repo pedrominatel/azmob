@@ -24,7 +24,7 @@ import android.widget.Toast;
 public class MeterMenu extends Activity {
 	
 	private String btAddress = "";
-	DriverTest tst = new DriverTest();
+	DriverInterface tst = new DriverInterface();
 	IClientConnection conn;
 	private String tag = "MeterMenu";
 	//Threads
