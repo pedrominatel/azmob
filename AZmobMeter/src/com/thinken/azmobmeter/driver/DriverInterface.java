@@ -24,7 +24,7 @@ public class DriverInterface {
 	private DriverDataExchange data = new DriverDataExchange();
 	private DriverPduIO parser = new DriverPduIO();
 	
-	private String tag = "TEST";
+	private String tag = "DriverInterface";
 
 	public IClientConnection connect(BluetoothSocket socket) throws InterruptedException {
 		// TODO Auto-generated method stub
@@ -105,16 +105,52 @@ public class DriverInterface {
 		}
 	}
 	
-	public String getSerialNumber() {
+	public String getSerialNumber(IClientConnection connection) {
 		//XXX get serial number
 		//<CosemObject Name="SerialNumber" LogicalName="0;0;96;1;0;255;" ClassId="1" Index="2">
-		return "";
+		
+		ObisCode obis = new ObisCode(0,0,96,1,0,255);//index parameters
+		int classId = 1;
+		int attribute = 2;
+		
+		String serialNumber = "";
+
+		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
+
+		if (getResult.isSuccess()) {
+			Log.i(tag, "getSerialNumber Success!");
+			serialNumber = (String)parser.pdu_decodeSingleNode(getResult.getResultData());
+		} else {
+			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+			return null;
+		}
+		
+		
+		return serialNumber;
 	}
 	
-	public String getFirmwareVersion() {
+	public boolean getFirmwareVersion(IClientConnection connection, String version) {
 		//XXX get firmware version
 		//<CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2">
-		return "";
+		ObisCode obis = new ObisCode(0,0,142,1,3,255);//index parameters
+		int classId = 1;
+		int attribute = 2;
+		
+		String firmwareVersion = "";
+
+		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
+
+		if (getResult.isSuccess()) {
+			Log.i(tag, "Success!");
+			parser.pduToXmlDebug(getResult);
+		} else {
+			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+			return false;
+		}
+		
+		version = firmwareVersion;
+		
+		return true;
 	}
 	
 	public String getDateTime() {

@@ -22,7 +22,7 @@
 			<CosemObject Name="LoadProfile2Data" LogicalName="0;0;99;2;0;255;" ClassId="7" Index="2" />
 		</ReadingGroup>
 	</Meter>
-	<Meter Model="SL7000" FirmwareVersion="06.28A.22">
+	<Meter Model="SL7000" FirmwareVersion="07.21A.00">
 		<ReadingGroup Id="GR0" Name="Faturamento" Desc="Executa faturamento e le registradores">
 		</ReadingGroup>
 		<ReadingGroup Id="GR1" Name="Verificacao" Desc="Le dados atuais">

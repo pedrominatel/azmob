@@ -90,6 +90,17 @@ public class MeterMenu extends Activity {
 //			Log.i(tag, "FileSys Error: " + e.toString());
 //		}
 		
+		String serial = tst.getSerialNumber(conn);
+		
+		if(serial!=null)		
+			Log.i(tag, "Meter Serial Number: " + serial);
+		
+		if(tst.getFirmwareVersion(conn, serial)){
+			Toast.makeText(getApplicationContext(),"Leitura Realizada!", 0).show();
+		} else {
+			Toast.makeText(getApplicationContext(),"Erro na Leitura!!", 0).show();
+		}
+		
 		if(tst.getObjectEx(conn)){
 			Toast.makeText(getApplicationContext(),"Leitura Realizada!", 0).show();
 		} else {

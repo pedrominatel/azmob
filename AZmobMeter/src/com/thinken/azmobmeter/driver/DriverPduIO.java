@@ -167,6 +167,56 @@ public class DriverPduIO extends Activity {
 		}
 	}
 
+	public Object pdu_decodeSingleNode(Data data) {
+
+		switch (data.getChoiceIndex()) {
+		case BOOL:
+			Log.i(tag, "Boolean: " + data.getBoolean());
+			return data.getBoolean();
+		case ENUMERATE:
+			Log.i(tag, "Enumarate: " + data.getNumber());
+			return data.getNumber();
+		case LONG_UNSIGNED:
+			Log.i(tag, "Long Unsigned: " + data.getNumber());
+			return data.getNumber();
+		case UNSIGNED:
+			Log.i(tag, "Unsigned: " + data.getNumber());
+			return data.getNumber();
+		case INTEGER:
+			Log.i(tag, "Integer: " + data.getNumber());
+			return data.getNumber();
+		case LONG_INTEGER:
+			Log.i(tag, "Long Integer: " + data.getNumber());
+			return data.getNumber();
+		case DOUBLE_LONG_UNSIGNED:
+			Log.i(tag, "Double: " + data.getNumber());
+			return data.getNumber();
+		case VISIBLE_STRING:
+			Log.i(tag, "Visible String: ");
+			String visible = "";
+			for (byte b : data.getByteArray()) {
+				visible = visible + (char) b;
+			}
+			Log.i(tag, visible);
+			return visible;
+		case BIT_STRING:
+			Log.i(tag, "Bit String: ");
+			String hex = "";
+			for (byte b : data.getByteArray()) {
+				hex = hex + Integer.toBinaryString(b);
+			}
+			Log.i(tag, hex);
+			return hex;
+		case NULL_DATA:
+			Log.i(tag, "Null data ");
+			break;
+		default:
+			Log.i(tag, "Unknown type: " + data.getChoiceIndex());
+		}
+		
+		return null;
+	}
+	
 	private static void pduToXmlDebugDecode(Data data, int indent) {
 
 		for (int i = 0; i < indent; i++) {
@@ -195,7 +245,7 @@ public class DriverPduIO extends Activity {
 				// String hex = Integer.toHexString(b & 0xFF);
 				String hex = Integer.toString(b & 0xFF);
 				// hex = hex.length() == 1 ? "0" + hex : hex;
-				System.out.print(hex + ";");
+				Log.i(tag, hex + ";");
 			}
 			
 			break;
