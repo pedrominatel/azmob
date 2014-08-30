@@ -213,10 +213,10 @@ public class DriverPduIO extends Activity {
 		default:
 			Log.i(tag, "Unknown type: " + data.getChoiceIndex());
 		}
-		
+
 		return null;
 	}
-	
+
 	private static void pduToXmlDebugDecode(Data data, int indent) {
 
 		for (int i = 0; i < indent; i++) {
@@ -247,7 +247,7 @@ public class DriverPduIO extends Activity {
 				// hex = hex.length() == 1 ? "0" + hex : hex;
 				Log.i(tag, hex + ";");
 			}
-			
+
 			break;
 		case BOOL:
 			Log.i(tag, "Boolean: " + data.getBoolean());
@@ -332,11 +332,12 @@ public class DriverPduIO extends Activity {
 		return dateArray;
 	}
 
-	public boolean createXml(String serialNumber, String fileName, GetResult pdu, ObisCode obis,
-			int classId, int attribute) {
+	public boolean createXml(String serialNumber, String fileName,
+			GetResult pdu, ObisCode obis, int classId, int attribute) {
 		try {
 
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory
+					.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
 			// XML root elements
@@ -353,7 +354,8 @@ public class DriverPduIO extends Activity {
 			cosemObject.setAttribute("LogicalName", obis.getHexCode());
 			cosemObject.setAttribute("ClassId", Integer.toString(classId));
 			cosemObject.setAttribute("Index", Integer.toString(attribute));
-			cosemObject.setAttribute("ReadingDateTime", octetStringToString(encodeClock(Calendar.getInstance())));
+			cosemObject.setAttribute("ReadingDateTime",
+					octetStringToString(encodeClock(Calendar.getInstance())));
 			cosemObject.setAttribute("DataAccessResult", "success(0)");
 			cosemXML.appendChild(cosemObject);
 
@@ -365,17 +367,21 @@ public class DriverPduIO extends Activity {
 			pduToXml(pdu.getResultData(), xml, cosemData);
 
 			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			TransformerFactory transformerFactory = TransformerFactory
+					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 
 			// Set ident
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-			
+			transformer.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", "2");
+
 			Filesys fsys = new Filesys();
-			
-			String path = fsys.fsSys_createFolder(fsys.fsSys_getExtStorageDir(fsys.READOUTS_FOLDER), "/"+fsys.fsSys_dateStamp()+"/"+serialNumber);
-			
+
+			String path = fsys.fsSys_createFolder(
+					fsys.fsSys_getExtStorageDir(fsys.READOUTS_FOLDER), "/"
+							+ fsys.fsSys_dateStamp() + "/" + serialNumber);
+
 			DOMSource source = new DOMSource(xml);
 			StreamResult result = new StreamResult(new File(path, fileName));
 

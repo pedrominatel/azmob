@@ -9,12 +9,9 @@ import com.thinken.azmobmeter.utils.Logging;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -30,7 +27,7 @@ public class SplashScreen extends Activity {
 	private static int SPLASH_TIME_OUT = 4000;
 	private String tag = "SplashScreen";
 	private static final int REQUEST_ENABLE_BT = 1;
-	
+
 	Filesys fsys = new Filesys();
 	Logging log = new Logging();
 
@@ -45,15 +42,15 @@ public class SplashScreen extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_splash_screen);		
-		
+		setContentView(R.layout.activity_splash_screen);
+
 		// Check if the application is registred
 		CheckRegistration();
-		//Check free space at external memory
+		// Check free space at external memory
 		CheckExternalMemory();
-		//Check folders creation
+		// Check folders creation
 		CheckFoldersCreation();
-		//Check Bluetooth radio
+		// Check Bluetooth radio
 		CheckBlueToothState();
 
 	}
@@ -63,10 +60,18 @@ public class SplashScreen extends Activity {
 	 */
 	private void CheckRegistration() {
 		// TODO Auto-generated method stub
-		Log.i(tag, fsys.fsSys_timeStamp());
+		log.log(tag, log.INFO, fsys.fsSys_timeStamp(), true);
 		DeviceInfo dInfo = new DeviceInfo();
-		Log.i(tag, "IMEI "	+ dInfo.getIMEI(SplashScreen.this.getApplicationContext()));
-		Log.i(tag, "Subscribed Id "	+ dInfo.getSubId(SplashScreen.this.getApplicationContext()));
+		log.log(tag,
+				log.INFO,
+				"IMEI "
+						+ dInfo.deviceInfo_getIMEI(SplashScreen.this
+								.getApplicationContext()), true);
+		log.log(tag,
+				log.INFO,
+				"Subscribed Id "
+						+ dInfo.deviceInfo_getSubId(SplashScreen.this
+								.getApplicationContext()), true);
 	}
 
 	/**
@@ -76,10 +81,10 @@ public class SplashScreen extends Activity {
 		// TODO Auto-generated method stub
 		try {
 			fsys.fsSys_createFs();
-			Log.i(tag, "FS created");
+			log.log(tag, log.INFO, "FS created", true);
 		} catch (IOException e) {
-			Log.i(tag, "FS Error" + e.toString());
-			log.log(tag, log.INFO, "FS Error" + e.toString(), true);
+			log.log(tag, log.ERROR, "FS Error" + e.toString() + e.toString(),
+					true);
 		}
 	}
 
@@ -91,8 +96,11 @@ public class SplashScreen extends Activity {
 		log.log(tag, log.INFO, "Checking External Memory", true);
 		if (fsys.fsSys_checkExtMedia()) {
 			// TODO Warn window
-			if (fsys.fsSys_checkExtMediaFreeSize())
+			if (fsys.fsSys_checkExtMediaFreeSize()) {
 				alert("Alerta de Memoria", "Nivel de memoria baixa!");
+				log.log(tag, log.INFO,
+						"Alerta de Memoria - Nivel de memoria baixa!", true);
+			}
 		}
 	}
 
@@ -115,15 +123,18 @@ public class SplashScreen extends Activity {
 	private void CheckBlueToothState() {
 
 		log.log(tag, log.INFO, "Checking Bluetooth state", true);
-		
+
 		BluetoothAdapter myBTadapter = BluetoothAdapter.getDefaultAdapter();
 		if (myBTadapter == null) {
-			Toast.makeText(getApplicationContext(),	"Device doesn't support Bluetooth", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),
+					"Device doesn't support Bluetooth", Toast.LENGTH_LONG)
+					.show();
 			log.log(tag, log.INFO, "Device doesn't support Bluetooth", true);
 		}
 
 		if (!myBTadapter.isEnabled()) {
-			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+			Intent enableBtIntent = new Intent(
+					BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		} else {
 			StartApplication();
@@ -135,11 +146,15 @@ public class SplashScreen extends Activity {
 		// TODO Auto-generated method stub
 		if (requestCode == REQUEST_ENABLE_BT) {
 			if (resultCode == RESULT_OK) {
-				Toast.makeText(getApplicationContext(),"BlueTooth is now Enabled", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),
+						"BlueTooth is now Enabled", Toast.LENGTH_LONG).show();
 				StartApplication();
 			}
 			if (resultCode == RESULT_CANCELED) {
-				log.log(tag, log.ERROR, "Error occured while enabling.Leaving the application...", true);
+				log.log(tag,
+						log.ERROR,
+						"Error occured while enabling.Leaving the application...",
+						true);
 				finish();
 			}
 		}

@@ -5,7 +5,7 @@ import android.telephony.TelephonyManager;
 
 public class DeviceInfo {
 
-	public String getIMEI(Context c) {
+	public String deviceInfo_getIMEI(Context c) {
 		//Returns the IMEI code
 		TelephonyManager telephonyManager;
 		telephonyManager = (TelephonyManager)c.getSystemService(Context.TELEPHONY_SERVICE);
@@ -13,7 +13,7 @@ public class DeviceInfo {
 
 	}
 	
-	public String getSubId(Context c) {
+	public String deviceInfo_getSubId(Context c) {
 		//Returns the Subscriber Id
 		TelephonyManager telephonyManager;
 		telephonyManager = (TelephonyManager)c.getSystemService(Context.TELEPHONY_SERVICE);

@@ -20,8 +20,6 @@ public class DriverManagement {
 		HdlcClientConnectionSettings hdlcConnSettings = new HdlcClientConnectionSettings(btSocket,
 		        new HdlcAddress(clientProfile), hdlcAddress, ReferencingMethod.LN);
 		
-		//Log.i("CONNECTION", "btDevice = "+hdlcConnSettings.getBtAddress());
-		
 		hdlcConnSettings.setAuthentication(Authentication.LOW);
 		hdlcConnSettings.setUseHandshake(false);
 		hdlcConnSettings.setConfirmedMode(ConfirmedMode.CONFIRMED);

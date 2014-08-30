@@ -214,26 +214,10 @@ public class DriverInterface {
 			log.log(tag, log.INFO, "Action Success!", true);
 			return true;
 		} else {
-			log.log(tag, log.WARNING, "Set Error "+setResult.toString(), true);
+			log.log(tag, log.WARNING, "Set Error "+actionResult.toString(), true);
 			return false;
 		}
 	}
-
-	//
-	// public static void setObjectEx(IClientConnection connection) {
-	// // TODO: Set clock example
-	//
-	// AccessResultCode setResult =
-	// data.SetObjectXML(connection,"C:\\read.xml"); //Set clock using octet
-	// string
-	//
-	// if (setResult == AccessResultCode.SUCCESS) {
-	// System.out.println("Set Success");
-	// } else {
-	// System.out.println("Set Error: " + setResult.toString());
-	// }
-	// }
-	//
 	
 	public void setClockObjectEx(IClientConnection connection) {
 		// TODO: Set clock example
