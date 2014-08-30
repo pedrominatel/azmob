@@ -1,6 +1,7 @@
 package com.thinken.azmobmeter;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import com.thinken.azmobmeter.utils.DeviceInfo;
 import com.thinken.azmobmeter.utils.Filesys;
@@ -10,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
@@ -82,9 +84,49 @@ public class SplashScreen extends Activity {
 		try {
 			fsys.fsSys_createFs();
 			log.log(tag, log.INFO, "FS created", true);
+
+			CheckMeterDataFiles();
+
 		} catch (IOException e) {
 			log.log(tag, log.ERROR, "FS Error" + e.toString() + e.toString(),
 					true);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void CheckMeterDataFiles() {
+		// TODO Auto-generated method stub
+
+		InputStream supported_meters = getResources().openRawResource(
+				R.raw.supported_meters);
+		InputStream common_objects = getResources().openRawResource(
+				R.raw.common_objects);
+
+		String supMetersExt = fsys.fsSys_getExtStorageDir(
+				fsys.METER_OBJECTS_FOLDER + "/supported_meters.xml")
+				.getAbsolutePath();
+		String commonObjExt = fsys.fsSys_getExtStorageDir(
+				fsys.METER_OBJECTS_FOLDER + "/common_objects.xml")
+				.getAbsolutePath();
+
+		if (!fsys.fsSys_checkFile(supMetersExt)) {
+			try {
+				fsys.fsSys_copyFile(supported_meters, supMetersExt);
+			} catch (IOException e) {
+				log.log(tag, log.ERROR,
+						"Copy Error" + e.toString() + e.toString(), true);
+			}
+		}
+
+		if (!fsys.fsSys_checkFile(commonObjExt)) {
+			try {
+				fsys.fsSys_copyFile(common_objects, commonObjExt);
+			} catch (IOException e) {
+				log.log(tag, log.ERROR,
+						"Copy Error" + e.toString() + e.toString(), true);
+			}
 		}
 	}
 
@@ -98,7 +140,7 @@ public class SplashScreen extends Activity {
 			// TODO Warn window
 			if (fsys.fsSys_checkExtMediaFreeSize()) {
 				alert("Alerta de Memoria", "Nivel de memoria baixa!");
-				log.log(tag, log.INFO,
+				log.log(tag, log.WARNING,
 						"Alerta de Memoria - Nivel de memoria baixa!", true);
 			}
 		}
