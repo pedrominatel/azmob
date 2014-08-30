@@ -1,5 +1,5 @@
 package com.thinken.azmobmeter.driver;
 
-public class DriverSetup {
+public class Driver {
 
 }

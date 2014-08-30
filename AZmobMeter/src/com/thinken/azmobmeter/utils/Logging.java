@@ -40,7 +40,7 @@ public class Logging {
 		}
 		
 		if(outputFile){
-			logFile.fsSys_createLog(strLog, level);
+			logFile.fsSys_createLog(module+": "+strLog, level);
 		}
 		
 	}

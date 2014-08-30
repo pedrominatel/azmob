@@ -7,23 +7,49 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/azmod_banner" />
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/azmod_banner"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@drawable/azmod_banner" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/txt_serialNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SerialNumber"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/txt_firmwareVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="FirmwareVersion"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                
+            </LinearLayout>
+        </LinearLayout>
 
         <ExpandableListView
-            android:id="@+id/expandableListView1"
+            android:id="@+id/list_readoutItens"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
         </ExpandableListView>
-
+        
     </LinearLayout>
-    
 
 </LinearLayout>

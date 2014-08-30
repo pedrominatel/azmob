@@ -71,6 +71,15 @@ public class MeterMenu extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void openMeterRead(View view) {
+
+		//Read Serial Number
+		//Read Fw Version
+		
+		Intent intent = new Intent(MeterMenu.this, MeterReadout.class);
+		startActivity(intent);
+	}
+	
 	public void connectToMeter(View view) {
 		
 		if (!btOpen) {
@@ -95,18 +104,14 @@ public class MeterMenu extends Activity {
 		if(serial!=null)		
 			Log.i(tag, "Meter Serial Number: " + serial);
 		
-		if(tst.getFirmwareVersion(conn, serial)){
-			Toast.makeText(getApplicationContext(),"Leitura Realizada!", 0).show();
-		} else {
-			Toast.makeText(getApplicationContext(),"Erro na Leitura!!", 0).show();
-		}
+		String fwVersion = tst.getFirmwareVersion(conn);
 		
-		if(tst.getObjectEx(conn)){
-			Toast.makeText(getApplicationContext(),"Leitura Realizada!", 0).show();
-		} else {
-			Toast.makeText(getApplicationContext(),"Erro na Leitura!!", 0).show();
-		}
+		if(fwVersion!=null)		
+			Log.i(tag, "Meter Firmware Version: " + fwVersion);
 		
+		if(!tst.getObjectEx(conn))
+			Toast.makeText(getApplicationContext(),"Erro na Leitura!", 0).show();
+
 	}
 	
 	public void clearAlarms(View view) {

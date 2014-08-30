@@ -9,9 +9,9 @@ import org.openmuc.jdlms.client.MethodResult;
 import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
+import com.thinken.azmobmeter.utils.Logging;
+
 import android.bluetooth.BluetoothSocket;
-import android.util.Log;
-import android.widget.Toast;
 
 public class DriverInterface {
 
@@ -24,6 +24,8 @@ public class DriverInterface {
 	private DriverDataExchange data = new DriverDataExchange();
 	private DriverPduIO parser = new DriverPduIO();
 	
+	Logging log = new Logging();
+	
 	private String tag = "DriverInterface";
 
 	public IClientConnection connect(BluetoothSocket socket) throws InterruptedException {
@@ -33,29 +35,21 @@ public class DriverInterface {
 		IClientConnection connection = connManager.buildHDLCConnection(hdlcAddress, socket, 1);
 
 		try {
-			Log.i(tag, "Trying to connect...");
-			// Create the connection and connect using HDLC
-			Log.i(tag, "Connecting...");
+			log.log(tag, log.INFO, "Connecting", true);
 
 			if (!connection.isConnected()) {
 				connection.connect(CONN_TIMEOUT, "ABCDEFGH".getBytes("US-ASCII"));
 			}
 
 			if (connection.isConnected()) {
-				Log.i(tag, "Connected!");
-
-				// // getObjectWithSelectorEx(connection);
-				//
-				// //Thread.sleep(1000);
-				// //if(setActionEx(connection))
-				// connection.disconnect(false);
-				//
-				// // setObjectEx(connection);
+				log.log(tag, log.INFO, "Connected", true);
 			}
 
 		} catch (IOException ex) {
+			log.log(tag, log.ERROR, ex.toString(), true);
 			return null;
 		} catch (Exception ex) {
+			log.log(tag, log.ERROR, ex.toString(), true);
 			return null;
 		}
 		return connection;
@@ -82,11 +76,11 @@ public class DriverInterface {
 		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
 		if (getResult.isSuccess()) {
-			Log.i(tag, "Success!");
+			log.log(tag, log.INFO, "Read Success!", true);
 			parser.createXml("1234567890", "read.xml", getResult, obis, classId, attribute); //this function create the XML file using the
 			return true;
 		} else {
-			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+			log.log(tag, log.WARNING, "Read Error " + getResult.getResultCode(), true);
 			return false;
 		}
 	}
@@ -96,11 +90,11 @@ public class DriverInterface {
 		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
 		if (getResult.isSuccess()) {
-			Log.i(tag, "Success!");
+			log.log(tag, log.INFO, "Read Success!", true);
 			parser.createXml(serialNumber, object+".xml", getResult, obis, classId, attribute); //this function create the XML file using the
 			return true;
 		} else {
-			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+			log.log(tag, log.WARNING, "Read Error " + getResult.getResultCode(), true);
 			return false;
 		}
 	}
@@ -118,18 +112,17 @@ public class DriverInterface {
 		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
 		if (getResult.isSuccess()) {
-			Log.i(tag, "getSerialNumber Success!");
+			log.log(tag, log.INFO, "Read Success!", true);
 			serialNumber = (String)parser.pdu_decodeSingleNode(getResult.getResultData());
 		} else {
-			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
+			log.log(tag, log.WARNING, "Read Error " + getResult.getResultCode(), true);
 			return null;
 		}
-		
 		
 		return serialNumber;
 	}
 	
-	public boolean getFirmwareVersion(IClientConnection connection, String version) {
+	public String getFirmwareVersion(IClientConnection connection) {
 		//XXX get firmware version
 		//<CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2">
 		ObisCode obis = new ObisCode(0,0,142,1,3,255);//index parameters
@@ -140,21 +133,19 @@ public class DriverInterface {
 
 		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
-		if (getResult.isSuccess()) {
-			Log.i(tag, "Success!");
+		if (!getResult.isSuccess()) {
+			log.log(tag, log.INFO, "Read Success!", true);
 			parser.pduToXmlDebug(getResult);
 		} else {
-			Log.i(tag, "Reading Error. ErrorCode: " + getResult.getResultCode());
-			return false;
+			log.log(tag, log.WARNING, "Read Error " + getResult.getResultCode(), true);
+			return null;
 		}
 		
-		version = firmwareVersion;
-		
-		return true;
+		return firmwareVersion;
 	}
 	
 	public String getDateTime() {
-		//XXX get firmware version
+		//XXX get dateandtime
 		return "";
 	}
 	
@@ -215,16 +206,15 @@ public class DriverInterface {
 	//
 	public boolean setActionEx(IClientConnection connection) {
 		// TODO: Action example
-		Log.i(tag, "Action...");
 		// ResetNonFatalAlarmScriptTable
 		ObisCode obisAction = new ObisCode(0, 0, 10, 1, 0, 255);
 		MethodResult actionResult = data.Action(connection, obisAction, 9, 1, 1);
 
 		if (actionResult.isSuccess()) {
-			Log.i(tag, "Action success...");
+			log.log(tag, log.INFO, "Action Success!", true);
 			return true;
 		} else {
-			Log.i(tag, "Action error...");
+			log.log(tag, log.WARNING, "Set Error "+setResult.toString(), true);
 			return false;
 		}
 	}
@@ -249,20 +239,13 @@ public class DriverInterface {
 		// TODO: Set clock example
 
 		ObisCode obisSet = new ObisCode(0, 0, 1, 0, 0, 255);
-
-		byte[] dateOctet = { (byte) 0x07, (byte) 0xde, (byte) 0x01,
-				(byte) 0x01, (byte) 0xFF, (byte) 0x00, (byte) 0x00,
-				(byte) 0x00, (byte) 0xff, (byte) 0x80, (byte) 0x00, (byte) 0x00 };
 		
-		AccessResultCode setResult = data.SetDateTimeObject(connection,
-				obisSet, 8, 2, dateOctet); // Set clock using octet string
-		// AccessResultCode setResult = data.SetDateTimeObject(connection, obis,
-		// 8, 2); //Set clock using system time
+		AccessResultCode setResult = data.SetDateTime(connection, obisSet, 8, 2); //Set clock using system time
 
 		if (setResult == AccessResultCode.SUCCESS) {
-			Log.i(tag, "Set Success");
+			log.log(tag, log.INFO, "Set Success!", true);
 		} else {
-			Log.i(tag, "Set Error: " + setResult.toString());
+			log.log(tag, log.WARNING, "Set Error "+setResult.toString(), true);
 		}
 	}
 

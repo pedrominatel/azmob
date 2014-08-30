@@ -48,28 +48,6 @@ public class DriverDataExchange {
 		return result;
 	}
 	
-//GetObjectXML
-//	in Connection
-//	in FilePath
-//	out GetResult
-//	public GetResult GetObjectXml(IClientConnection connection, String xmlFilePath){
-//		// Get parameter to read
-//		
-//		//itr_driver_parse_pduXml parse = new itr_driver_parse_pduXml();
-//		//parse.xmlHeader(obis, classId, attributeId);
-//		
-//		GetRequest getObject = new GetRequest(classId, obis, attributeId);
-//		GetResult result = null;
-//		// Read entire event log
-//		try {
-//			List<GetResult> getResults = connection.get(HIGH_TIMEOUT, true, getObject); //set the timeout with more than 15s for big data i.e Events
-//			result = getResults.get(0); 
-//		} catch (Exception e) {
-//			return null;
-//		}
-//		return result;
-//	}
-	
 //GetObjectWithSelector
 //	in Connection
 //	in ObisCode
@@ -160,7 +138,7 @@ return result;
 //	in ObisCode
 //	in ClassID
 //	out AccessResultCode
-public AccessResultCode SetDateTimeObject(IClientConnection connection, ObisCode obis, int classId, int attributeId){
+public AccessResultCode SetDateTime(IClientConnection connection, ObisCode obis, int classId, int attributeId){
 	
 	// Get parameter to read
 	SetRequest setObject = new SetRequest(classId, obis, attributeId);
@@ -185,7 +163,7 @@ public AccessResultCode SetDateTimeObject(IClientConnection connection, ObisCode
 //	in ObisCode
 //	in ClassID
 //	out AccessResultCode
-public AccessResultCode SetDateTimeObject(IClientConnection connection, ObisCode obis, int classId, int attributeId, byte[] dateOctet){
+public AccessResultCode SetDateTime(IClientConnection connection, ObisCode obis, int classId, int attributeId, byte[] dateOctet){
 	
 	// Get parameter to read
 	SetRequest setObject = new SetRequest(classId, obis, attributeId);
@@ -221,26 +199,5 @@ public AccessResultCode SetDateTimeObject(IClientConnection connection, ObisCode
 		}
 		return result;
 	}
-
-//Action
-//	in Connection
-//	in ObisCode
-//	in ClassID
-//	out MethodResult
-//	public MethodResult ActionXml(IClientConnection connection, ObisCode obis, int classId, int attributeId){
-//		// Action
-//		MethodRequest action = new MethodRequest(classId, obis, attributeId);
-//		action.data().setUnsigned16(data);
-//		MethodResult result = null;
-//		// Read entire event log
-//		try {
-//			List<MethodResult> actionResults = connection.action(LOW_TIMEOUT, action);
-//			result = actionResults.get(0); 
-//		} catch (Exception e) {
-//			return null;
-//		}
-//		return result;
-//	}
-	
 	
 }

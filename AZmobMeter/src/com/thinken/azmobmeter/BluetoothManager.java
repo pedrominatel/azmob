@@ -235,7 +235,7 @@ public class BluetoothManager extends Activity implements OnItemClickListener {
 			BluetoothManager.this.finish();
 
 		} else {
-			Toast.makeText(getApplicationContext(), "device is not paired", 0)
+			Toast.makeText(getApplicationContext(), "Device nao pareado!", 0)
 					.show();
 		}
 	}

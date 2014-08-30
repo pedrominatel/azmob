@@ -139,7 +139,7 @@ public class SplashScreen extends Activity {
 				StartApplication();
 			}
 			if (resultCode == RESULT_CANCELED) {
-				Toast.makeText(getApplicationContext(),"Error occured while enabling.Leaving the application..",Toast.LENGTH_LONG).show();
+				log.log(tag, log.ERROR, "Error occured while enabling.Leaving the application...", true);
 				finish();
 			}
 		}
