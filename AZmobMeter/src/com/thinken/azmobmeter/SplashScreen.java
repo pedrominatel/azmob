@@ -3,6 +3,9 @@ package com.thinken.azmobmeter;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.xmlpull.v1.sax2.Driver;
+
+import com.thinken.azmobmeter.driver.DriverUtils;
 import com.thinken.azmobmeter.utils.DeviceInfo;
 import com.thinken.azmobmeter.utils.Filesys;
 import com.thinken.azmobmeter.utils.Logging;
@@ -26,13 +29,15 @@ import android.widget.Toast;
  */
 public class SplashScreen extends Activity {
 	// Splash screen timer
-	private static int SPLASH_TIME_OUT = 4000;
+	private static int SPLASH_TIME_OUT = 2000;
 	private String tag = "SplashScreen";
 	private static final int REQUEST_ENABLE_BT = 1;
 
 	Filesys fsys = new Filesys();
 	Logging log = new Logging();
 
+	DriverUtils d = new DriverUtils();
+	
 	/** Called when the activity is first created. */
 	BluetoothAdapter bluetoothAdapter;
 
@@ -52,6 +57,9 @@ public class SplashScreen extends Activity {
 		CheckExternalMemory();
 		// Check folders creation
 		CheckFoldersCreation();
+		
+		d.driver_getObjectsGroupsNames("SL7000", "07.21A.00");
+		
 		// Check Bluetooth radio
 		CheckBlueToothState();
 
