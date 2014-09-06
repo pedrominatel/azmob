@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CosemXML Version="1.0.0">
-	<ObjectsList Name="Common" FirmwareVersion="Generic">
-		<CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2" />
+<MeterInfo Version="1.0.0" Model="sl7000" FirmwareVersion="generic">
+
+    <Groups>
+      	<ReadingGroup Name="Faturamento" Desc="Executa faturamento e le registradores">
+		</ReadingGroup>
+		<ReadingGroup Name="Verificacao" Desc="Le dados atuais">
+		</ReadingGroup>
+		<ReadingGroup Name="Recuperacao" Desc="Le dados do ultimo faturamento">
+		</ReadingGroup>
+		<ReadingGroup Name="Valores Instantaneos" Desc="Le valores instantaneos">
+		    <CosemObject Name="AllRmsValues" LogicalName="1;1;98;128;4;255;" ClassId="7" Index="2" />
+			<CosemObject Name="AllInstantaneousPowers" LogicalName="1;1;98;128;3;255;" ClassId="7" Index="2" />
+		</ReadingGroup>
+		<ReadingGroup Name="Alarmes" Desc="Le dados do ultimo faturamento">
+		</ReadingGroup>
+		<ReadingGroup Name="Memoria de massa" Desc="Le dados do ultimo faturamento">
+			<CosemObject Name="LoadProfile1ChannelParameters" LogicalName="0;0;136;0;2;255;" ClassId="1" Index="2" />
+			<CosemObject Name="LoadProfile1RecordingIntervalDuration" LogicalName="1;1;0;8;4;255;" ClassId="3" Index="2" />
+			<CosemObject Name="LoadProfile1Data" LogicalName="0;0;99;1;0;255;" ClassId="7" Index="2" />
+			<CosemObject Name="LoadProfile2ChannelParameters" LogicalName="0;0;136;1;2;255;" ClassId="1" Index="2" />
+			<CosemObject Name="LoadProfile2RecordingIntervalDuration" LogicalName="1;1;0;8;5;255;" ClassId="3" Index="2" />
+			<CosemObject Name="LoadProfile2Data" LogicalName="0;0;99;2;0;255;" ClassId="7" Index="2" />
+		</ReadingGroup>  
+    </Groups>	
+
+    <Objects>
+        <CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2" />
 		<CosemObject Name="SerialNumber" LogicalName="0;0;96;1;0;255;" ClassId="1" Index="2" />
 		<CosemObject Name="BatteryVoltage" LogicalName="0;0;96;6;3;255;" ClassId="3" Index="2" />
 		<CosemObject Name="CurrentDateAndTime" LogicalName="0;0;1;0;0;255;" ClassId="8" Index="2" />
@@ -20,5 +44,5 @@
 		<CosemObject Name="CTNumeratorParameters" LogicalName="1;1;0;4;2;255;" ClassId="1" Index="2" />
 		<CosemObject Name="VTDenominatorParameters" LogicalName="1;1;0;4;6;255;" ClassId="1" Index="2" />
 		<CosemObject Name="VTNumeratorParameters" LogicalName="1;1;0;4;3;255;" ClassId="1" Index="2" />
-	</ObjectsList>
-</CosemXML>
+    </Objects>
+</MeterInfo>

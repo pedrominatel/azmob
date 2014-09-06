@@ -12,6 +12,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.thinken.azmobmeter.SplashScreen;
 import com.thinken.azmobmeter.utils.Filesys;
 import com.thinken.azmobmeter.utils.Logging;
 
@@ -29,13 +30,13 @@ public class DriverUtils {
 		return supportedMeters;
 	}
 
-	public List<String> driver_getObjectsGroupsNames(String meterType, String firmwareVersion) {
+	public List<String[]> driver_getObjectsGroupsNames(String meterType, String firmwareVersion) {
 		//List
-		List<String> objGroupNames = new ArrayList<String>();
+		List<String[]> objGroupNames = new ArrayList<String[]>();
 		
 		try {
 			
-			String supMetersExt = fsys.fsSys_getExtStorageDir(fsys.METER_OBJECTS_FOLDER + "/supported_meters.xml").getAbsolutePath();
+			String supMetersExt = fsys.fsSys_getExtStorageDir(fsys.METER_OBJECTS_FOLDER + "/"+meterType+"_"+firmwareVersion+".xml").getAbsolutePath();
 			
 			File file = new File(supMetersExt);
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -44,45 +45,81 @@ public class DriverUtils {
 			
 			doc.getDocumentElement().normalize();
 			
-			//Get Node <Meter>
-			NodeList nList = doc.getElementsByTagName("Meter");
+			NodeList flowList = doc.getElementsByTagName("Groups");
 			
-			for (int i = 0; i < nList.getLength(); i++) {
-				 
-				Node nNode = nList.item(i);
-		 
-				//log.log(tag, log.INFO, "\nCurrent Element :" + nNode.getNodeName(), false);
+			for (int i = 0; i < flowList.getLength(); i++) {
 				
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					 
-					Element eElement = (Element) nNode;
-		 
-					String meterTypeCheck = eElement.getAttribute("Model");
-					String firmwareVerCheck = eElement.getAttribute("FirmwareVersion");
+				NodeList childList = flowList.item(i).getChildNodes();
+				
+				for (int j = 0; j < childList.getLength(); j++) {
 					
-					if(meterType.equals(meterTypeCheck)&&firmwareVersion.equals(firmwareVerCheck)) {
-						
-						NodeList groups = eElement.getElementsByTagName("ReadingGroup");
-						
-							for (int c = 0; c < groups.getLength(); c++) {
-								
-								Node group = groups.item(c);
-								
-								if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-									Element groupNode = (Element) group;
-									
-									String id = groupNode.getAttribute("Id");
-									String name = groupNode.getAttribute("Name");
-									String desc = groupNode.getAttribute("Desc");
-									
-									System.out.println(id);
-									System.out.println(name);
-									System.out.println(desc);
-								}
-							}
-					}		
+					Node childNode = childList.item(j);
+					
+					if ("ReadingGroup".equals(childNode.getNodeName())) {
+
+						if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+
+							Element groupNode = (Element) childNode;
+
+							String[] groupInfo  = new String[2];
+							
+							groupInfo[0] = groupNode.getAttribute("Name");
+							groupInfo[0] = groupNode.getAttribute("Desc");
+
+							objGroupNames.add(groupInfo);
+						}
+					}
 				}
 			}
+			
+			
+//			//Get Node <Meter>
+//			NodeList nList = doc.getElementsByTagName("Groups");
+//			
+//			for (int i = 0; i < nList.getLength(); i++) {
+//
+//				Node nNode = nList.item(i);
+//
+//				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//
+//					Element eElement = (Element) nNode;
+//
+//					String meterTypeCheck = eElement.getAttribute("Model");
+//					String firmwareVerCheck = eElement.getAttribute("FirmwareVersion");
+//
+//					if (meterType.equals(meterTypeCheck)&&firmwareVersion.equals(firmwareVerCheck)) {
+//
+//						NodeList groups = eElement.getElementsByTagName("Groups");
+//						
+//						for (int c = 0; c < groups.getLength(); c++) {
+//							
+//							NodeList readingGroup = groups.item(i).getChildNodes();
+//							
+//					        for (int j = 0; j < readingGroup.getLength(); j++) {
+//					            Node childNode = readingGroup.item(j);
+//					            if ("ReadingGroup".equals(childNode.getNodeName())) {
+//					            	
+//					        		log.log(tag, log.INFO,readingGroup.item(j).getTextContent().trim(), false);
+//					            	
+//					            }
+//					        }
+//
+//							Node group = groups.item(c);
+//
+//							if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//								
+//								Element groupNode = (Element) group;
+//
+//								//String id = groupNode.getAttribute("Id");
+//								String name = groupNode.getAttribute("Name");
+//								//String desc = groupNode.getAttribute("Desc");
+//								
+//								objGroupNames.add(name);	
+//							}
+//						}
+//					}
+//				}
+//			}
 			
 		} catch (Exception e) {
 			return null;

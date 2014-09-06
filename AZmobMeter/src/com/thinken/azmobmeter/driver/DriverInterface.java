@@ -28,7 +28,10 @@ public class DriverInterface {
 	
 	private String tag = "DriverInterface";
 
-	public IClientConnection connect(BluetoothSocket socket) throws InterruptedException {
+	/**
+	 * 
+	 */
+	public IClientConnection mtr_connect(BluetoothSocket socket) throws InterruptedException {
 		// TODO Auto-generated method stub
 
 		HdlcAddress hdlcAddress = new HdlcAddress(dlms_upperAddress, dlms_lowerAddress, dlms_addressSize);
@@ -55,15 +58,21 @@ public class DriverInterface {
 		return connection;
 	}
 
-	public void disconnect(IClientConnection conn) {
+	/**
+	 * 
+	 */
+	public void mtr_disconnect(IClientConnection conn) {
 
 		if (conn.isConnected()) {
-			conn.disconnect(false);
+			conn.disconnect(false);	
 		}
 
 	}
 
-	public boolean getObjectEx(IClientConnection connection) {
+	/**
+	 * 
+	 */
+	public boolean mtr_get_Object(IClientConnection connection) {
 		// TODO: Get clock example
 		// ObisCode obis = new ObisCode(0,0,98,133,5,255);//this function create
 		// the OBIS code structure using the six elements as integer
@@ -85,7 +94,10 @@ public class DriverInterface {
 		}
 	}
 	
-	public boolean getObjectEx(IClientConnection connection, String serialNumber, String object, ObisCode obis, int classId, int attribute) {
+	/**
+	 * 
+	 */
+	public boolean mtr_get_Object(IClientConnection connection, String serialNumber, String object, ObisCode obis, int classId, int attribute) {
 
 		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
@@ -99,7 +111,10 @@ public class DriverInterface {
 		}
 	}
 	
-	public String getSerialNumber(IClientConnection connection) {
+	/**
+	 * 
+	 */
+	public String mtr_get_SerialNumber(IClientConnection connection) {
 		//XXX get serial number
 		//<CosemObject Name="SerialNumber" LogicalName="0;0;96;1;0;255;" ClassId="1" Index="2">
 		
@@ -122,7 +137,10 @@ public class DriverInterface {
 		return serialNumber;
 	}
 	
-	public String getFirmwareVersion(IClientConnection connection) {
+	/**
+	 * 
+	 */
+	public String mtr_get_FirmwareVersion(IClientConnection connection) {
 		//XXX get firmware version
 		//<CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2">
 		ObisCode obis = new ObisCode(0,0,142,1,3,255);//index parameters
@@ -144,7 +162,10 @@ public class DriverInterface {
 		return firmwareVersion;
 	}
 	
-	public String getDateTime() {
+	/**
+	 * 
+	 */
+	public String mtr_get_CurrentDateTime() {
 		//XXX get dateandtime
 		return "";
 	}
@@ -204,7 +225,11 @@ public class DriverInterface {
 	// }
 	// }
 	//
-	public boolean setActionEx(IClientConnection connection) {
+	
+	/**
+	 * 
+	 */
+	public boolean mtr_action_ResetNonFatalAlarmScriptTable(IClientConnection connection) {
 		// TODO: Action example
 		// ResetNonFatalAlarmScriptTable
 		ObisCode obisAction = new ObisCode(0, 0, 10, 1, 0, 255);
@@ -219,7 +244,29 @@ public class DriverInterface {
 		}
 	}
 	
-	public void setClockObjectEx(IClientConnection connection) {
+	/**
+	 * 
+	 */
+	public boolean mtr_action_AsynchronousEOBScriptTable(IClientConnection connection) {
+		// TODO Auto-generated method stub
+		// TODO: Action example
+		// ResetNonFatalAlarmScriptTable
+		ObisCode obisAction = new ObisCode(0, 0, 10, 0, 1, 255);
+		MethodResult actionResult = data.Action(connection, obisAction, 9, 1, 1);
+
+		if (actionResult.isSuccess()) {
+			log.log(tag, log.INFO, "Action Success!", true);
+			return true;
+		} else {
+			log.log(tag, log.WARNING, "Set Error "+actionResult.toString(), true);
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void mtr_set_CurrentDateAndTime(IClientConnection connection) {
 		// TODO: Set clock example
 
 		ObisCode obisSet = new ObisCode(0, 0, 1, 0, 0, 255);

@@ -87,7 +87,7 @@ public class MeterMenu extends Activity {
 		}
 		
 		try {
-			conn = tst.connect(btSocket);
+			conn = tst.mtr_connect(btSocket);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			Log.i(tag, "Connecting Error: " + e.toString());
@@ -99,17 +99,17 @@ public class MeterMenu extends Activity {
 //			Log.i(tag, "FileSys Error: " + e.toString());
 //		}
 		
-		String serial = tst.getSerialNumber(conn);
+		String serial = tst.mtr_get_SerialNumber(conn);
 		
 		if(serial!=null)		
 			Log.i(tag, "Meter Serial Number: " + serial);
 		
-		String fwVersion = tst.getFirmwareVersion(conn);
+		String fwVersion = tst.mtr_get_FirmwareVersion(conn);
 		
 		if(fwVersion!=null)		
 			Log.i(tag, "Meter Firmware Version: " + fwVersion);
 		
-		if(!tst.getObjectEx(conn))
+		if(!tst.mtr_get_Object(conn))
 			Toast.makeText(getApplicationContext(),"Erro na Leitura!", 0).show();
 
 	}
@@ -121,13 +121,13 @@ public class MeterMenu extends Activity {
 		}
 		
 		try {
-			conn = tst.connect(btSocket);
+			conn = tst.mtr_connect(btSocket);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			Log.i(tag, "Connecting Error: " + e.toString());
 		}
 		
-		if(tst.setActionEx(conn)) {
+		if(tst.mtr_action_ResetNonFatalAlarmScriptTable(conn)) {
 			Toast.makeText(getApplicationContext(),"Sucesso na operacao!", 0).show();
 		} else {
 			Toast.makeText(getApplicationContext(),"Erro na operacao!", 0).show();
@@ -141,7 +141,7 @@ public class MeterMenu extends Activity {
 	public void disconnect(View view) {
 
 		try {
-			tst.disconnect(conn);
+			tst.mtr_disconnect(conn);
 			closeBluetooth();
 			btOpen = false;
 		} catch (Exception e) {
