@@ -37,8 +37,6 @@ public class SplashScreen extends Activity {
 
 	Filesys fsys = new Filesys();
 	Logging log = new Logging();
-
-	DriverUtils d = new DriverUtils();
 	
 	/** Called when the activity is first created. */
 	BluetoothAdapter bluetoothAdapter;
@@ -59,9 +57,6 @@ public class SplashScreen extends Activity {
 		CheckExternalMemory();
 		// Check folders creation
 		CheckFoldersCreation();
-		
-		d.driver_getObjectsGroupsNames("sl7000", "0721");
-		
 		// Check Bluetooth radio
 		CheckBlueToothState();
 

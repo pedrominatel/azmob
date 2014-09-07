@@ -40,16 +40,24 @@
                     android:layout_gravity="center"
                     android:text="FirmwareVersion"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/txt_objectList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Selecione a Leitura:"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
                 
             </LinearLayout>
         </LinearLayout>
-
-        <ExpandableListView
-            android:id="@+id/list_readoutItens"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ExpandableListView>
         
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>

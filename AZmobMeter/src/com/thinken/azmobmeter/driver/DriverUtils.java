@@ -64,63 +64,13 @@ public class DriverUtils {
 							String[] groupInfo  = new String[2];
 							
 							groupInfo[0] = groupNode.getAttribute("Name");
-							groupInfo[0] = groupNode.getAttribute("Desc");
+							groupInfo[1] = groupNode.getAttribute("Desc");
 
 							objGroupNames.add(groupInfo);
 						}
 					}
 				}
 			}
-			
-			
-//			//Get Node <Meter>
-//			NodeList nList = doc.getElementsByTagName("Groups");
-//			
-//			for (int i = 0; i < nList.getLength(); i++) {
-//
-//				Node nNode = nList.item(i);
-//
-//				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-//
-//					Element eElement = (Element) nNode;
-//
-//					String meterTypeCheck = eElement.getAttribute("Model");
-//					String firmwareVerCheck = eElement.getAttribute("FirmwareVersion");
-//
-//					if (meterType.equals(meterTypeCheck)&&firmwareVersion.equals(firmwareVerCheck)) {
-//
-//						NodeList groups = eElement.getElementsByTagName("Groups");
-//						
-//						for (int c = 0; c < groups.getLength(); c++) {
-//							
-//							NodeList readingGroup = groups.item(i).getChildNodes();
-//							
-//					        for (int j = 0; j < readingGroup.getLength(); j++) {
-//					            Node childNode = readingGroup.item(j);
-//					            if ("ReadingGroup".equals(childNode.getNodeName())) {
-//					            	
-//					        		log.log(tag, log.INFO,readingGroup.item(j).getTextContent().trim(), false);
-//					            	
-//					            }
-//					        }
-//
-//							Node group = groups.item(c);
-//
-//							if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-//								
-//								Element groupNode = (Element) group;
-//
-//								//String id = groupNode.getAttribute("Id");
-//								String name = groupNode.getAttribute("Name");
-//								//String desc = groupNode.getAttribute("Desc");
-//								
-//								objGroupNames.add(name);	
-//							}
-//						}
-//					}
-//				}
-//			}
-			
 		} catch (Exception e) {
 			return null;
 		}		
@@ -128,9 +78,174 @@ public class DriverUtils {
 		return objGroupNames;
 	}
 	
-	public List<Object> driver_getCommonObjects(String objectName) {
+	public List<String[]> driver_getObjectsGroupsNames(String meterType, String firmwareVersion, String groupName) {
 		//List
-		List<Object> commonObj = new ArrayList<Object>();
+		List<String[]> objGroupNames = new ArrayList<String[]>();
+		
+		try {
+			
+			String supMetersExt = fsys.fsSys_getExtStorageDir(fsys.METER_OBJECTS_FOLDER + "/"+meterType+"_"+firmwareVersion+".xml").getAbsolutePath();
+			
+			File file = new File(supMetersExt);
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			// Parse the XML
+			Document doc = dBuilder.parse(file);
+			
+			doc.getDocumentElement().normalize();
+			
+			NodeList flowList = doc.getElementsByTagName("Groups");
+			
+			for (int i = 0; i < flowList.getLength(); i++) {
+				
+				NodeList childList = flowList.item(i).getChildNodes();
+				
+				for (int j = 0; j < childList.getLength(); j++) {
+					
+					Node childNode = childList.item(j);
+					
+					if ("ReadingGroup".equals(childNode.getNodeName())) {
+
+						if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+
+							Element groupNode = (Element) childNode;
+
+							if(groupNode.getAttribute("Name").equals(groupName)) {
+								
+								NodeList objects = childList.item(i).getChildNodes();
+								
+								for (int k = 0; k < objects.getLength(); k++) {
+									
+									Node object = objects.item(k);
+									
+									if ("CosemObject".equals(object.getNodeName())) {
+
+										if (object.getNodeType() == Node.ELEMENT_NODE) {
+
+											Element objectNode = (Element) object;
+											
+											String[] objectInfo  = new String[4];
+											
+											objectInfo[0] = objectNode.getAttribute("Name");
+											objectInfo[1] = objectNode.getAttribute("LogicalName");
+											objectInfo[2] = objectNode.getAttribute("ClassId");
+											objectInfo[3] = objectNode.getAttribute("Index");
+											objGroupNames.add(objectInfo);
+											break;
+											
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			return null;
+		}		
+		
+		return objGroupNames;
+	}
+	
+	public List<String[]> driver_getCommonObjects(String meterType, String firmwareVersion) {
+
+		List<String[]> commonObj = new ArrayList<String[]>();
+		
+		try {
+			
+			String supMetersExt = fsys.fsSys_getExtStorageDir(fsys.METER_OBJECTS_FOLDER + "/"+meterType+"_"+firmwareVersion+".xml").getAbsolutePath();
+			
+			File file = new File(supMetersExt);
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			// Parse the XML
+			Document doc = dBuilder.parse(file);
+			
+			doc.getDocumentElement().normalize();
+			
+			NodeList flowList = doc.getElementsByTagName("Objects");
+			
+			for (int i = 0; i < flowList.getLength(); i++) {
+				
+				NodeList childList = flowList.item(i).getChildNodes();
+				
+				for (int j = 0; j < childList.getLength(); j++) {
+					
+					Node childNode = childList.item(j);
+					
+					if ("CosemObject".equals(childNode.getNodeName())) {
+
+						if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+
+							Element groupNode = (Element) childNode;
+
+							String[] objectInfo  = new String[4];
+							
+							objectInfo[0] = groupNode.getAttribute("Name");
+							objectInfo[1] = groupNode.getAttribute("LogicalName");
+							objectInfo[2] = groupNode.getAttribute("ClassId");
+							objectInfo[3] = groupNode.getAttribute("Index");
+
+							commonObj.add(objectInfo);
+							
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		
+		return commonObj;
+	}
+	
+	public List<String[]> driver_getCommonObjects(String meterType, String firmwareVersion, String objectName) {
+
+		List<String[]> commonObj = new ArrayList<String[]>();
+		
+		try {
+			
+			String supMetersExt = fsys.fsSys_getExtStorageDir(fsys.METER_OBJECTS_FOLDER + "/"+meterType+"_"+firmwareVersion+".xml").getAbsolutePath();
+			
+			File file = new File(supMetersExt);
+			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			// Parse the XML
+			Document doc = dBuilder.parse(file);
+			
+			doc.getDocumentElement().normalize();
+			
+			NodeList flowList = doc.getElementsByTagName("Objects");
+			
+			for (int i = 0; i < flowList.getLength(); i++) {
+				
+				NodeList childList = flowList.item(i).getChildNodes();
+				
+				for (int j = 0; j < childList.getLength(); j++) {
+					
+					Node childNode = childList.item(j);
+					
+					if ("CosemObject".equals(childNode.getNodeName())) {
+
+						if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+
+							Element groupNode = (Element) childNode;
+
+							String[] objectInfo  = new String[4];
+							
+							if(groupNode.getAttribute("Name").equals(objectName)) {
+								objectInfo[0] = groupNode.getAttribute("Name");
+								objectInfo[1] = groupNode.getAttribute("LogicalName");
+								objectInfo[2] = groupNode.getAttribute("ClassId");
+								objectInfo[3] = groupNode.getAttribute("Index");
+								commonObj.add(objectInfo);
+								break;
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			return null;
+		}
 		
 		return commonObj;
 	}
