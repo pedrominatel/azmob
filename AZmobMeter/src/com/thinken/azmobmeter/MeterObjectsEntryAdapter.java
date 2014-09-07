@@ -8,7 +8,6 @@ package com.thinken.azmobmeter;
  * @author piiiters
  *
  */
-import java.text.DateFormat;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -21,11 +20,11 @@ import android.widget.TextView;
 /**
  * Adapts NewsEntry objects onto views for lists
  */
-public final class NewsEntryAdapter extends ArrayAdapter<NewsEntry> {
+public final class MeterObjectsEntryAdapter extends ArrayAdapter<MeterObjectsEntry> {
 
 	private final int newsItemLayoutResource;
 
-	public NewsEntryAdapter(final Context context,
+	public MeterObjectsEntryAdapter(final Context context,
 			final int newsItemLayoutResource) {
 		super(context, 0);
 		this.newsItemLayoutResource = newsItemLayoutResource;
@@ -39,14 +38,11 @@ public final class NewsEntryAdapter extends ArrayAdapter<NewsEntry> {
 		// efficiency
 		final View view = getWorkingView(convertView);
 		final ViewHolder viewHolder = getViewHolder(view);
-		final NewsEntry entry = getItem(position);
+		final MeterObjectsEntry entry = getItem(position);
 		// Setting the title view is straightforward
-		viewHolder.titleView.setText(entry.getTitle());
-		// Setting the subTitle view requires a tiny bit of formatting
-		final String formattedSubTitle = String.format("By %s on %s", entry
-				.getAuthor(), DateFormat.getDateInstance(DateFormat.SHORT)
-				.format(entry.getPostDate()));
-		viewHolder.subTitleView.setText(formattedSubTitle);
+		viewHolder.objectNameView.setText(entry.getObjectName());
+		
+		viewHolder.objectDescView.setText(entry.getObjectDesc());
 		// Setting image view is also simple
 		viewHolder.imageView.setImageResource(entry.getIcon());
 		return view;
@@ -74,9 +70,9 @@ public final class NewsEntryAdapter extends ArrayAdapter<NewsEntry> {
 		ViewHolder viewHolder = null;
 		if (null == tag || !(tag instanceof ViewHolder)) {
 			viewHolder = new ViewHolder();
-			viewHolder.titleView = (TextView) workingView
+			viewHolder.objectNameView = (TextView) workingView
 					.findViewById(R.id.news_entry_title);
-			viewHolder.subTitleView = (TextView) workingView
+			viewHolder.objectDescView = (TextView) workingView
 					.findViewById(R.id.news_entry_subtitle);
 			viewHolder.imageView = (ImageView) workingView
 					.findViewById(R.id.news_entry_icon);
@@ -92,8 +88,8 @@ public final class NewsEntryAdapter extends ArrayAdapter<NewsEntry> {
 	 * are recycled, these references will never change
 	 */
 	private static class ViewHolder {
-		public TextView titleView;
-		public TextView subTitleView;
+		public TextView objectNameView;
+		public TextView objectDescView;
 		public ImageView imageView;
 	}
 }
