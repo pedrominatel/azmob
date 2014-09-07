@@ -8,21 +8,41 @@ import com.thinken.azmobmeter.driver.DriverUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MeterReadout extends Activity {
 
 	DriverUtils driver_utils = new DriverUtils();
+	//Strings
+	private String meterType = "sl7000";
+	private String serialNumber = "";
+	private String fwVersion = "generic";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_meter_read);
-
+		
+		Bundle extras = getIntent().getExtras();
+		
+		if (extras != null) {
+			serialNumber = extras.getString("serialNumber");
+			fwVersion = extras.getString("fwVersion");
+		}
+		
+		
+		TextView serial = (TextView)findViewById(R.id.txt_serialNumber);
+		TextView fw = (TextView)findViewById(R.id.txt_firmwareVersion);
+		
+		serial.setText("Número de Série: "+serialNumber);
+		fw.setText("Versão do Firmware: "+fwVersion);
+		
 		// Setup the list view
 		final ListView newsEntryListView = (ListView) findViewById(R.id.list);
 		final MeterObjectsEntryAdapter newsEntryAdapter = new MeterObjectsEntryAdapter(this,
@@ -44,16 +64,19 @@ public class MeterReadout extends Activity {
 		
 		List<String[]> objects = new ArrayList<String[]>();
 		
-		objects = driver_utils.driver_getObjectsGroupsNames("sl7000", "0721");
+		try {
+			objects = driver_utils.driver_getObjectsGroupsNames(meterType, fwVersion);
+		} catch (Exception e) {
+			// TODO: handle exception
+			objects = driver_utils.driver_getObjectsGroupsNames("sl7000", "generic");
+		}
 		
-		for (int i = 1; i < objects.size(); i++) {
+		
+		for (int i = 0; i < objects.size(); i++) {
 			String[] object = new String[2];
 			object = objects.get(i);
 			entries.add(new MeterObjectsEntry(object[0], object[1] , i % 2 == 0 ? R.drawable.ic_read: R.drawable.ic_read));
 		}
-		
-		
-		
 		
 		return entries;
 	}

@@ -115,7 +115,7 @@ public class DriverInterface {
 	 * 
 	 */
 	public String mtr_get_SerialNumber(IClientConnection connection) {
-		//XXX get serial number
+		// get serial number
 		//<CosemObject Name="SerialNumber" LogicalName="0;0;96;1;0;255;" ClassId="1" Index="2">
 		
 		ObisCode obis = new ObisCode(0,0,96,1,0,255);//index parameters
@@ -141,22 +141,26 @@ public class DriverInterface {
 	 * 
 	 */
 	public String mtr_get_FirmwareVersion(IClientConnection connection) {
-		//XXX get firmware version
+		// get firmware version
 		//<CosemObject Name="CompleteExtFirmwareIdParameters" LogicalName="0;0;142;1;3;255;" ClassId="1" Index="2">
 		ObisCode obis = new ObisCode(0,0,142,1,3,255);//index parameters
 		int classId = 1;
 		int attribute = 2;
 		
-		String firmwareVersion = "";
+		String firmwareVersion = "generic";
 
 		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
-		if (!getResult.isSuccess()) {
+		if (getResult.isSuccess()) {
 			log.log(tag, log.INFO, "Read Success!", true);
-			parser.pduToXmlDebug(getResult);
+			firmwareVersion = (String)parser.pdu_decodeSingleNode(getResult.getResultData());
+			
+			String newFw = firmwareVersion.replace(".", "");
+			newFw = newFw.substring(0, 4);
+			
+			return newFw;
 		} else {
 			log.log(tag, log.WARNING, "Read Error " + getResult.getResultCode(), true);
-			return null;
 		}
 		
 		return firmwareVersion;
@@ -165,9 +169,24 @@ public class DriverInterface {
 	/**
 	 * 
 	 */
-	public String mtr_get_CurrentDateTime() {
-		//XXX get dateandtime
-		return "";
+	public String mtr_get_CurrentDateTime(IClientConnection connection) {
+		// get CurrentDateAndTime
+		ObisCode obis = new ObisCode(0,0,1,0,0,255);//index parameters
+		int classId = 8;
+		int attribute = 2;
+		
+		String currentDateAndTime = "";
+
+		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
+
+		if (getResult.isSuccess()) {
+			log.log(tag, log.INFO, "Read Success!", true);
+			currentDateAndTime = (String)parser.pdu_decodeSingleNode(getResult.getResultData());
+		} else {
+			log.log(tag, log.WARNING, "Read Error " + getResult.getResultCode(), true);
+		}
+		
+		return currentDateAndTime;
 	}
 	
 	//

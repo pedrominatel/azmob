@@ -31,7 +31,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="SerialNumber"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/bt_text_red" />
 
                 <TextView
                     android:id="@+id/txt_firmwareVersion"
@@ -39,7 +40,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="FirmwareVersion"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/bt_text_red" />
 
                 <TextView
                     android:id="@+id/txt_objectList"
@@ -47,7 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Selecione a Leitura:"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    style="@style/bt_text_black" />
                 
             </LinearLayout>
         </LinearLayout>

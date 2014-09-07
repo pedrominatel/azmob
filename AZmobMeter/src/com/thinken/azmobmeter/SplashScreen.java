@@ -49,8 +49,8 @@ public class SplashScreen extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_splash_screen);
-
+		setContentView(R.layout.activity_splash_screen);		
+		
 		// Check if the application is registred
 		CheckRegistration();
 		// Check free space at external memory

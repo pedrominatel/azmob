@@ -37,7 +37,7 @@
     <string name="options_menu">Menu de Opções</string>
     <string name="todo">Opção não disponível!</string>
     <string name="engineering_mode">Modo de Engenharia</string>
-
+    
     <style name="bt_text_white">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -51,8 +51,8 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
     </style>
-    
-        <style name="bt_text_black">
+
+    <style name="bt_text_black">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#000000</item>
@@ -60,6 +60,18 @@
         <item name="android:layout_margin">0dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:shadowColor">#686868</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="bt_text_red">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:shadowColor">#686868</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
