@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MeterInfo Version="1.0.0" Model="sl7000" FirmwareVersion="0721">
     <Groups>
-      	<ReadingGroup Name="Faturamento" Desc="Executa faturamento e leitura registradores">
+      	<ReadingGroup Name="Faturamento" Desc="Executa fechamento de fatura e a leitura dos registradores">
 		</ReadingGroup>
-		<ReadingGroup Name="Verificacao" Desc="Leitura dos dados atuais">
+		<ReadingGroup Name="Verificacao" Desc="Leitura dos dados atuais sem fechamento de fatura">
 		</ReadingGroup>
-		<ReadingGroup Name="Recuperacao" Desc="Leitura do ultimo faturamento">
+		<ReadingGroup Name="Recuperacao" Desc="Leitura do ultimo faturamento sem fechamento de fatura">
 		</ReadingGroup>
 		<ReadingGroup Name="Valores Instantaneos" Desc="Leitura dos valores instantaneos">
 		    <CosemObject Name="AllRmsValues" LogicalName="1;1;98;128;4;255;" ClassId="7" Index="2" />

@@ -285,7 +285,7 @@ public class DriverInterface {
 	/**
 	 * 
 	 */
-	public void mtr_set_CurrentDateAndTime(IClientConnection connection) {
+	public boolean mtr_set_CurrentDateAndTime(IClientConnection connection) {
 		// TODO: Set clock example
 
 		ObisCode obisSet = new ObisCode(0, 0, 1, 0, 0, 255);
@@ -294,8 +294,10 @@ public class DriverInterface {
 
 		if (setResult == AccessResultCode.SUCCESS) {
 			log.log(tag, log.INFO, "Set Success!", true);
+			return true;
 		} else {
 			log.log(tag, log.WARNING, "Set Error "+setResult.toString(), true);
+			return false;
 		}
 	}
 

@@ -7,10 +7,12 @@ import java.util.List;
 import com.thinken.azmobmeter.driver.DriverUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -52,6 +54,19 @@ public class MeterReadout extends Activity {
 		for (final MeterObjectsEntry entry : getMeterObjectsEntries()) {
 			newsEntryAdapter.add(entry);
 		}
+		
+		
+		newsEntryListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				String selectedObject = newsEntryAdapter.getItem(position).getObjectName();
+				Toast.makeText(getBaseContext(), selectedObject, Toast.LENGTH_LONG).show();
+				
+			}
+		});
+		
 
 	}
 
@@ -70,7 +85,6 @@ public class MeterReadout extends Activity {
 			// TODO: handle exception
 			objects = driver_utils.driver_getObjectsGroupsNames("sl7000", "generic");
 		}
-		
 		
 		for (int i = 0; i < objects.size(); i++) {
 			String[] object = new String[2];

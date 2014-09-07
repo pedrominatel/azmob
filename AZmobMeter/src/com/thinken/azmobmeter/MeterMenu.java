@@ -207,6 +207,30 @@ public class MeterMenu extends Activity {
 		disconnect();
 
 	}
+	
+	public void setClock(View view) {
+
+		if (!btOpen) {
+			startBluetooth(btAddress);
+		}
+
+		try {
+			conn = tst.mtr_connect(btSocket);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			Log.i(tag, "Connecting Error: " + e.toString());
+		}
+
+		if (tst.mtr_set_CurrentDateAndTime(conn)) {
+			Toast.makeText(getApplicationContext(), "Sucesso na operacao!", 0)
+					.show();
+		} else {
+			Toast.makeText(getApplicationContext(), "Erro na operacao!", 0)
+					.show();
+		}
+		
+		disconnect();
+	}
 
 	public void disconnect(View view) {
 
@@ -278,7 +302,6 @@ public class MeterMenu extends Activity {
 		connectThread.cancel();
 	}
 	
-
 	// XXX Refactoring by Pedro Minatel
 	// Thread to create Bluetooth connection
 	private class ConnectThread extends Thread {
@@ -314,6 +337,7 @@ public class MeterMenu extends Activity {
 					Log.i(tag, "Socket Connect - Succeeded");
 				} catch (IOException connectException) {
 					Log.i(tag, "Connect Failed");
+					progress.dismiss(); 
 					// Unable to connect; close the socket and get out
 					try {
 						mmSocket.close();

@@ -91,7 +91,7 @@
             android:layout_weight="1"
             android:background="@drawable/bt_title"
             android:drawableLeft="@drawable/ic_clock"
-            android:onClick="todo"
+            android:onClick="setClock"
             android:text="Ajuste de Relogio" />
 
         <Button
