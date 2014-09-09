@@ -9,6 +9,7 @@ import org.openmuc.jdlms.client.MethodResult;
 import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
+import com.thinken.azmobmeter.utils.Filesys;
 import com.thinken.azmobmeter.utils.Logging;
 
 import android.bluetooth.BluetoothSocket;
@@ -23,6 +24,8 @@ public class DriverInterface {
 	private DriverManagement connManager = new DriverManagement();
 	private DriverDataExchange data = new DriverDataExchange();
 	private DriverPduIO parser = new DriverPduIO();
+	
+	private Filesys fs = new Filesys();
 	
 	Logging log = new Logging();
 	
@@ -78,15 +81,21 @@ public class DriverInterface {
 		// the OBIS code structure using the six elements as integer
 		// GetResult getResult = data.GetObject(connection, obis, 7, 0);
 
-		ObisCode obis = new ObisCode(0, 0, 130, 0, 2, 255);//index parameters
-		int classId = 1;
-		int attribute = 2;
+//		ObisCode obis = new ObisCode(0, 0, 130, 0, 2, 255);//index parameters
+//		int classId = 1;
+//		int attribute = 2;
 
+		//ObisCode obis = new ObisCode(0,0,98,133,2,255);//all energies
+		ObisCode obis = new ObisCode(0,0,99,98,0,255);//logbook
+		
+		int classId = 7;
+		int attribute = 2;
+		
 		GetResult getResult = data.GetObject(connection, obis, classId,	attribute);
 
 		if (getResult.isSuccess()) {
 			log.log(tag, log.INFO, "Read Success!", true);
-			parser.createXml("1234567890", "read.xml", getResult, obis, classId, attribute); //this function create the XML file using the
+			parser.createXml("1234567890", fs.fsSys_timeStamp()+"_read.xml", getResult, obis, classId, attribute); //this function create the XML file using the
 			return true;
 		} else {
 			log.log(tag, log.WARNING, "Read Error " + getResult.getResultCode(), true);

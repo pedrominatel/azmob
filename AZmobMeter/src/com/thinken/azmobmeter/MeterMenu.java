@@ -141,6 +141,7 @@ public class MeterMenu extends Activity {
     		Intent intent = new Intent(MeterMenu.this, MeterReadout.class);
     		intent.putExtra("serialNumber", serialNumber);
     		intent.putExtra("fwVersion", fwVersion);
+    		intent.putExtra("btAddress", btAddress);
     		startActivity(intent);
     		
         }  
@@ -175,6 +176,30 @@ public class MeterMenu extends Activity {
 
 		if (fwVersion != null)
 			Log.i(tag, "Meter Firmware Version: " + fwVersion);
+
+		disconnect();
+		
+	}
+	
+	public void connectToMeter(View view) {
+
+		if (!btOpen) {
+			startBluetooth(btAddress);
+		}
+
+		try {
+			conn = tst.mtr_connect(btSocket);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			Log.i(tag, "Connecting Error: " + e.toString());
+		}
+
+		if (tst.mtr_get_Object(conn)) {
+			Toast.makeText(getApplicationContext(), "Sucesso na operacao!", 0);
+		}else{
+			
+		}
+
 
 		disconnect();
 		
@@ -261,6 +286,7 @@ public class MeterMenu extends Activity {
 		Intent intent = new Intent(this, MeterReadout.class);
 		intent.putExtra("serialNumber", serialNumber);
 		intent.putExtra("firmwareVersion", fwVersion);
+		intent.putExtra("btAddress", btAddress);
 		startActivity(intent);
 	}
 

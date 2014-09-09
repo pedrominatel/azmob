@@ -78,7 +78,7 @@ public class DriverUtils {
 		return objGroupNames;
 	}
 	
-	public List<String[]> driver_getObjectsGroupsNames(String meterType, String firmwareVersion, String groupName) {
+	public List<String[]> driver_getObjectsByGroup(String meterType, String firmwareVersion, String groupName) {
 		//List
 		List<String[]> objGroupNames = new ArrayList<String[]>();
 		

@@ -62,7 +62,7 @@
             android:layout_weight="1"
             android:background="@drawable/bt_title"
             android:drawableLeft="@drawable/ic_info"
-            android:onClick="todo"
+            android:onClick="connectToMeter"
             android:text="Informacoes do Medidor" />
 
         <Button
