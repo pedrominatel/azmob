@@ -93,9 +93,13 @@ public class Connected extends HdlcClientLayerState {
 		}
 
 		wrapper.increaseReceiveSeq();
+		
 		if (frame.isSegmented()) {
+			Log.i(tag, "Segmented Frame");
 			wrapper.bufferSegment(frame);
 			try {
+				//XXX Here!!!!!
+				// PMinatel: Send the ACK back to the meter
 				wrapper.acknowledgeReceive();
 			} catch (IOException e) {
 				Log.i(tag, "Error"+e.toString());

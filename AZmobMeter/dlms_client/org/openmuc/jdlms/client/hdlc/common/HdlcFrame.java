@@ -27,6 +27,8 @@ import java.nio.ByteBuffer;
 
 import org.openmuc.jdlms.client.hdlc.HdlcAddress;
 
+import android.util.Log;
+
 /**
  * This class represents a complete HDLC frame ready to be sent, excluding opening and closing flag
  * 
@@ -46,6 +48,8 @@ public class HdlcFrame {
 	private int sendSeq = -1;
 	private int receiveSeq = -1;
 	private boolean isSegmented = false;
+	
+	private String tag = "HdlcFrame";
 
 	private byte controlField;
 
@@ -299,6 +303,9 @@ public class HdlcFrame {
 		byteRead = iStream.read();
 		length = byteRead & 0x07;
 		isSegmented = (byteRead & 0x08) == 0x08;
+		//XXX Determine if is
+		Log.i(tag, "isSegmented: " + isSegmented);
+		
 		byteRead = iStream.read();
 		length = (length << 8) | byteRead;
 		length -= 2;

@@ -185,6 +185,8 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 				} catch (FrameInvalidException e) {
 				}
 				if (frame.getFrameType() == FrameType.ReceiveReady) {
+					//XXX
+					Log.i(tag, "ReceiveReady");
 					int newSendSeq = frame.getReceiveSeq();
 					recreateSendQueue(newSendSeq);
 				}
@@ -246,6 +248,8 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 		frame.setDestination(serverAddress);
 		frame.setSource(clientAddress);
 
+		Log.i(tag, "Acknowledge Receive");
+		
 		sendFrame(frame);
 	}
 
@@ -341,6 +345,14 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 			dataToSend[0] = FLAG;
 			dataToSend[dataToSend.length - 1] = FLAG;
 
+			String toSend = "";
+			
+			for (int i = 0; i < dataToSend.length; i++) {
+				toSend = toSend + String.format("%02X ", dataToSend[i]);
+			}
+			
+			Log.i(tag, "Send: "+toSend);
+			
 			synchronized (lowerLayer) {
 				lowerLayer.send(dataToSend);
 			}
@@ -388,6 +400,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	public void increaseReceiveSeq() {
 		receiveSeq = (++receiveSeq) % 8;
+		Log.i(tag, "Received Sequence: "+receiveSeq);
 	}
 
 	/**
@@ -453,6 +466,8 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 			Queue<HdlcMessage> bufferedQueue = new LinkedList<HdlcMessage>();
 			bufferedQueue.addAll(sendQueue);
 			sendQueue.clear();
+			
+			Log.i(tag, "recreateSendQueue");
 
 			while (!bufferedQueue.isEmpty()) {
 				HdlcMessage message = bufferedQueue.poll();
@@ -474,7 +489,6 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 				sendQueue.add(new HdlcMessage(frameBuffer.array(), newSendSeq));
 				newSendSeq = (newSendSeq + 1) % 8;
 			}
-
 			sendSeq = newSendSeq;
 		}
 	}
