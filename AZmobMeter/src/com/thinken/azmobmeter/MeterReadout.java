@@ -90,32 +90,24 @@ public class MeterReadout extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 
-				//String selectedObject = newsEntryAdapter.getItem(position).getObjectName();
+				String selectedObject = newsEntryAdapter.getItem(position).getObjectName();
 
-				
-				switch (position) {
-				case 0:
-					new LoadViewTask().execute();
-					break;
-
-				default:
-					break;
-				}
+				//new LoadViewTask().execute();
 	
-//				List<String[]> objects = new ArrayList<String[]>();
-//				
-//				objects = driver_utils.driver_getObjectsByGroup(meterType, fwVersion, selectedObject);
-//				
-//				for (int i = 0; i < objects.size(); i++) {
-//					String[] object = new String[4];
-//					object = objects.get(i);
-//					
-//					Log.i(tag, object[0]);
-//					Log.i(tag, object[1]);
-//					Log.i(tag, object[2]);
-//					Log.i(tag, object[3]);
-//
-//				}
+				List<String[]> objects = new ArrayList<String[]>();
+				
+				objects = driver_utils.driver_getObjectsByGroup(meterType, fwVersion, selectedObject);
+				
+				for (int i = 0; i < objects.size(); i++) {
+					String[] object = new String[4];
+					object = objects.get(i);
+					
+					Log.i(tag, object[0]);
+					Log.i(tag, object[1]);
+					Log.i(tag, object[2]);
+					Log.i(tag, object[3]);
+
+				}
 				
 			}
 		});
