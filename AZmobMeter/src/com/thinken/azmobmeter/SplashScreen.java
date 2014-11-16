@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 
-import org.xmlpull.v1.sax2.Driver;
-
-import com.thinken.azmobmeter.driver.DriverUtils;
 import com.thinken.azmobmeter.utils.DeviceInfo;
 import com.thinken.azmobmeter.utils.Filesys;
 import com.thinken.azmobmeter.utils.Logging;
@@ -16,7 +13,6 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;

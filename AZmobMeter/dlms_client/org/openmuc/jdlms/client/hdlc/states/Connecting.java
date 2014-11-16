@@ -33,8 +33,6 @@ import org.openmuc.jdlms.client.hdlc.impl.HdlcClientLayerState;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-
-import android.R.string;
 import android.util.Log;
 
 public class Connecting extends HdlcClientLayerState {

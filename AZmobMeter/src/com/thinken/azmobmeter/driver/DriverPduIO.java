@@ -25,12 +25,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import ch.qos.logback.core.Context;
-
 import com.thinken.azmobmeter.utils.Filesys;
 
 import android.app.Activity;
-import android.content.ContextWrapper;
 import android.util.Log;
 
 public class DriverPduIO extends Activity {

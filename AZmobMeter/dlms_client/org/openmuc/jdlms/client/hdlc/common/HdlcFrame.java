@@ -364,6 +364,8 @@ public class HdlcFrame {
 				rejectReason = new FrameRejectReason();
 				rejectReason.decode(new ByteArrayInputStream(informationField));
 				break;
+			default:
+				break;
 			}
 		}
 	}

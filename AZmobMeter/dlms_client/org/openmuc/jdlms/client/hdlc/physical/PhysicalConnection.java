@@ -20,18 +20,10 @@
  */
 package org.openmuc.jdlms.client.hdlc.physical;
 
-//import gnu.io.SerialPort;
-//import gnu.io.SerialPortEvent;
-//import gnu.io.SerialPortEventListener;
-//import gnu.io.UnsupportedCommOperationException;
-
 import java.io.*;
 import java.util.TooManyListenersException;
 
 import android.bluetooth.BluetoothSocket;
-import android.os.Handler;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 import android.util.Log;
 
 /**
