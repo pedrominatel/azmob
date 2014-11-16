@@ -261,6 +261,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 	 *            Frame number that the smart meter acknowledged
 	 */
 	public void acknowledgeSend(int sendSeq) {
+		
 		boolean found = false;
 
 		sendSeq = sendSeq == 0 ? 8 : sendSeq;

@@ -92,47 +92,27 @@ public class DriverUtils {
 			Document doc = dBuilder.parse(file);
 			
 			doc.getDocumentElement().normalize();
-			
 			NodeList flowList = doc.getElementsByTagName("Groups");
-			
-			for (int i = 0; i < flowList.getLength(); i++) {
-				
+			for (int i = 0; i < flowList.getLength(); i++) {	
 				NodeList childList = flowList.item(i).getChildNodes();
-				
 				for (int j = 0; j < childList.getLength(); j++) {
-					
 					Node childNode = childList.item(j);
-					
 					if ("ReadingGroup".equals(childNode.getNodeName())) {
-
-						if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-
-							Element groupNode = (Element) childNode;
-
-							if(groupNode.getAttribute("Name").equals(groupName)) {
-								
-								NodeList objects = childList.item(i).getChildNodes();
-								
-								for (int k = 0; k < objects.getLength(); k++) {
-									
-									Node object = objects.item(k);
-									
-									if ("CosemObject".equals(object.getNodeName())) {
-
-										if (object.getNodeType() == Node.ELEMENT_NODE) {
-
-											Element objectNode = (Element) object;
-											
-											String[] objectInfo  = new String[4];
-											
-											objectInfo[0] = objectNode.getAttribute("Name");
-											objectInfo[1] = objectNode.getAttribute("LogicalName");
-											objectInfo[2] = objectNode.getAttribute("ClassId");
-											objectInfo[3] = objectNode.getAttribute("Index");
-											objGroupNames.add(objectInfo);
-											break;
-											
-										}
+						Element groupNode = (Element) childNode;
+						if (groupNode.getAttribute("Name").equals(groupName)) {
+							System.out.print("Group Name: "+groupNode.getAttribute("Name") + "\n");
+							NodeList objects = groupNode.getChildNodes();
+							for (int k = 0; k < objects.getLength(); k++) {
+								Node object = objects.item(k);
+								if ("CosemObject".equals(object.getNodeName())) {
+									if (object.getNodeType() == Node.ELEMENT_NODE) {
+										Element objectNode = (Element) object;
+										String[] objectInfo = new String[4];
+										objectInfo[0] = objectNode.getAttribute("Name");
+										objectInfo[1] = objectNode.getAttribute("LogicalName");
+										objectInfo[2] = objectNode.getAttribute("ClassId");
+										objectInfo[3] = objectNode.getAttribute("Index");
+										objGroupNames.add(objectInfo);
 									}
 								}
 							}
@@ -142,8 +122,7 @@ public class DriverUtils {
 			}
 		} catch (Exception e) {
 			return null;
-		}		
-		
+		}
 		return objGroupNames;
 	}
 	
