@@ -173,11 +173,10 @@ public class PhysicalConnection implements IPhysicalConnection {
 		public void run() {
 
 			try {
-				byte[] buffer = new byte[1024]; // buffer store for the stream
+				byte[] buffer = new byte[2048]; // buffer store for the stream
 				int bytes = -1; // bytes returned from read()
 				// Keep listening to the InputStream until an exception occurs
 				while (true) {
-						
 					// Read from the InputStream
 					bytes = mmInStream.read(buffer, curLength, buffer.length - curLength);
 
@@ -191,11 +190,16 @@ public class PhysicalConnection implements IPhysicalConnection {
 						if (curLength > 0) {
 							// reading finished
 							listener.dataReceived(buffer, curLength);
+							
+							String received = "";
+							for (int i = 0; i < curLength; i++) {
+								received = received + String.format("%02X ", buffer[i]);
+							}
+							Log.i(tag, "Bytes Received: "+received);
+							
 							curLength = bytes = 0;
-						}
-						
+						}	
 					}
-					
 				}
 			} catch (Exception e) {
 				Log.i(tag, "Receive Error: " + e.toString());
@@ -224,6 +228,14 @@ public class PhysicalConnection implements IPhysicalConnection {
 				
 			try {
 				Log.i(tag, "Sending Stream");
+				
+				String toSend = "";
+				for (int i = 0; i < bytes.length; i++) {
+					toSend = toSend + String.format("%02X ", bytes[i]);
+				}
+				
+				Log.i(tag, "Bytes Send: "+toSend);
+				
 				mmOutStream.write(bytes);
 			} catch (IOException e) {
 				Log.i(tag, "Sending Stream Error: " + e.toString());

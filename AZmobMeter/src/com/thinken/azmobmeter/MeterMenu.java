@@ -246,11 +246,31 @@ public class MeterMenu extends Activity {
 		}
 
 		if (tst.mtr_set_CurrentDateAndTime(conn)) {
-			Toast.makeText(getApplicationContext(), "Sucesso na operacao!", 0)
-					.show();
+			Toast.makeText(getApplicationContext(), "Sucesso na operacao!", 0).show();
 		} else {
-			Toast.makeText(getApplicationContext(), "Erro na operacao!", 0)
-					.show();
+			Toast.makeText(getApplicationContext(), "Erro na operacao!", 0).show();
+		}
+		
+		disconnect();
+	}
+	
+	public void eobReset(View view) {
+
+		if (!btOpen) {
+			startBluetooth(btAddress);
+		}
+
+		try {
+			conn = tst.mtr_connect(btSocket);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			Log.i(tag, "Connecting Error: " + e.toString());
+		}
+
+		if (tst.mtr_action_AsynchronousEOBScriptTable(conn)) {
+			Toast.makeText(getApplicationContext(), "Sucesso na operacao!", 0).show();
+		} else {
+			Toast.makeText(getApplicationContext(), "Erro na operacao!", 0).show();
 		}
 		
 		disconnect();

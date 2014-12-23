@@ -102,6 +102,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 
 	@Override
 	public synchronized void send(byte[] data) throws IOException {
+				
 		if (sendQueue.size() == 7) {
 			throw new IOException("Send queue full");
 		}
@@ -118,15 +119,16 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 				dataWrapper.get(segment, LLCREQUEST.length, segment.length - LLCREQUEST.length);
 				state.send(this, segment, true);
 			}
-			dataWrapper.get(segment, LLCREQUEST.length, dataWrapper.remaining());
+			dataWrapper.get(segment, LLCREQUEST.length, dataWrapper.remaining());			
 			state.send(this, segment, false);
 		}
 		else {
 			byte[] frame = new byte[data.length + LLCREQUEST.length];
 			System.arraycopy(LLCREQUEST, 0, frame, 0, LLCREQUEST.length);
-			System.arraycopy(data, 0, frame, LLCREQUEST.length, data.length);
+			System.arraycopy(data, 0, frame, LLCREQUEST.length, data.length);			
 			state.send(this, frame, false);
 		}
+		
 	}
 
 	@Override
@@ -345,14 +347,6 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 			System.arraycopy(encodedFrame, 0, dataToSend, 1, encodedFrame.length);
 			dataToSend[0] = FLAG;
 			dataToSend[dataToSend.length - 1] = FLAG;
-
-			String toSend = "";
-			
-			for (int i = 0; i < dataToSend.length; i++) {
-				toSend = toSend + String.format("%02X ", dataToSend[i]);
-			}
-			
-			Log.i(tag, "Send: "+toSend);
 			
 			synchronized (lowerLayer) {
 				lowerLayer.send(dataToSend);
@@ -386,7 +380,7 @@ public class HdlcClientLayer implements IUpperLayer, ILowerLayer<Object> {
 				} catch (InterruptedException e) {
 				}
 			}
-
+			
 			synchronized (lowerLayer) {
 				lowerLayer.send(dataToSend);
 			}

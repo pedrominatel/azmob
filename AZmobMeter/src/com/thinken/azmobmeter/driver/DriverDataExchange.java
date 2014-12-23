@@ -15,6 +15,8 @@ import org.openmuc.jdlms.client.ObisCode;
 import org.openmuc.jdlms.client.SelectiveAccessDescription;
 import org.openmuc.jdlms.client.SetRequest;
 
+import android.util.Log;
+
 import com.thinken.azmobmeter.driver.DriverPduIO;
 
 ;
@@ -25,6 +27,8 @@ public class DriverDataExchange {
 	private static final int LOW_TIMEOUT = 5000;// 5 seconds in miliseconds
 	private static final int DEFAULT_TIMEOUT = 3000;// 3 seconds in miliseconds
 
+	private String tag = "DriverDataExchange";
+	
 	DriverPduIO parse = new DriverPduIO();
 
 	// GetObject
@@ -145,7 +149,9 @@ public class DriverDataExchange {
 		Calendar calendar = new GregorianCalendar();
 
 		setObject.data().setOctetString(parse.encodeClock(calendar));
-
+		
+		Log.i(tag, "Date and Time: " + setObject.toString());
+		
 		try {
 			List<AccessResultCode> getResults = connection.set(DEFAULT_TIMEOUT,
 					true, setObject); // set the timeout with more than 15s for
@@ -186,6 +192,9 @@ public class DriverDataExchange {
 		action.data().setUnsigned16(data);
 		MethodResult result = null;
 		// Read entire event log
+		
+		Log.i(tag, "Action: " + action.toString());
+		
 		try {
 			List<MethodResult> actionResults = connection.action(LOW_TIMEOUT,
 					action);
