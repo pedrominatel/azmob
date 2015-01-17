@@ -20,6 +20,8 @@ public class MainMenu extends Activity {
 		
 	}
 	
+	//NCS-2015
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    //Handle the back button
