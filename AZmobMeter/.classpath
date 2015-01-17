@@ -7,10 +7,10 @@
 	<classpathentry kind="src" path="dlms_api"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="/Users/nickcs/GitHub/azmob/libs/antlr.jar"/>
-	<classpathentry kind="lib" path="/Users/nickcs/GitHub/azmob/libs/axdr-compiler-0.9.0.jar"/>
-	<classpathentry kind="lib" path="/Users/nickcs/GitHub/azmob/libs/lineargs.jar"/>
-	<classpathentry kind="lib" path="/Users/nickcs/GitHub/azmob/libs/logback-classic-1.0.9.jar"/>
-	<classpathentry kind="lib" path="/Users/nickcs/GitHub/azmob/libs/logback-core-1.0.9.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/git/azmob/libs/antlr.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/git/azmob/libs/axdr-compiler-0.9.0.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/git/azmob/libs/lineargs.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/git/azmob/libs/logback-classic-1.0.9.jar"/>
+	<classpathentry kind="lib" path="/home/piiiters/projects/az-mov/src/git/azmob/libs/logback-core-1.0.9.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
