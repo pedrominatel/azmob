@@ -20,7 +20,8 @@
  */
 package org.openmuc.jdlms.client;
 
-import java.util.ServiceLoader;
+//import java.util.ServiceLoader; //Nicola - Replaced with com.thinken.azmobmeter.utils.* for CustomServiceLoader
+import com.thinken.azmobmeter.utils.*;
 
 /**
  * Basic settings all DLMS connections must at least have.
@@ -37,8 +38,9 @@ import java.util.ServiceLoader;
  * 
  * @author Karsten Mueller-Bier
  */
-public abstract class ClientConnectionSettings<E extends ClientConnectionSettings<E>> {
 
+public abstract class ClientConnectionSettings<E extends ClientConnectionSettings<E>> {
+	
 	private static IClientConnectionFactory factory;
 	private static final Object lock = new Object();
 
@@ -51,7 +53,7 @@ public abstract class ClientConnectionSettings<E extends ClientConnectionSetting
 		if (factory == null) {
 			synchronized (lock) {
 				if (factory == null) {
-					factory = ServiceLoader.load(IClientConnectionFactory.class).iterator().next();
+					factory = CustomServiceLoader.load(IClientConnectionFactory.class).iterator().next(); //Nicola - Changed ServiceLoader to CustomServiceLoader 
 				}
 			}
 		}

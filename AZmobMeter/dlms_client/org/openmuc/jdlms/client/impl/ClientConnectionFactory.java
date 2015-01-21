@@ -23,7 +23,9 @@ package org.openmuc.jdlms.client.impl;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ServiceLoader;
+//import java.util.ServiceLoader; //Nicola - Replaced with com.thinken.azmobmeter.utils.* for CustomServiceLoader
+
+import com.thinken.azmobmeter.utils.*;
 
 import org.openmuc.jdlms.client.ClientConnectionSettings;
 import org.openmuc.jdlms.client.ClientConnectionSettings.ConfirmedMode;
@@ -45,8 +47,8 @@ public class ClientConnectionFactory implements IClientConnectionFactory {
 			16);
 
 	private final ConnectModule connectModule = new ConnectModule();
-
-	private ServiceLoader<ILowerLayerFactory> factoryService;
+	
+	private CustomServiceLoader<ILowerLayerFactory> factoryService; //Nicola - Changed ServiceLoader to CustomServiceLoader 
 
 	@Override
 	public IClientConnection createClientConnection(ClientConnectionSettings settings) throws IOException {
@@ -65,7 +67,7 @@ public class ClientConnectionFactory implements IClientConnectionFactory {
 		else {
 			ILowerLayer<Object> lowerLayer = null;
 			if (factoryService == null) {
-				factoryService = ServiceLoader.load(ILowerLayerFactory.class);
+				factoryService = CustomServiceLoader.load(ILowerLayerFactory.class); //Nicola - Changed ServiceLoader to CustomServiceLoader 
 			}
 
 			ILowerLayerFactory factory = getLowerLayerFactory(settings.getClass());
